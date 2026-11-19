@@ -63,7 +63,7 @@ export function InstallHint() {
   return (
     <div style={overlay} role="dialog" aria-modal="true" aria-labelledby="install-title">
       <div style={card}>
-        <img src="/icon-192.png" alt="" width={72} height={72} style={{ borderRadius: 16 }} />
+        <img src="/mycrib-icon-192.png" alt="" width={72} height={72} style={{ borderRadius: 16 }} />
         <h2 id="install-title" style={{ margin: 0, fontSize: 22, fontWeight: 600 }}>
           Open MyCrib in full screen
         </h2>
