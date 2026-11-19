@@ -27,6 +27,9 @@ interface Props {
   busy: boolean;
   /** show the send button while writing, also before there is text (Synne's Figma 987:14820, 13.11) */
   showSend?: boolean;
+  /** a scripted line waits (Fig's talk, the table at the stand, 19.11): a tap types it by itself, so the field is
+   *  read-only and the phone's keyboard doesn't open */
+  noKeyboard?: boolean;
 }
 
 /** Chat/Composer: [+] [Ask about the room …] [↑]. With an attachment it grows into a card (State=WithAttachment). */
@@ -133,6 +136,8 @@ export const Composer = forwardRef<HTMLTextAreaElement, Props>(function Composer
             value={p.draft}
             onChange={(e) => p.setDraft(e.target.value)}
             onKeyDown={onKey}
+            readOnly={p.noKeyboard}
+            inputMode={p.noKeyboard ? 'none' : undefined}
           />
         </div>
         {/* the send button only appears when there is something to send (like ChatGPT) */}

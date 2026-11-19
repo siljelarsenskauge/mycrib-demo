@@ -1973,6 +1973,9 @@ export function RoomScreen({ roomId }: { roomId: string }) {
           onSend={() => send()}
           busy={thinking}
           showSend={writing || !!draft}
+          // the scripted lines type themselves when the field is tapped: no keyboard on the phone (19.11). Also while an
+          // answer is coming (nothing can be sent then anyway), so a tap between two lines doesn't open it
+          noKeyboard={figTalk !== null || (STAND && (tableAsk || thinking)) || (thinking && figPeek)}
         />
       </ChatSheet>
       </div>
