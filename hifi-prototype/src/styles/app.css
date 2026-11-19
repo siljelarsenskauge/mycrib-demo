@@ -9094,4 +9094,9 @@ button.wall-card-main {
   body {
     background: var(--color-background-default);
   }
+  /* iOS doesn't dim the area behind the clock with the dark layer under a sheet or menu (it can't be reached with dark
+     status-bar icons), so the dark layer fades in over the top 40px instead of starting with a sharp edge (19.11) */
+  .scrim:not(.scrim-modeless) {
+    background: linear-gradient(to bottom, transparent, var(--color-overlay-scrim) var(--space-40));
+  }
 }
