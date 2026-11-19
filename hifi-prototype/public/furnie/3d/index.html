@@ -1,0 +1,1358 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Furnie 3D-stue</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: 3D-rommet fyller skjermen. Smal verktøylinje øverst i midten, mållinje under, «Om» og ovenfra-visning øverst til høyre. Samme uttrykk som panoramavisningen. */
+:root{
+  --bg:#e9e6e1; --surface:#fbfaf8; --surface-2:#f0ece7; --fg:#22201d; --muted:#6c665f; --line:#ddd6cd;
+  --accent:#22201d; --accent-fg:#fbfaf8; --warn:#9a5b14; --ok:#3f6b4c;
+  --glass:rgba(251,250,248,.9);
+  --font-ui:"Schibsted Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-num:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#141413; --surface:#1f1d1b; --surface-2:#2a2724; --fg:#efebe5; --muted:#a39b91; --line:#3a3632;
+  --accent:#efebe5; --accent-fg:#1a1816; --warn:#e2a35a; --ok:#8fc29e; --glass:rgba(31,29,27,.9); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#141413; --surface:#1f1d1b; --surface-2:#2a2724; --fg:#efebe5; --muted:#a39b91; --line:#3a3632;
+  --accent:#efebe5; --accent-fg:#1a1816; --warn:#e2a35a; --ok:#8fc29e; --glass:rgba(31,29,27,.9); color-scheme:dark}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-ui);font-size:14px;overflow:hidden}
+#stage{position:fixed;inset:0;touch-action:none;background:#dcd6ce}
+#stage canvas{display:block;width:100%;height:100%}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
+.top{position:fixed;top:calc(env(safe-area-inset-top,0px) + 12px);left:max(12px,env(safe-area-inset-left,0px));right:max(12px,env(safe-area-inset-right,0px));display:flex;gap:8px;align-items:center;justify-content:space-between;pointer-events:none}
+.top>*{pointer-events:auto}
+.brand{background:var(--glass);border-radius:999px;padding:6px 12px;font-weight:600;font-size:13px}
+.brand span{font-weight:400;color:var(--muted)}
+.tools{display:flex;gap:6px}
+.btn{border:0;background:var(--glass);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:500}
+.btn:hover{background:var(--surface)}
+.btn[aria-pressed="true"]{background:var(--accent);color:var(--accent-fg)}
+.bar{position:fixed;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top,0px) + 10px);display:flex;flex-direction:column;align-items:center;gap:6px;max-width:calc(100vw - 24px)}
+.tray{display:flex;align-items:center;gap:4px;background:var(--glass);border-radius:999px;padding:4px;box-shadow:0 4px 18px rgba(0,0,0,.14)}
+.seg{display:flex;background:var(--surface-2);border-radius:999px;padding:2px}
+.seg button{border:0;background:transparent;border-radius:999px;padding:5px 11px;font-size:13px;white-space:nowrap}
+.seg button[aria-pressed="true"]{background:var(--surface);font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.seg small{font-family:var(--font-num);font-size:10.5px;color:var(--muted);margin-left:4px;font-weight:400}
+.ico{width:32px;height:32px;border-radius:50%;border:0;background:transparent;display:grid;place-items:center;font-size:16px;line-height:1}
+.ico:hover{background:var(--surface-2)}
+.sep{width:1px;height:20px;background:var(--line);margin:0 2px}
+.readout{background:var(--glass);border-radius:999px;padding:5px 12px;font-size:12.5px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.readout b{font-family:var(--font-num);font-weight:500}
+.readout .dot{color:var(--muted);margin:0 6px}
+.readout .est{color:var(--warn)}
+.tray-wrap{position:relative}
+.menu{position:absolute;top:calc(100% + 6px);right:0;z-index:2;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:4px;display:flex;flex-direction:column;min-width:200px;box-shadow:0 8px 24px rgba(0,0,0,.2)}
+.menu button{border:0;background:transparent;text-align:left;padding:8px 10px;border-radius:8px;font-size:13px}
+.menu button:hover{background:var(--surface-2)}
+#hint{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 128px);transform:translateX(-50%);background:rgba(20,18,16,.72);color:#f4efe8;padding:9px 14px;border-radius:10px;font-size:13px;pointer-events:none;transition:opacity .4s;text-align:center;max-width:86vw}
+.dlg{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:16px;z-index:5}
+.dlg .card{background:var(--surface);color:var(--fg);border-radius:14px;max-width:480px;width:100%;max-height:85vh;overflow:auto;padding:18px 20px;display:flex;flex-direction:column;gap:10px}
+.dlg h2{margin:0;font-size:17px;font-weight:600}
+.dlg p{margin:0;line-height:1.5}
+.dlg .small{font-size:12.5px;color:var(--muted)}
+.choices{display:flex;flex-direction:column;gap:6px}
+.choice{display:flex;flex-direction:column;gap:2px;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:10px 12px;cursor:pointer;font:inherit;color:inherit}
+.choice:hover{border-color:var(--muted)}
+.choice span{font-size:12.5px;color:var(--muted)}
+.dlg .close{align-self:flex-start;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px}
+#about{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:16px}
+#about .card{background:var(--surface);color:var(--fg);border-radius:14px;max-width:560px;width:100%;max-height:85vh;overflow:auto;padding:18px 20px;display:flex;flex-direction:column;gap:10px}
+#about h2{margin:0;font-size:17px;font-weight:600;text-wrap:balance}
+#about p{line-height:1.55;margin:0;max-width:65ch}
+#about .tbl{overflow-x:auto}
+#about table{border-collapse:collapse;width:100%;font-size:13px}
+#about td,#about th{padding:5px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+#about th{font-weight:600;color:var(--muted);font-size:11.5px;letter-spacing:.04em;text-transform:uppercase}
+#about td.num{font-family:var(--font-num);font-variant-numeric:tabular-nums;white-space:nowrap}
+.src{font-size:11px;border-radius:999px;padding:1px 7px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.src.anslått{border-color:color-mix(in srgb,var(--warn) 55%,transparent);color:var(--warn)}
+.src.oppgitt{border-color:color-mix(in srgb,var(--ok) 55%,transparent);color:var(--ok)}
+#about .close{align-self:flex-start;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px}
+#toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 124px);transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:7px 14px;border-radius:999px;font-size:13px;opacity:0;transition:opacity .25s;pointer-events:none}
+#copybox{width:100%;height:120px;font-family:var(--font-num);font-size:11px;border:1px solid var(--line);border-radius:8px;background:var(--surface-2);color:var(--fg)}
+#loading{position:fixed;inset:0;display:grid;place-items:center;color:var(--muted);font-size:13px;pointer-events:none}
+body.embed .top .brand{display:none}
+/* inside the group app (MyCrib): only the tables already in the room, no shelf with other tables (28.10) */
+.embed .shelf,.embed .ghost{display:none!important}
+/* ---------- MyCrib look (the group's hi-fi prototype, tokens.css 27.10): only inside the app (28.10) ---------- */
+body.embed{
+  --bg:#faf9f7; --surface:#faf9f7; --surface-2:#f0eeea; --fg:#111111; --muted:#666666; --line:#e3e3e3;
+  --accent:#111111; --accent-fg:#ffffff; --warn:#8f600f; --ok:#2f3d20;
+  --glass:rgba(250,249,247,.68);
+  --mc-accent:#7a1c2c; --mc-input:#ffffff; --mc-inverse:#111111;
+  --mc-edge:0 0 0 .5px rgba(17,17,17,.06); --mc-elev3:0 4px 16px rgba(17,17,17,.06); --mc-elev5:0 8px 24px rgba(17,17,17,.12);
+  --mc-hover:rgba(17,17,17,.05); --mc-pressed:rgba(17,17,17,.1);
+  --font-ui:'Inter',system-ui,-apple-system,sans-serif; --font-num:'Inter',system-ui,-apple-system,sans-serif;
+  font-family:var(--font-ui); background:var(--bg); color:var(--fg);
+}
+body.embed .top{top:16px;left:16px;right:16px}
+body.embed .tools{gap:8px}
+body.embed .btn,body.embed .tray,body.embed .readout{
+  background:var(--glass);-webkit-backdrop-filter:blur(24px) saturate(1.6);backdrop-filter:blur(24px) saturate(1.6);
+  border:1px solid rgba(250,249,247,.9);box-shadow:var(--mc-edge),var(--mc-elev3)}
+body.embed .btn{display:inline-flex;align-items:center;height:48px;padding:0 16px;border-radius:999px;font:500 14px/20px var(--font-ui);letter-spacing:.5px}
+body.embed .btn:hover{background:var(--glass)}
+body.embed .btn:active{background:var(--mc-pressed)}
+body.embed .btn[aria-pressed="true"]{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+body.embed button:focus-visible{outline:2px solid var(--mc-accent);outline-offset:2px}
+body.embed .bar{top:72px;gap:8px}
+body.embed .tray{border-radius:999px;padding:4px;gap:4px}
+body.embed .seg{background:var(--surface-2);border-radius:999px;padding:2px}
+body.embed .seg button{min-height:40px;padding:0 14px;border-radius:999px;font:500 14px/20px var(--font-ui)}
+body.embed .seg button[aria-pressed="true"]{background:var(--mc-input);font-weight:600;box-shadow:0 0 0 1px var(--mc-accent)}
+body.embed .ico{width:44px;height:44px;font-size:18px}
+body.embed .ico:hover{background:var(--mc-hover)}
+body.embed .sep{background:var(--line)}
+body.embed .readout{border-radius:999px;padding:6px 14px;font:500 12px/16px var(--font-ui);letter-spacing:.5px;font-variant-numeric:tabular-nums}
+body.embed .readout b{font-family:var(--font-ui);font-weight:600}
+body.embed .readout .est{color:var(--warn)}
+body.embed .menu{top:calc(100% + 8px);background:var(--bg);border:0;border-radius:24px;padding:8px 0;min-width:240px;box-shadow:var(--mc-edge),var(--mc-elev5)}
+body.embed .menu button{min-height:48px;padding:0 16px;border-radius:0;font:400 14px/20px var(--font-ui);letter-spacing:.25px}
+body.embed .menu button:hover{background:var(--mc-hover)}
+body.embed .menu button:active{background:var(--mc-pressed)}
+body.embed #hint{top:72px;bottom:auto;left:16px;right:16px;transform:none;max-width:none;background:var(--mc-accent);color:#fff;border-radius:8px;padding:12px;font:400 14px/20px var(--font-ui);letter-spacing:.25px;text-align:left}
+body.embed #toast{top:72px;bottom:auto;left:16px;right:16px;transform:none;background:var(--mc-inverse);color:#fff;border-radius:8px;padding:12px 16px;font:400 14px/20px var(--font-ui);box-shadow:var(--mc-elev5)}
+body.embed #loading{font:400 14px/20px var(--font-ui);color:var(--muted)}
+/* the measurement table («Mål») is in Norwegian and not needed in the test */
+body.embed #btnAbout{display:none}
+/* MyCrib: the page fills the stage; the app tells it how much room its own bars take (--embed-top/-bottom) */
+/* the app's own view menu replaces the page's buttons (Photo / Show model / Top view) */
+body.embed .top{display:none!important}
+body.embed .bar{display:none!important}
+#rotFloat{position:fixed;transform:translateX(-50%);display:flex;gap:8px;z-index:4}
+#rotFloat button{width:44px;height:44px;border-radius:999px;display:grid;place-items:center;font:500 20px/1 var(--font-ui);color:var(--fg);
+  background:var(--glass);-webkit-backdrop-filter:blur(24px) saturate(1.6);backdrop-filter:blur(24px) saturate(1.6);border:1px solid rgba(250,249,247,.9);box-shadow:var(--mc-edge),var(--mc-elev3)}
+#rotFloat button:active{background:var(--mc-pressed)}
+body.embed #hint,body.embed #toast{top:var(--embed-top,128px)}
+body.embed #hint{display:none}
+
+
+@media (max-width:980px){ .brand span{display:none} .bar{top:calc(env(safe-area-inset-top,0px) + 54px)} }
+@media (max-width:640px){ .seg small{display:none} .seg button{padding:5px 9px} .ico{width:30px;height:30px} .readout{font-size:11.5px;padding:4px 10px} }
+@media (prefers-reduced-motion:reduce){#hint,#toast{transition:none}}
+/* Hylla nederst: bilder av bordene. Dra opp i rommet for å sette bordet der, eller trykk for å bytte på stedet. */
+.shelf{position:fixed;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 10px);overflow-x:auto;padding:0 12px;touch-action:pan-x;scrollbar-width:none;z-index:3}
+.shelf::-webkit-scrollbar{display:none}
+.shelf-inner{display:flex;gap:6px;width:max-content;margin:0 auto;padding:6px;background:transparent}
+.tile{flex:0 0 auto;width:90px;border:0;background:transparent;border-radius:11px;padding:4px 3px 5px;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:grab;font:inherit;color:inherit;user-select:none;-webkit-user-select:none;touch-action:pan-x;-webkit-touch-callout:none}
+.tile:hover{background:var(--surface)}
+.tile:active{cursor:grabbing}
+.tile img,.tile .ph{width:82px;height:60px;object-fit:contain;background:color-mix(in srgb,var(--surface) 55%,transparent);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border-radius:8px;pointer-events:none;-webkit-user-drag:none;display:grid;place-items:center;font-size:22px;color:var(--muted)}
+.tile b{font-size:11.5px;font-weight:600;line-height:1.15;text-align:center;margin-top:3px}
+.tile b,.tile span{text-shadow:0 0 3px var(--surface),0 0 6px var(--surface),0 0 10px var(--surface)}
+.tile span{font-size:10.5px;color:var(--muted);font-family:var(--font-num)}
+.tile[aria-pressed="true"]{background:var(--surface);box-shadow:inset 0 0 0 2px var(--fg)}
+.ghost{position:fixed;width:82px;height:60px;pointer-events:none;z-index:6;opacity:.9;transform:translate(-50%,-70%);background:transparent;filter:drop-shadow(0 8px 10px rgba(0,0,0,.3))}
+@media (max-width:640px){.tile{width:76px}.tile img,.tile .ph{width:68px;height:50px}.ghost{width:68px;height:50px}}
+</style>
+
+<div id="stage" aria-label="3D model of the living room. Drag a glass table to move it, drag the room to turn it."></div>
+<div id="loading">Loading the room …</div>
+
+<div class="top">
+  <div class="brand">Furnie · Stue B1 <span>· 3D</span></div>
+  <div class="tools">
+    <button class="btn" id="btnTop" aria-pressed="false">Top view</button>
+    <button class="btn" id="btnAbout" aria-label="Om modellen og målene">Mål</button>
+  </div>
+</div>
+
+<div class="bar" id="bar" hidden>
+  <div class="tray-wrap">
+    <div class="tray" role="toolbar" aria-label="Table">
+      <div class="seg" role="group" aria-label="Choose table">
+        <button id="selBig" aria-pressed="true">Large<small>42 cm</small></button>
+        <button id="selSmall" aria-pressed="false">Small<small>36 cm</small></button>
+        <button id="selAlt" aria-pressed="false" hidden>Other<small id="altDim"></small></button>
+      </div>
+      <button class="ico" id="rotL" aria-label="Rotate the table 15° anticlockwise" title="Rotate">↺</button>
+      <button class="ico" id="rotR" aria-label="Rotate the table 15° clockwise" title="Rotate">↻</button>
+      <span class="sep"></span>
+      <button class="ico" id="btnMore" aria-label="More options" aria-expanded="false" title="More options">⋯</button>
+    </div>
+    <div class="menu" id="menu" hidden>
+      <button id="btnReset">Reset the tables</button>
+      <button id="btnView">Reset the view</button>
+      <button id="btnCopy">Copy position and sizes</button>
+    </div>
+  </div>
+  <div class="readout" id="readout" aria-live="polite">–</div>
+</div>
+
+<div id="hint">Dra et bord fra hylla nede inn i rommet<br>Trykk på et bord for å flytte og snu det<br>Dra i rommet for å snu det, klyp eller scroll for å zoome</div>
+<div id="toast" role="status"></div>
+<div class="shelf" id="shelf"><div class="shelf-inner" id="shelfInner" role="toolbar" aria-label="Bord du kan prøve. Dra et bord inn i rommet, eller trykk for å bytte."></div></div>
+<img class="ghost" id="ghost" alt="" hidden>
+
+<div id="altDlg" class="dlg" hidden>
+  <div class="card" role="dialog" aria-modal="true" aria-labelledby="altTitle">
+    <h2 id="altTitle">Sammenlign med et annet bord</h2>
+    <p>Bytt ut glassbordene med et annet bord, og se hvordan det passer i stua. Målene øverst oppdateres for bordet du velger.</p>
+    <div class="choices">
+      <button class="choice" id="altGlass"><b>Glassbordene</b><span>Røykglass, 42 og 36 cm, slik de står i dag</span></button>
+      <button class="choice" id="altMine"><b>Ditt runde bord</b><span>Fra SketchUp · Ø 87 cm, høyde 37 cm · mørk eik</span></button>
+      <button class="choice" id="altOak"><b>Rundt eikebord</b><span>Ø 80 cm, høyde 40 cm · eksempel, ikke skannet</span></button>
+      <button class="choice" id="altLow"><b>Langt, lavt sofabord</b><span>120 × 60 cm, høyde 35 cm · eksempel, ikke skannet</span></button>
+      <button class="choice" id="altGlassWal"><b>Rundt glassbord</b><span>Ø 90 cm, høyde 30 cm · glassplate på sokkel i valnøtt · fra nettbilde</span></button>
+      <button class="choice" id="altTray"><b>Brettbord i valnøtt</b><span>Ø 59 cm, høyde 33 cm · brun valnøtt, plate med kant på sylinderfot · fra nettbilde</span></button>
+      <label class="choice" for="altFile"><b>Last opp et skannet bord</b><span>.glb eller .gltf, for eksempel skannet med iPhone i Scaniverse eller Polycam</span></label>
+      <input type="file" id="altFile" accept=".glb,.gltf,model/gltf-binary,model/gltf+json" hidden>
+    </div>
+    <p class="small" id="altMsg"></p>
+    <button class="close" id="altClose">Lukk</button>
+  </div>
+</div>
+
+<div id="about" hidden>
+  <div class="card" role="dialog" aria-modal="true" aria-labelledby="aboutTitle">
+    <h2 id="aboutTitle">Mål og kilder</h2>
+    <p>Alle mål ligger i <code>rom.json</code>, som de andre visningene også kan lese. Hvert mål er merket med hvor det kommer fra. Det som er merket «anslått», bør måles i rommet.</p>
+    <div class="tbl"><table id="srcTable"><thead><tr><th>Hva</th><th>Mål</th><th>Kilde</th></tr></thead><tbody></tbody></table></div>
+    <button class="close" id="aboutClose">Lukk</button>
+  </div>
+</div>
+
+<script type="application/json" id="rom-reserve">{"navn": "Stue B1", "enhet": "meter", "koordinater": "x fra sofaveggen (vest) mot soveromsveggen, z fra balkongveggen mot badveggen, y opp fra gulvet", "kilder": {"tegning": "lest av plantegningen", "oppgitt": "målt av gruppen", "bilde": "regnet ut fra panoramabildene", "anslått": "anslått, bør måles"}, "rom": {"bredde": 4.4, "dybde": 4.425, "takhoyde": 2.49, "kilde": {"bredde": "tegning", "dybde": "tegning", "takhoyde": "bilde"}}, "vegger": {"balkong": {"langs": "x", "z": 0.0, "apninger": [{"navn": "Balkongdør", "fra": 0.8, "til": 3.2, "hoyde": 2.4, "type": "glassdor", "kilde": "anslått"}]}, "bad": {"langs": "x", "z": 4.425, "apninger": [{"navn": "Åpning til gangen", "fra": 2.9, "til": 4.4, "hoyde": 2.1, "type": "apning", "kilde": "oppgitt", "merknad": "15 cm vegg i flukt med badveggen mellom kjøleskapet og åpningen (fra tegningen, skjult bak kjøleskapet på bildene)"}]}, "sofavegg": {"langs": "z", "x": 0.0, "apninger": []}, "soverom": {"langs": "z", "x": 4.4, "apninger": [{"navn": "Åpning til soverommet ved balkongen", "fra": 0.1, "til": 1.0, "hoyde": 2.1, "type": "apning", "kilde": "oppgitt"}, {"navn": "Åpning til soverommet ved gangen", "fra": 3.025, "til": 3.925, "hoyde": 2.1, "type": "apning", "kilde": "oppgitt"}]}}, "kjokken": {"x0": 0.0, "x1": 2.75, "dybde": 0.6, "benkehoyde": 0.9, "overskap": {"fra": 1.45, "til": 2.15, "dybde": 0.35}, "kjoleskap": {"x0": 2.15, "x1": 2.75, "hoyde": 1.85}, "kilde": "oppgitt"}, "mobler": [{"id": "sofa", "navn": "Hjørnesofa med sjeselong", "type": "hjornesofa", "fast": true, "x0": 0.0, "z0": 0.32, "lengde": 2.7, "dybde": 0.93, "sjeselong": 2.13, "sjeselongbredde": 0.94, "setehoyde": 0.4, "armlenehoyde": 0.59, "rygghoyde": 0.78, "kilde": {"lengde": "oppgitt", "sjeselong": "oppgitt", "dybde": "oppgitt", "armlenehoyde": "oppgitt", "plassering": "oppgitt", "setehoyde": "anslått"}, "merknad": "enden av sjeselongen står i flukt med teppekanten"}, {"id": "teppe", "navn": "Teppe", "type": "teppe", "fast": true, "x0": 0.67, "z0": 0.12, "bredde": 2.0, "lengde": 2.9, "kilde": {"mål": "oppgitt", "plassering": "oppgitt"}, "merknad": "langsiden går langs sofaen; sjeselongen står helt på teppet"}, {"id": "stort", "navn": "Stort glassbord", "type": "settbord", "x": 1.5, "z": 1.3, "rot": 0, "storrelse": 0.42, "kilde": "oppgitt"}, {"id": "lite", "navn": "Lite glassbord", "type": "settbord", "x": 1.5, "z": 1.58, "rot": 0, "storrelse": 0.36, "kilde": "oppgitt"}, {"id": "spisebord", "navn": "Spisebord", "type": "rundbord", "fast": true, "x": 3.36, "z": 0.95, "diameter": 1.2, "hoyde": 0.75, "stoler": 3, "kilde": {"mål": "oppgitt", "plassering": "anslått"}, "merknad": "flyttet så gardinene går fri (ca. 35 cm fra balkongveggen til bordkanten)"}, {"id": "tv", "navn": "TV på stativ", "type": "tv", "fast": true, "x": 4.225, "z": 2.013, "bredde": 1.45, "kilde": "oppgitt", "merknad": "midt mellom dørene til soverommet, ca. 15–20 cm fra veggen"}, {"id": "lampe", "navn": "Gulvlampe", "type": "gulvlampe", "fast": true, "x": 0.18, "z": 0.14, "kilde": "bilde"}], "panorama": {"bilder": ["equi-a.jpg", "equi-b.jpg"], "x": 3.062, "z": 2.276, "hoyde": 1.324, "retning_grader": 0, "kilde": "bilde", "merknad": "360-bildet er laget av IMG_0371 (original HEIC, 26.10): kamerapunktet er regnet ut fra sofaen, TV-en, døra og gulvlinjene, og fotoet er tilpasset 3D-modellen. Glassbordene er tatt bort, gulvet rett under kameraet er lagt med modellens parkett og teppe, og veggene øverst og taket er fylt inn."}}</script>
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+if (new URLSearchParams(location.search).has('embed')) { document.body.classList.add('embed'); const h=document.getElementById('hint'); if (h) h.innerHTML='Tap a table to move and rotate it. Drag the room to look around, pinch or scroll to zoom.'; document.documentElement.dataset.theme='light'; };
+
+/* ---------- Romdata: rom.json (felles for alle visninger), med innebygd reserve ---------- */
+async function loadRoom() {
+  try { const r = await fetch('rom.json', { cache:'no-store' }); if (r.ok) return await r.json(); } catch {}
+  return JSON.parse(document.getElementById('rom-reserve').textContent);
+}
+const ROM = await loadRoom();
+const R = ROM.rom, Wd = R.bredde, Dp = R.dybde, Ht = R.takhoyde;
+const M = Object.fromEntries(ROM.mobler.map(m => [m.id, m]));
+const SOFA = M.sofa, RUG = M.teppe, DINE = M.spisebord;
+SOFA.ze = SOFA.z0 + SOFA.lengde; SOFA.zc = SOFA.ze - SOFA.sjeselongbredde;
+
+/* ---------- Renderer, scene, kamera ---------- */
+const stage = document.getElementById('stage');
+const renderer = new THREE.WebGLRenderer({ antialias:true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 0.82;
+stage.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xdcd6ce);
+scene.environment = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(renderer), 0.04).texture;
+scene.environmentIntensity = 0.45;
+const camera = new THREE.PerspectiveCamera(42, 1, 0.05, 100);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true; controls.dampingFactor = 0.09;
+controls.minDistance = 2.2; controls.maxDistance = 11; controls.maxPolarAngle = Math.PI*0.47;
+const VIEW = { pos:new THREE.Vector3(5.3, 5.0, 4.6), target:new THREE.Vector3(1.7, 0.2, 1.85) };   // fra TV-siden, omtrent der panoramaet ble tatt
+function resetView() { camera.position.copy(VIEW.pos); controls.target.copy(VIEW.target); controls.update(); }
+resetView();
+
+/* ---------- Materialer og teksturer ---------- */
+const tl = new THREE.TextureLoader();
+function tex(url, repeatM) {
+  const t = tl.load(url, () => requestRender()); t.colorSpace = THREE.SRGBColorSpace;
+  t.wrapS = t.wrapT = THREE.RepeatWrapping; t.anisotropy = renderer.capabilities.getMaxAnisotropy(); t.minFilter = THREE.LinearMipmapLinearFilter; t.userData.m = repeatM; return t;
+}
+const C = { wall:0xcbbfb1, white:0xf3f1ec, frame:0xf6f4f0, fabric:0xe4ddd2, fabricDark:0xd6cec2, counter:0x8d8a86, wood:0x3b2c23, chrome:0xc9ccd0, black:0x15151a };
+const mat = {
+  wall: new THREE.MeshStandardMaterial({ color:C.wall, roughness:0.95 }),
+  white: new THREE.MeshStandardMaterial({ color:C.white, roughness:0.55 }),
+  frame: new THREE.MeshStandardMaterial({ color:C.frame, roughness:0.5 }),
+  fabric: new THREE.MeshStandardMaterial({ color:C.fabric, roughness:0.95 }),
+  fabricDark: new THREE.MeshStandardMaterial({ color:C.fabricDark, roughness:0.95 }),
+  counter: new THREE.MeshStandardMaterial({ color:C.counter, roughness:0.6 }),
+  wood: new THREE.MeshStandardMaterial({ color:C.wood, roughness:0.5 }),
+  chrome: new THREE.MeshStandardMaterial({ color:C.chrome, roughness:0.15, metalness:1 }),
+  black: new THREE.MeshStandardMaterial({ color:C.black, roughness:0.45, metalness:0.1, envMapIntensity:0.3 }),
+  boucle: new THREE.MeshStandardMaterial({ color:0xcfc6b8, roughness:1 }),
+  pillowG: new THREE.MeshStandardMaterial({ color:0x6d6a5c, roughness:1 }),
+  pillowB: new THREE.MeshStandardMaterial({ color:0x6a5a52, roughness:1 }),
+  pillowL: new THREE.MeshStandardMaterial({ color:0xc9bfb1, roughness:1 }),
+  window: new THREE.MeshPhysicalMaterial({ color:0xdfeaf2, roughness:0.05, transmission:0.6, transparent:true, opacity:0.35 }),
+};
+const parquet = tex('parkett.jpg', 1.2), rugTex = tex('rug.jpg', 0.30);   // fotografert vev, én flis ≈ 30 × 30 cm
+
+function box(w, h, d, m, x, y, z, { r = 0, cast = true, receive = true, parent = scene } = {}) {
+  const g = r > 0 ? new RoundedBoxGeometry(w, h, d, 3, Math.min(r, w/2 - 1e-3, h/2 - 1e-3, d/2 - 1e-3)) : new THREE.BoxGeometry(w, h, d);
+  const mesh = new THREE.Mesh(g, m); mesh.position.set(x, y, z); mesh.castShadow = cast; mesh.receiveShadow = receive; parent.add(mesh); return mesh;
+}
+function cyl(rt, rb, h, m, x, y, z, seg = 24, parent = scene) {
+  const mesh = new THREE.Mesh(new THREE.CylinderGeometry(rt, rb, h, seg), m); mesh.position.set(x, y, z); mesh.castShadow = mesh.receiveShadow = true; parent.add(mesh); return mesh;
+}
+
+/* ---------- Gulv og teppe ---------- */
+{ const g = new THREE.PlaneGeometry(Wd, Dp); const t = parquet.clone(); t.repeat.set(Wd/1.2, Dp/1.2); t.needsUpdate = true;
+  const f = new THREE.Mesh(g, new THREE.MeshStandardMaterial({ map:t, roughness:0.55 }));
+  f.rotation.x = -Math.PI/2; f.position.set(Wd/2, 0, Dp/2); f.receiveShadow = true; scene.add(f); }
+{ const t = rugTex.clone(); t.repeat.set(RUG.bredde/0.30, RUG.lengde/0.30); t.needsUpdate = true;
+  const rug = box(RUG.bredde, 0.012, RUG.lengde, new THREE.MeshStandardMaterial({ map:t, color:0xfff6ec, roughness:1 }), RUG.x0 + RUG.bredde/2, 0.006, RUG.z0 + RUG.lengde/2, { r:0.004, cast:false });
+  rug.material.map.rotation = 0; }
+
+/* ---------- Balkongdør: karm, to glassfelt, gardiner og balkongen utenfor ---------- */
+// Glasset merker hvor det er (stencil), og utsikten tegnes bare der: man ser nabohus og himmel gjennom vinduet, aldri rundt modellen.
+const glass = new THREE.MeshPhysicalMaterial({ color:0xffffff, roughness:0.02, metalness:0, transmission:1, thickness:0.01, ior:1.5, transparent:true, envMapIntensity:0.8,
+  depthWrite:false, stencilWrite:true, stencilRef:1, stencilZPass:THREE.ReplaceStencilOp });
+function canvasTex(w, h, draw) { const c = document.createElement('canvas'); c.width = w; c.height = h; draw(c.getContext('2d'), w, h); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t; }
+let OUTSIDE = null;   // himmel og nabohus: vises bare når kameraet står inne i rommet
+function balconyDoor(grp, o) {
+  OUTSIDE = new THREE.Group(); grp.add(OUTSIDE);
+  const x0 = o.fra, x1 = o.til, H = o.hoyde, mid = (x0 + x1)/2, fw = 0.07, sw = 0.055, zf = -0.05;
+  const B = (w, h, d, m, x, y, z, opt = {}) => box(w, h, d, m, x, y, z, { parent:grp, ...opt });
+  // karm og terskel
+  B(x1 - x0, fw, 0.12, mat.frame, mid, H - fw/2, zf); B(fw, H, 0.12, mat.frame, x0 + fw/2, H/2, zf); B(fw, H, 0.12, mat.frame, x1 - fw/2, H/2, zf);
+  B(x1 - x0, 0.03, 0.18, mat.frame, mid, 0.015, zf + 0.02);
+  // to rammer: venstre fast felt, høyre dør (litt forskjøvet i dybden, som på bildet)
+  for (const [a, b, dz] of [[x0 + fw, mid + 0.02, -0.022], [mid - 0.02, x1 - fw, 0.022]]) {
+    const cx = (a + b)/2, wdt = b - a, h = H - fw - 0.03, y0 = 0.03;
+    B(wdt, sw, 0.06, mat.frame, cx, y0 + h - sw/2, zf + dz); B(wdt, sw*1.8, 0.06, mat.frame, cx, y0 + sw*0.9, zf + dz);
+    B(sw, h, 0.06, mat.frame, a + sw/2, y0 + h/2, zf + dz); B(sw, h, 0.06, mat.frame, b - sw/2, y0 + h/2, zf + dz);
+    const gh = h - sw*2.8, g = new THREE.Mesh(new THREE.PlaneGeometry(wdt - 2*sw, gh), glass);
+    g.position.set(cx, y0 + sw*1.8 + gh/2, zf + dz); g.renderOrder = 2; grp.add(g);
+  }
+  B(0.025, 0.17, 0.035, mat.chrome, mid + 0.07, 1.05, zf + 0.07);                  // håndtak på døra
+  // gardiner: tynt, hvitt stoff med folder, på stang under taket
+  const sheer = new THREE.MeshStandardMaterial({ color:0xfbfaf6, roughness:1, transparent:true, opacity:0.62, side:THREE.DoubleSide, depthWrite:false });
+  const curtain = (cx, wdt) => {
+    const g = new THREE.PlaneGeometry(wdt, Ht - 0.12, Math.round(wdt*60), 1), p = g.attributes.position;
+    for (let i = 0; i < p.count; i++) p.setZ(i, 0.035*Math.sin(p.getX(i)*38) + 0.012*Math.sin(p.getX(i)*97));
+    g.computeVertexNormals();
+    const m = new THREE.Mesh(g, sheer); m.position.set(cx, (Ht - 0.12)/2 + 0.01, 0.14); m.castShadow = true; m.renderOrder = 4; grp.add(m);
+  };
+  curtain(x0 - 0.05, 0.62); curtain(mid + 0.05, 0.45); curtain(x1 + 0.12, 0.62);
+  const rod = cyl(0.012, 0.012, Wd - 0.3, mat.frame, Wd/2, Ht - 0.07, 0.14, 10, grp); rod.rotation.z = Math.PI/2;
+  // ute: balkong med fliser, rekkverk med hvite plater, himmel og nabohus
+  const tiles = canvasTex(256, 256, (c, w, h) => { c.fillStyle = '#9b9893'; c.fillRect(0, 0, w, h); c.strokeStyle = '#86837e'; c.lineWidth = 3; for (let i = 0; i <= 4; i++) { c.beginPath(); c.moveTo(i*w/4, 0); c.lineTo(i*w/4, h); c.stroke(); c.beginPath(); c.moveTo(0, i*h/4); c.lineTo(w, i*h/4); c.stroke(); } });
+  tiles.wrapS = tiles.wrapT = THREE.RepeatWrapping; tiles.repeat.set(Wd/1.2, 1.6/1.2);
+  B(Wd + 0.4, 0.1, 1.7, new THREE.MeshStandardMaterial({ map:tiles, roughness:0.85 }), Wd/2, -0.06, -0.95, { cast:false });
+  const panel = new THREE.MeshStandardMaterial({ color:0xf3f5f6, roughness:0.4, transparent:true, opacity:0.92 });
+  // rekkverk rundt hele balkongen: front langs ytterkanten og en side i hver ende, med stolper, hvite plater og håndløper
+  const bx0 = -0.2, bx1 = Wd + 0.2, bz0 = -0.12, bz1 = -1.78, rh = 1.12;
+  const railRun = (ax, ay, bx, by) => {          // fra (ax, ay) til (bx, by) i plan (x, z)
+    const L = Math.hypot(bx - ax, by - ay), n = Math.max(1, Math.round(L/1.1)), alongX = Math.abs(bx - ax) > Math.abs(by - ay);
+    for (let i = 0; i <= n; i++) { const t = i/n; B(0.04, rh, 0.04, mat.chrome, ax + (bx - ax)*t, rh/2, ay + (by - ay)*t, { cast:false }); }
+    for (let i = 0; i < n; i++) {
+      const t = (i + 0.5)/n, seg = L/n - 0.05, cx = ax + (bx - ax)*t, cz = ay + (by - ay)*t;
+      if (alongX) B(seg, 0.82, 0.015, panel, cx, 0.5, cz, { cast:false }); else B(0.015, 0.82, seg, panel, cx, 0.5, cz, { cast:false });
+    }
+    if (alongX) B(L + 0.04, 0.04, 0.06, mat.chrome, (ax + bx)/2, rh, ay, { cast:false }); else B(0.06, 0.04, L + 0.04, mat.chrome, ax, rh, (ay + by)/2, { cast:false });
+  };
+  railRun(bx0, bz1, bx1, bz1); railRun(bx0, bz0, bx0, bz1); railRun(bx1, bz0, bx1, bz1);
+  const sky = canvasTex(8, 256, (c, w, h) => { const g = c.createLinearGradient(0, 0, 0, h); g.addColorStop(0, '#9fc3e6'); g.addColorStop(0.6, '#d8e8f4'); g.addColorStop(1, '#eef3f6'); c.fillStyle = g; c.fillRect(0, 0, w, h); });
+  const skyM = new THREE.Mesh(new THREE.PlaneGeometry(60, 30), new THREE.MeshBasicMaterial({ map:sky, toneMapped:false, fog:false }));
+  skyM.position.set(Wd/2, 4, -26); OUTSIDE.add(skyM);
+  // utsikten fra fotografiet (IMG_0377): nabohusene slik de faktisk ser ut fra stua, ca. 12 m unna
+  const view = tl.load('utsikt.jpg', () => requestRender()); view.colorSpace = THREE.SRGBColorSpace;
+  const vw = 26, vh = vw*532/1305;   // midtre tredjedel (det ekte bildet) dekker hele døra; sidene er speilet
+  const viewM = new THREE.Mesh(new THREE.PlaneGeometry(vw, vh), new THREE.MeshBasicMaterial({ map:view, toneMapped:false }));
+  viewM.position.set(Wd/2 - 0.2, -1.6 + vh/2, -12); OUTSIDE.add(viewM);
+  OUTSIDE.traverse(o => { if (o.isMesh) { const m = o.material; Object.assign(m, { transparent:true, stencilWrite:true, stencilRef:1, stencilFunc:THREE.EqualStencilFunc }); o.renderOrder = 3; o.castShadow = o.receiveShadow = false; } });
+}
+
+/* ---------- Vegger med åpninger (dukkehus: vegger mellom kameraet og rommet skjules) ---------- */
+const walls = [];
+const T = 0.10;   // veggtykkelse utover
+function buildWall(key, w) {
+  const grp = new THREE.Group(); scene.add(grp);
+  const along = w.langs, len = along === 'x' ? Wd : Dp;
+  const ops = [...w.apninger].sort((a, b) => a.fra - b.fra);
+  const place = (a0, a1, y0, y1, m = mat.wall, thick = T, inset = 0) => {
+    const L = a1 - a0, H = y1 - y0; if (L <= 0.001 || H <= 0.001) return;
+    if (along === 'x') box(L, H, thick, m, (a0 + a1)/2, (y0 + y1)/2, w.z === 0 ? -thick/2 + inset : w.z + thick/2 - inset, { parent:grp });
+    else box(thick, H, L, m, w.x === 0 ? -thick/2 + inset : w.x + thick/2 - inset, (y0 + y1)/2, (a0 + a1)/2, { parent:grp });
+  };
+  let a = 0;
+  for (const o of ops) { place(a, o.fra, 0, Ht); place(o.fra, o.til, o.hoyde, Ht); a = o.til; }
+  place(a, len, 0, Ht);
+  // fotlister og karmer
+  a = 0;
+  for (const o of ops) { place(a, o.fra, 0, 0.06, mat.white, 0.012, -0.012); a = o.til; }
+  place(a, len, 0, 0.06, mat.white, 0.012, -0.012);
+  for (const o of ops) {
+    const fw = 0.06;
+    place(o.fra - fw, o.fra, 0, o.hoyde + fw, mat.frame, 0.02, -0.02);
+    place(o.til, o.til + fw, 0, o.hoyde + fw, mat.frame, 0.02, -0.02);
+    place(o.fra - fw, o.til + fw, o.hoyde, o.hoyde + fw, mat.frame, 0.02, -0.02);
+    if (o.type === 'glassdor' && along === 'x' && w.z === 0) balconyDoor(grp, o);
+    // rommet bak en åpning: en enkel bakvegg og gulv, så man ikke ser rett ut i lufta
+    if (o.type === 'apning') {
+      const back = 1.0, dark = new THREE.MeshStandardMaterial({ color:0xb9ad9f, roughness:0.95 });
+      const L = o.til - o.fra + 4.0, cmid = (o.fra + o.til)/2, sgn = along === 'x' ? (w.z === 0 ? -1 : 1) : (w.x === 0 ? -1 : 1);
+      if (along === 'x') { box(L, Ht, 0.05, dark, cmid, Ht/2, w.z + sgn*back, { parent:grp, cast:false }); box(L, 0.01, back, dark, cmid, -0.004, w.z + sgn*back/2, { parent:grp, cast:false }); }
+      else { box(0.05, Ht, L, dark, w.x + sgn*back, Ht/2, cmid, { parent:grp, cast:false }); box(back, 0.01, L, dark, w.x + sgn*back/2, -0.004, cmid, { parent:grp, cast:false }); }
+    }
+  }
+  const n = along === 'x' ? new THREE.Vector3(0, 0, w.z === 0 ? -1 : 1) : new THREE.Vector3(w.x === 0 ? -1 : 1, 0, 0);
+  const c = along === 'x' ? new THREE.Vector3(Wd/2, 0, w.z) : new THREE.Vector3(w.x, 0, Dp/2);
+  walls.push({ grp, n, c, key });
+}
+for (const [k, w] of Object.entries(ROM.vegger)) buildWall(k, w);
+function updateWalls() {
+  for (const w of walls) {
+    const v = camera.position.clone().sub(w.c); v.y = 0;
+    w.grp.visible = v.dot(w.n) < 0.15 || state.top;
+  }
+  if (state.top) for (const w of walls) w.grp.visible = true;
+  const cp = camera.position, inne = cp.x > 0 && cp.x < Wd && cp.z > 0 && cp.z < Dp && cp.y < Ht;
+  if (OUTSIDE) OUTSIDE.visible = !state.top;   // utsikten vises bare gjennom glasset (stencil)
+}
+
+/* ---------- Korte veggstykker (f.eks. ved enden av kjøleskapet) ---------- */
+for (const v of (ROM.veggstykker || [])) box(v.x1 - v.x0, Ht, v.z1 - v.z0, mat.wall, (v.x0 + v.x1)/2, Ht/2, (v.z0 + v.z1)/2);
+
+/* ---------- Kjøkken ---------- */
+{ const K = ROM.kjokken, z = Dp - K.dybde/2, f = K.kjoleskap;
+  box(f.x0 - K.x0, 0.08, K.dybde - 0.06, mat.black, (K.x0 + f.x0)/2, 0.04, z + 0.03);                         // sokkel
+  box(f.x0 - K.x0, K.benkehoyde - 0.12, K.dybde - 0.02, mat.white, (K.x0 + f.x0)/2, 0.08 + (K.benkehoyde - 0.12)/2, z + 0.01);
+  box(f.x0 - K.x0 + 0.01, 0.04, K.dybde + 0.02, mat.counter, (K.x0 + f.x0)/2, K.benkehoyde - 0.02, z - 0.01);
+  for (let x = K.x0 + 0.6; x < f.x0 - 0.05; x += 0.6) box(0.004, K.benkehoyde - 0.16, 0.004, mat.counter, x, 0.08 + (K.benkehoyde - 0.16)/2, Dp - K.dybde - 0.001);
+  box(0.58, 0.58, 0.01, mat.black, 0.95, 0.5, Dp - K.dybde - 0.004);                                           // stekeovn
+  box(0.55, 0.01, 0.42, mat.black, 0.95, K.benkehoyde + 0.001, z);                                            // platetopp
+  box(0.6, 0.02, 0.4, mat.chrome, 1.75, K.benkehoyde + 0.002, z);                                             // vask
+  box(f.x0 - K.x0, 0.55, 0.01, mat.white, (K.x0 + f.x0)/2, K.benkehoyde + 0.28, Dp - 0.005);                  // fliser
+  const O = K.overskap; box(f.x0 - K.x0, 0.75, O.dybde, mat.white, (K.x0 + f.x0)/2, O.fra + 0.375, Dp - O.dybde/2);
+  box(f.x0 - K.x0, Ht - (O.fra + 0.75), O.dybde + 0.02, mat.wall, (K.x0 + f.x0)/2, (O.fra + 0.75 + Ht)/2, Dp - O.dybde/2 - 0.01);
+  box(f.x1 - f.x0 - 0.01, f.hoyde, 0.66, mat.white, (f.x0 + f.x1)/2, f.hoyde/2, Dp - 0.33, { r:0.02 });     // kjøleskap
+  box(0.02, 0.5, 0.02, mat.chrome, f.x0 + 0.05, 1.3, Dp - 0.67); box(0.02, 0.45, 0.02, mat.chrome, f.x0 + 0.05, 0.65, Dp - 0.67);
+}
+
+/* ---------- Hjørnesofa med sjeselong (modulsofa som på bildene IMG_0379–0381) ----------
+   Kort, skrått armlene ved sjeselongen og fullt bred sjeselong foran det. Myke puter med avrundede kanter og litt fylde,
+   piping langs sømmene, pynteputer i to klynger (brun + sebra i hjørnet, oliven + lin ved balkongarmlenet)
+   og et grønt pledd som følger formen over armlenet, med frynser ut på setet. */
+{ const S = SOFA, d = S.dybde, frameW = 0.20, armW = 0.22, seatTop = Math.max(S.setehoyde, 0.40), armH = S.armlenehoyde;
+  const fabTex = canvasTex(256, 256, (c, w, h) => { const im = c.createImageData(w, h); for (let i = 0; i < w*h; i++) { const v = 228 + (Math.random()*18 - 9); im.data.set([v, v - 4, v - 10, 255], i*4); } c.putImageData(im, 0, 0); });
+  fabTex.wrapS = fabTex.wrapT = THREE.RepeatWrapping; fabTex.repeat.set(3, 3);
+  const fab = new THREE.MeshStandardMaterial({ color:0xebe3d6, map:fabTex, roughness:1 }), fabShade = new THREE.MeshStandardMaterial({ color:0xd9d0c2, map:fabTex, roughness:1 });
+  const pipeM = new THREE.MeshStandardMaterial({ color:0xd6ccbe, roughness:1 }), pr = 0.006;
+  const seatZ0 = S.z0 + armW, gap = 0.008;
+  // piping: en tynn snor langs en linje av punkter
+  function pipe(pts, closed = true) {
+    const n = closed ? pts.length : pts.length - 1;
+    for (let i = 0; i < n; i++) {
+      const a = new THREE.Vector3(...pts[i]), b = new THREE.Vector3(...pts[(i + 1) % pts.length]), len = a.distanceTo(b);
+      const c = new THREE.Mesh(new THREE.CylinderGeometry(pr, pr, len, 8), pipeM);
+      c.position.copy(a).add(b).multiplyScalar(0.5); c.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), b.clone().sub(a).normalize()); c.castShadow = true; scene.add(c);
+    }
+  }
+  // myk pute: avrundede kanter og litt fylde på én side ('top' eller 'front' = mot rommet), piping der sømmen går
+  function soft(w, h, dd, m, x, y, z, { r = 0.04, puff = 0.02, face = 'top', seams = ['top'] } = {}) {
+    const g = new RoundedBoxGeometry(w, h, dd, 5, r), p = g.attributes.position;
+    for (let i = 0; i < p.count; i++) {
+      const X = p.getX(i), Y = p.getY(i), Z = p.getZ(i);
+      if (face === 'top' && Y > h/2 - r) p.setY(i, Y + puff*Math.max(0, 1 - (2*X/w)**2)*Math.max(0, 1 - (2*Z/dd)**2));
+      if (face === 'front' && X > w/2 - r) p.setX(i, X + puff*Math.max(0, 1 - (2*Y/h)**2)*Math.max(0, 1 - (2*Z/dd)**2));
+    }
+    g.computeVertexNormals();
+    const mesh = new THREE.Mesh(g, m); mesh.position.set(x, y, z); mesh.castShadow = mesh.receiveShadow = true; scene.add(mesh);
+    const k = r*0.29;   // sømmen ligger midt i den runde kanten
+    for (const s of seams) {
+      if (s === 'top' || s === 'bottom') { const yy = y + (s === 'top' ? h/2 - k : -h/2 + k); pipe([[x - w/2 + k, yy, z - dd/2 + k], [x + w/2 - k, yy, z - dd/2 + k], [x + w/2 - k, yy, z + dd/2 - k], [x - w/2 + k, yy, z + dd/2 - k]]); }
+      if (s === 'front') { const xx = x + w/2 - k; pipe([[xx, y - h/2 + k, z - dd/2 + k], [xx, y + h/2 - k, z - dd/2 + k], [xx, y + h/2 - k, z + dd/2 - k], [xx, y - h/2 + k, z + dd/2 - k]]); }
+    }
+    return mesh;
+  }
+  // flat form krympet innover med b, så de runde kantene ender på de oppgitte målene (mangekant mot klokka)
+  function inset(pts, b) {
+    const n = pts.length, out = [];
+    for (let i = 0; i < n; i++) {
+      const P = pts[(i + n - 1) % n], C = pts[i], N = pts[(i + 1) % n];
+      const e1 = [C[0] - P[0], C[1] - P[1]], e2 = [N[0] - C[0], N[1] - C[1]], l1 = Math.hypot(...e1), l2 = Math.hypot(...e2);
+      const n1 = [-e1[1]/l1, e1[0]/l1], n2 = [-e2[1]/l2, e2[0]/l2];   // venstre normal = innover når formen går mot klokka
+      const a1 = [P[0] + n1[0]*b, P[1] + n1[1]*b], a2 = [C[0] + n2[0]*b, C[1] + n2[1]*b];
+      const den = e1[0]*e2[1] - e1[1]*e2[0];
+      if (Math.abs(den) < 1e-9) { out.push([C[0] + n1[0]*b, C[1] + n1[1]*b]); continue; }
+      const t = ((a2[0] - a1[0])*e2[1] - (a2[1] - a1[1])*e2[0])/den; out.push([a1[0] + e1[0]*t, a1[1] + e1[1]*t]);
+    }
+    return out;
+  }
+  // prisme: en flat form trukket ut i høyden (plan = 'xz') eller i dybden (plan = 'xy'), med myke, runde kanter
+  function prism(pts, depth, m, plane, at, b) {
+    const sh = new THREE.Shape(inset(pts, b).map(([u, v]) => new THREE.Vector2(u, v)));
+    const g = new THREE.ExtrudeGeometry(sh, { depth: depth - 2*b, bevelEnabled:true, bevelThickness:b, bevelSize:b, bevelSegments:5, curveSegments:4 });
+    if (plane === 'xz') { g.rotateX(Math.PI/2); g.translate(0, at + depth - b, 0); } else g.translate(0, 0, at + b);
+    g.computeVertexNormals();
+    const mesh = new THREE.Mesh(g, m); mesh.castShadow = mesh.receiveShadow = true; scene.add(mesh); return mesh;
+  }
+
+  // ramme langs veggen og lav, tilbaketrukket sokkel
+  soft(frameW, 0.56, S.ze - S.z0, fabShade, frameW/2, 0.28, (S.z0 + S.ze)/2, { r:0.05, puff:0, seams:[] });
+  const plinth = 0.05;
+  box(d - frameW - 0.06, plinth, S.zc - seatZ0 - 0.04, mat.black, frameW + (d - frameW - 0.06)/2, plinth/2, (seatZ0 + S.zc)/2, { cast:false });
+  box(S.sjeselong - frameW - 0.06, plinth, S.ze - S.zc - 0.04, mat.black, frameW + (S.sjeselong - frameW - 0.06)/2, plinth/2, (S.zc + S.ze)/2, { cast:false });
+
+  // armlene mot balkongen: myk kloss i full dybde
+  soft(d, armH - 0.02, armW, fab, d/2, 0.02 + (armH - 0.02)/2, S.z0 + armW/2, { r:0.035, puff:0.008, seams:['top'] });
+
+  // armlene ved sjeselongen: bare bakerste del, med skrå front ned mot setet (som på bildene)
+  const armLen = d, armTop = d - 0.30, za = S.ze - armW, ab = 0.03;
+  const armProf = [[0, 0.02], [armLen, 0.02], [armLen, seatTop], [armTop, armH], [0, armH]];
+  prism(armProf, armW, fab, 'xy', za, ab);
+  { const seam = inset(armProf, ab*0.71); for (const zz of [za + ab*0.29, S.ze - ab*0.29]) pipe(seam.slice(1, 5).map(([x, y]) => [x, y, zz]), false); }
+  const armTopAt = x => x <= armTop ? armH : armH - (armH - seatTop)*Math.min(1, (x - armTop)/(armLen - armTop));
+
+  // seteputer: to myke på hoveddelen, én L-formet på sjeselongen som blir fullt bred foran armlenet
+  const n = 2, mod = (S.zc - seatZ0)/n, b0 = 0.03, ct = seatTop - b0;
+  for (let i = 0; i < n; i++) soft(d - frameW, ct, mod - gap, fab, frameW + (d - frameW)/2, b0 + ct/2, seatZ0 + mod*(i + 0.5), { r:0.05, puff:0.022, seams:['top'] });
+  const cb = 0.045, chaise = [[frameW, S.zc + gap/2], [S.sjeselong, S.zc + gap/2], [S.sjeselong, S.ze], [armLen + gap, S.ze], [armLen + gap, za - gap], [frameW, za - gap]];
+  prism(chaise, ct, fab, 'xz', b0, cb);
+  pipe(inset(chaise, cb*0.71).map(([x, z]) => [x, b0 + ct - cb*0.29, z]));
+
+  // ryggputer: én per sete, stående, fyldige mot rommet
+  const backs = [[seatZ0, seatZ0 + mod], [seatZ0 + mod, S.zc], [S.zc, za]], bh = S.rygghoyde - seatTop + 0.05;
+  for (const [a, b] of backs) soft(0.2, bh, b - a - gap, fab, frameW + 0.1, seatTop + bh/2 - 0.01, (a + b)/2, { r:0.05, puff:0.03, face:'front', seams:['front'] });
+
+  // pynteputer: fyldige på midten, tynne mot kanten, med spisse hjørner («ører»)
+  function pillowGeo(w, h, t) {
+    const g = new THREE.SphereGeometry(1, 48, 32), p = g.attributes.position;
+    for (let i = 0; i < p.count; i++) {
+      const x = p.getX(i), y = p.getY(i), z = p.getZ(i), X = Math.sign(x)*Math.abs(x)**0.6, Y = Math.sign(y)*Math.abs(y)**0.6;
+      const ear = 1 + 0.2*(Math.abs(X)*Math.abs(Y))**3, puff = Math.max(0.03, (1 - X*X)*(1 - Y*Y))**1.1;
+      p.setXYZ(i, X*w/2*ear, Y*h/2*ear, z*t/2*puff);
+    }
+    g.computeVertexNormals(); return g;
+  }
+  const zebra = canvasTex(256, 256, (c, w, h) => { c.fillStyle = '#f2efe9'; c.fillRect(0, 0, w, h); c.fillStyle = '#1b1a19';
+    for (let k = -6; k < 22; k++) { c.beginPath(); for (let x = 0; x <= w; x += 6) { const y = k*14 + 6*Math.sin(x/20 + k) + x*0.3; x ? c.lineTo(x, y) : c.moveTo(x, y); }
+      for (let x = w; x >= 0; x -= 6) { const y = k*14 + 5 + 3*Math.sin(x/15 + k*1.7) + x*0.3; c.lineTo(x, y); } c.closePath(); c.fill(); } });
+  const cord = canvasTex(128, 128, (c, w, h) => { c.fillStyle = '#6b5a51'; c.fillRect(0, 0, w, h); c.fillStyle = 'rgba(30,20,15,0.35)'; for (let x = 0; x < w; x += 6) c.fillRect(x, 0, 2, h); });
+  cord.wrapS = cord.wrapT = THREE.RepeatWrapping; cord.repeat.set(3, 3);
+  const pm = (col, map) => new THREE.MeshStandardMaterial({ color:col, map:map || fabTex, roughness:1 });
+  // [z, materiale, sving, fram fra ryggen, høyde over setet, størrelse]: den bakre puta lener mot ryggen, den fremre står foran og litt til siden
+  const pillows = [
+    [za - 0.25, pm(0xffffff, cord), 0.22, 0.00, 0.23, 0.50],     // brun kordfløyel inn i hjørnet
+    [za - 0.56, pm(0xffffff, zebra), -0.12, 0.13, 0.20, 0.47],   // sebra foran og til siden
+    [seatZ0 + 0.25, pm(0x5c5a49), -0.22, 0.00, 0.23, 0.50],      // oliven inntil balkongarmlenet
+    [seatZ0 + 0.56, pm(0xcfc5b6), 0.12, 0.13, 0.20, 0.47],       // lin foran og til siden
+  ];
+  for (const [z, m, turn, fwd, up, sz] of pillows) {
+    const g = new THREE.Group(); g.position.set(frameW + 0.24 + fwd, seatTop + up, z); g.rotation.y = turn; g.rotation.z = 0.28; scene.add(g);
+    const p = new THREE.Mesh(pillowGeo(sz, sz, 0.19), m); p.rotation.y = Math.PI/2; p.castShadow = p.receiveShadow = true; g.add(p);
+  }
+
+  // grønt pledd i fiskebeinsmønster: én stoffbane over den skrå fronten av armlenet, ned på begge sider og litt ut på setet
+  const herring = canvasTex(256, 256, (c, w, h) => { c.fillStyle = '#3f4a37'; c.fillRect(0, 0, w, h); c.strokeStyle = 'rgba(170,180,150,0.35)'; c.lineWidth = 2;
+    for (let col = 0; col < w; col += 16) for (let y = -16; y < h + 16; y += 6) { c.beginPath(); const dir = (col/16) % 2 ? 1 : -1; c.moveTo(col, y); c.lineTo(col + 16, y + dir*8); c.stroke(); } });
+  herring.wrapS = herring.wrapT = THREE.RepeatWrapping; herring.repeat.set(1.2, 2.5);
+  const throwM = new THREE.MeshStandardMaterial({ color:0x8c8c8c, map:herring, roughness:1, side:THREE.DoubleSide });
+  const tx0 = armTop - 0.12, tx1 = armLen - 0.04, t = 0.014, R = 0.035, NU = 18, NS = 80, seatEnd = za - 0.12;
+  function throwPath(H) {   // punkter (z, y) for én stripe av pleddet, når armlenet er H høyt der
+    const pts = [], arc = (cz, cy, a0, a1) => { for (let k = 1; k <= 6; k++) { const a = a0 + (a1 - a0)*k/6; pts.push([cz + (R + t)*Math.cos(a), cy + (R + t)*Math.sin(a)]); } };
+    pts.push([S.ze + t, Math.max(0.08, H - 0.32)], [S.ze + t, H - R]);
+    arc(S.ze - R, H - R, 0, Math.PI/2); pts.push([za + R, H + t]); arc(za + R, H - R, Math.PI/2, Math.PI);
+    if (H - R > seatTop + R) pts.push([za - t, seatTop + t + R]);
+    arc(za - t - R, seatTop + t + R, 0, -Math.PI/2); pts.push([seatEnd, seatTop + t]);
+    const L = [0]; for (let i = 1; i < pts.length; i++) L.push(L[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
+    return s => { const target = s*L[L.length - 1]; let i = 1; while (i < L.length - 1 && L[i] < target) i++; const f = (target - L[i - 1])/((L[i] - L[i - 1]) || 1);
+      return [pts[i - 1][0] + (pts[i][0] - pts[i - 1][0])*f, pts[i - 1][1] + (pts[i][1] - pts[i - 1][1])*f]; };
+  }
+  const pos = [], uv = [], idx = [];
+  for (let iu = 0; iu <= NU; iu++) {
+    const u = iu/NU, x = tx0 + (tx1 - tx0)*u, path = throwPath(armTopAt(x));
+    for (let is = 0; is <= NS; is++) { const s = is/NS, [zz, yy] = path(s), wob = 0.004*Math.sin(u*19 + s*7)*Math.sin(s*Math.PI);
+      pos.push(x + wob, yy + Math.abs(wob)*0.5, zz); uv.push(u, s); }
+  }
+  for (let iu = 0; iu < NU; iu++) for (let is = 0; is < NS; is++) { const a = iu*(NS + 1) + is, b = a + NS + 1; idx.push(a, b, a + 1, a + 1, b, b + 1); }
+  const tg = new THREE.BufferGeometry(); tg.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); tg.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2)); tg.setIndex(idx); tg.computeVertexNormals();
+  const throwMesh = new THREE.Mesh(tg, throwM); throwMesh.castShadow = throwMesh.receiveShadow = true; scene.add(throwMesh);
+  const fringeM = new THREE.MeshStandardMaterial({ color:0xd8d2c0, roughness:1 });
+  for (let i = 0; i <= 16; i++) { const x = tx0 + 0.01 + (tx1 - tx0 - 0.02)*i/16, f = cyl(0.0025, 0.0025, 0.06 + 0.012*Math.sin(i*2.1), fringeM, x, seatTop + 0.006, seatEnd - 0.03, 5);
+    f.rotation.x = Math.PI/2; f.rotation.z = 0.12*Math.sin(i*1.7); f.castShadow = false; }
+}
+
+/* ---------- Spisebord med stoler ---------- */
+const DINE_START = scene.children.length;
+{ const D = DINE, r = D.diameter/2;
+  cyl(r, r, 0.03, mat.wood, D.x, D.hoyde - 0.015, D.z, 48);
+  for (let i = 0; i < 4; i++) { const a = Math.PI/4 + i*Math.PI/2; const l = cyl(0.022, 0.018, D.hoyde - 0.03, mat.wood, D.x + 0.38*Math.cos(a), (D.hoyde - 0.03)/2, D.z + 0.38*Math.sin(a), 12); }
+  // Stolene står midt mellom bordbena (bena står på 45°, 135°, 225° og 315°) og er skjøvet inn under bordplata.
+  const angs = [Math.PI*0.5, Math.PI*1.0, Math.PI*1.5].slice(0, D.stoler);   // mot kjøkkenet, sofaen og vinduet, ikke mot TV-en
+  for (const a of angs) {
+    const g = new THREE.Group(); const rc = r - 0.02;   // setet stikker ca. 24 cm inn under bordplata
+    g.position.set(D.x + rc*Math.cos(a), 0, D.z + rc*Math.sin(a)); g.rotation.y = -a + Math.PI/2; scene.add(g);
+    box(0.46, 0.06, 0.44, mat.boucle, 0, 0.47, 0, { r:0.025, parent:g });
+    box(0.44, 0.24, 0.05, mat.boucle, 0, 0.72, 0.21, { r:0.025, parent:g });
+    for (const sx of [-0.21, 0.21]) { box(0.018, 0.018, 0.5, mat.chrome, sx, 0.01, 0, { parent:g }); box(0.018, 0.45, 0.018, mat.chrome, sx, 0.23, -0.24, { parent:g }); }
+  }
+}
+
+const DINE_OBJS = new Set(); for (const o of scene.children.slice(DINE_START)) o.traverse(c => DINE_OBJS.add(c));   // spisebordet sto ikke i rommet da fotoet ble tatt
+
+/* ---------- TV og gulvlampe ---------- */
+{ const t = M.tv; const g = new THREE.Group(); g.position.set(t.x, 0, t.z); scene.add(g);
+  box(0.04, 0.84, t.bredde, mat.black, 0, 1.05, 0, { parent:g });
+  box(0.30, 0.03, 0.9, mat.black, 0.0, 0.62, 0, { parent:g });
+  for (const s of [-0.45, 0.45]) { const l = box(0.02, 0.64, 0.02, mat.chrome, 0.06, 0.31, s, { parent:g }); l.rotation.x = s > 0 ? -0.12 : 0.12; }
+  const L = M.lampe; cyl(0.012, 0.012, 1.55, mat.black, L.x, 0.78, L.z, 10); cyl(0.12, 0.12, 0.02, mat.black, L.x, 0.01, L.z);
+  const bulb = new THREE.Mesh(new THREE.SphereGeometry(0.085, 24, 16), new THREE.MeshStandardMaterial({ color:0xffd9a8, emissive:0xffb060, emissiveIntensity:2.2 }));
+  bulb.position.set(L.x + 0.06, 1.55, L.z); scene.add(bulb);
+  const pl = new THREE.PointLight(0xffc27a, 1.4, 3.5, 2); pl.position.copy(bulb.position); scene.add(pl);
+}
+
+/* ---------- Lys: dagslys fra balkongen ---------- */
+scene.add(new THREE.HemisphereLight(0xfffaf3, 0x9c8a76, 0.55));
+const sun = new THREE.DirectionalLight(0xfff1df, 1.7);
+sun.position.set(2.6, 5.5, -3.0); sun.target.position.set(2.0, 0, 2.2);
+sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048); sun.shadow.radius = 5; sun.shadow.bias = -0.0004;
+Object.assign(sun.shadow.camera, { left:-4, right:4, top:4, bottom:-4, near:0.5, far:14 });
+scene.add(sun, sun.target);
+
+/* ---------- Glassbordene: bøyd røykglass, åpne til to sider ---------- */
+// Røykglass: brunt-grått, gjennomsiktig, blankt, mørkere jo mer glass lyset går gjennom (som kantene på bildene)
+const glassMat = new THREE.MeshPhysicalMaterial({ color:0x2b1f18, metalness:0, roughness:0.03, transparent:true, opacity:0.66, ior:1.52,
+  specularIntensity:1, clearcoat:1, clearcoatRoughness:0.02, envMapIntensity:1.0, side:THREE.DoubleSide, depthWrite:false });   // virker likt på alle skjermer
+const SIZE = { big:M.stort.storrelse, small:M.lite.storrelse };
+const DEFAULTS = { big:{ x:M.stort.x, z:M.stort.z, rot:M.stort.rot }, small:{ x:M.lite.x, z:M.lite.z, rot:M.lite.rot } };
+// Ett stykke bøyd glass: plate og to sider med myke bøyer (radius 2 cm), åpent foran og bak
+function bentGlass(s, t = 0.012, R = 0.022) {
+  const h = s/2, sh = new THREE.Shape();
+  sh.moveTo(-h, 0); sh.lineTo(-h, s - R); sh.absarc(-h + R, s - R, R, Math.PI, Math.PI/2, true);
+  sh.lineTo(h - R, s); sh.absarc(h - R, s - R, R, Math.PI/2, 0, true); sh.lineTo(h, 0);
+  sh.lineTo(h - t, 0); sh.lineTo(h - t, s - R); sh.absarc(h - R, s - R, R - t, 0, Math.PI/2, false);
+  sh.lineTo(-h + R, s - t); sh.absarc(-h + R, s - R, R - t, Math.PI/2, Math.PI, false); sh.lineTo(-h + t, 0); sh.closePath();
+  const g = new THREE.ExtrudeGeometry(sh, { depth:s, bevelEnabled:true, bevelThickness:0.002, bevelSize:0.002, bevelSegments:2, curveSegments:10 });
+  g.translate(0, 0, -s/2); g.computeVertexNormals(); return g;
+}
+function makeTable(id, s) {
+  const grp = new THREE.Group(); grp.userData = { id };
+  const g = bentGlass(s), m = new THREE.Mesh(g, glassMat);
+  m.castShadow = true; m.renderOrder = 3; m.userData.table = grp; grp.add(m);
+  const edgeMat = new THREE.LineBasicMaterial({ color:0x140d09, transparent:true, opacity:0.55 }); grp.userData.edgeMat = edgeMat;   // mørke glasskanter
+  const e = new THREE.LineSegments(new THREE.EdgesGeometry(g, 35), edgeMat); e.renderOrder = 4; grp.add(e);   // lyse kanter markerer valgt bord
+  scene.add(grp); return grp;
+}
+const tables = { big:makeTable('big', SIZE.big), small:makeTable('small', SIZE.small) };
+const state = { big:{ ...DEFAULTS.big }, small:{ ...DEFAULTS.small }, sel:'big', hl:false, mode:'glass', top:false };
+function applyTables() {
+  for (const id of ['big','small']) { const g = tables[id], s = state[id]; g.position.set(s.x, 0, s.z); g.rotation.y = -s.rot; }
+  if (alt.grp) { alt.grp.position.set(alt.x, 0, alt.z); alt.grp.rotation.y = -alt.rot; }
+}
+/* ---------- Annet bord til sammenligning (eksempel eller skannet .glb) ---------- */
+const alt = { grp:null, name:'', fp:[0.8, 0.8], h:0.4, x:0, z:0, rot:0, edge:null };
+const cur = id => id === 'alt' ? alt : state[id];
+function altCorners(a = alt) { const c = Math.cos(a.rot), n = Math.sin(a.rot), hw = alt.fp[0]/2, hd = alt.fp[1]/2; return [[-hw,-hd],[hw,-hd],[hw,hd],[-hw,hd]].map(([u, v]) => [a.x + u*c - v*n, a.z + u*n + v*c]); }
+function altValid(a) {
+  const poly = altCorners(a);
+  for (const [x, z] of poly) if (x < 0.01 || x > Wd - 0.01 || z < 0.01 || z > Dp - 0.01) return false;
+  for (const q of [...SOFA_POLYS, KITCHEN, TVP]) if (overlap(poly, q)) return false;
+  if (ptPoly([DINE.x, DINE.z], poly) < DINE.diameter/2 + 0.25) return false;
+  return true;
+}
+function altPropose(patch) { const n = { x:alt.x, z:alt.z, rot:alt.rot, ...patch }; if (altValid(n)) { Object.assign(alt, n); return true; } return false; }
+function showMode(m) {
+  state.mode = m; const glassOn = m !== 'alt';
+  tables.big.visible = tables.small.visible = glassOn; if (alt.grp) alt.grp.visible = !glassOn;
+  document.getElementById('selBig').hidden = document.getElementById('selSmall').hidden = !glassOn;
+  document.getElementById('selAlt').hidden = glassOn;
+  document.querySelectorAll('#rotL, #rotR').forEach(b => b.hidden = false);
+}
+function setAlt(grp, name, sizeText) {
+  if (alt.grp) scene.remove(alt.grp);
+  grp.updateMatrixWorld(true);
+  const bb = new THREE.Box3().setFromObject(grp), sz = bb.getSize(new THREE.Vector3()), ctr = bb.getCenter(new THREE.Vector3());
+  const wrap = new THREE.Group(); grp.position.sub(new THREE.Vector3(ctr.x, bb.min.y, ctr.z)); wrap.add(grp);
+  wrap.userData = { id:'alt', isAlt:true };
+  wrap.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; o.userData.table = wrap; } });
+  const em = new THREE.LineBasicMaterial({ color:0xf4efe8, transparent:true, opacity:0 });
+  const ebox = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(sz.x + 0.02, 0.002, sz.z + 0.02)), em); ebox.position.y = 0.006; wrap.add(ebox);
+  Object.assign(alt, { grp:wrap, name, fp:[sz.x, sz.z], h:sz.y, edge:em, rot:0 });
+  // start der glassbordene står, eller nærmeste ledige plass
+  const tries = [[state.big.x, state.big.z]]; for (let r = 0.1; r < 2.5; r += 0.1) for (let a = 0; a < 6.28; a += 0.5) tries.push([state.big.x + r*Math.cos(a), state.big.z + r*Math.sin(a)]);
+  for (const [x, z] of tries) if (altValid({ x, z, rot:0 })) { alt.x = x; alt.z = z; break; }
+  scene.add(wrap);
+  document.getElementById('altDim').textContent = sizeText || `${Math.round(sz.x*100)} × ${Math.round(sz.z*100)} cm`;
+  state.sel = 'alt'; state.hl = true; showMode('alt'); updateReadout(); requestRender();
+}
+/* Mørk eik med treårer: tegnet på lerret (årer langs u), deles av eikebordene */
+let OAK_TEX = null;
+function oakTex() {
+  if (OAK_TEX) return OAK_TEX;
+  OAK_TEX = canvasTex(512, 512, (c, w, h) => {
+    const g = c.createLinearGradient(0, 0, 0, h); g.addColorStop(0, '#7a5332'); g.addColorStop(0.5, '#6e4a2c'); g.addColorStop(1, '#7c5635');
+    c.fillStyle = g; c.fillRect(0, 0, w, h);
+    let seed = 7; const rnd = () => (seed = (seed*16807) % 2147483647)/2147483647;
+    for (let i = 0; i < 70; i++) {                       // årer: lange, svakt bølgende linjer
+      const y0 = rnd()*h, amp = 2 + rnd()*6, fr = 0.004 + rnd()*0.01, ph = rnd()*6.3, dark = rnd() < 0.6;
+      c.strokeStyle = dark ? `rgba(48,30,16,${0.18 + rnd()*0.3})` : `rgba(160,120,80,${0.10 + rnd()*0.15})`;
+      c.lineWidth = 0.6 + rnd()*1.8; c.beginPath();
+      for (let x = 0; x <= w; x += 4) { const y = y0 + amp*Math.sin(x*fr + ph) + 3*Math.sin(x*fr*3.1 + ph*2); x ? c.lineTo(x, y) : c.moveTo(x, y); }
+      c.stroke();
+    }
+    for (let i = 0; i < 260; i++) {                      // eikens korte marger («flammer»)
+      const x = rnd()*w, y = rnd()*h, l = 4 + rnd()*14;
+      c.fillStyle = `rgba(150,108,66,${0.12 + rnd()*0.18})`; c.fillRect(x, y, l, 1 + rnd());
+    }
+    const im = c.getImageData(0, 0, w, h); for (let i = 0; i < im.data.length; i += 4) { const n = (rnd() - 0.5)*10; im.data[i] += n; im.data[i+1] += n; im.data[i+2] += n; } c.putImageData(im, 0, 0);
+  });
+  OAK_TEX.wrapS = OAK_TEX.wrapT = THREE.RepeatWrapping; OAK_TEX.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  return OAK_TEX;
+}
+function woodMat() { return new THREE.MeshStandardMaterial({ color:0xffffff, map:oakTex(), roughness:0.6 }); }
+/* Teksturkoordinater for en modell uten UV (SketchUp-bordet): hver trekant projiseres langs sin hovedretning */
+function boxUV(geom) {
+  const g = geom.index ? geom.toNonIndexed() : geom; g.computeBoundingBox();
+  const sz = g.boundingBox.getSize(new THREE.Vector3()), s = 2.2/Math.max(sz.x, sz.y, sz.z);
+  const p = g.attributes.position, uv = new Float32Array(p.count*2), a = new THREE.Vector3(), b = new THREE.Vector3(), c3 = new THREE.Vector3(), n = new THREE.Vector3();
+  for (let i = 0; i < p.count; i += 3) {
+    a.fromBufferAttribute(p, i); b.fromBufferAttribute(p, i + 1); c3.fromBufferAttribute(p, i + 2);
+    n.subVectors(c3, b).cross(new THREE.Vector3().subVectors(a, b)); const ax = Math.abs(n.x), ay = Math.abs(n.y), az = Math.abs(n.z);
+    for (let k = 0; k < 3; k++) { const x = p.getX(i + k), y = p.getY(i + k), z = p.getZ(i + k);
+      const [u, v] = ay >= ax && ay >= az ? [x, z] : ax >= az ? [y, z] : [x, y];   // årene går langs bordet, også nedover beina
+      uv[(i + k)*2] = u*s; uv[(i + k)*2 + 1] = v*s; }
+  }
+  g.setAttribute('uv', new THREE.BufferAttribute(uv, 2)); g.computeVertexNormals(); return g;
+}
+function exampleOak() { const g = new THREE.Group(), m = woodMat();
+  const top = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 0.03, 64), m); top.position.y = 0.385; g.add(top);
+  for (let i = 0; i < 4; i++) { const a = Math.PI/4 + i*Math.PI/2, l = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.016, 0.37, 16), m); l.position.set(0.27*Math.cos(a), 0.185, 0.27*Math.sin(a)); g.add(l); }
+  return g; }
+/* Rundt glassbord fra nettbildet: glassplate Ø 90 på to halvrunde valnøttplater i kryss, 30 cm høyt */
+function exampleGlassWalnut() {
+  const g = new THREE.Group(), D = 0.90, Ht = 0.30, tg = 0.008, H = Ht - tg, R = 0.33, th = 0.018, n = 2.6;
+  const walTex = oakTex().clone(); walTex.rotation = Math.PI/2; walTex.repeat.set(0.9, 0.9); walTex.needsUpdate = true;   // årene står loddrett, som på bildet
+  const wal = new THREE.MeshStandardMaterial({ color:0xb08a6a, map:walTex, roughness:0.5 });
+  // profil: rett overkant under glasset, flatt buet underkant som møter gulvet midt under bordet
+  const sh = new THREE.Shape(); sh.moveTo(-R, H); sh.lineTo(R, H);
+  for (let i = 0; i <= 48; i++) { const x = R - 2*R*i/48, y = H - H*Math.pow(Math.max(0, 1 - Math.pow(Math.abs(x/R), n)), 1/n); sh.lineTo(x, Math.max(0, y)); }
+  const pg = new THREE.ExtrudeGeometry(sh, { depth:th, bevelEnabled:true, bevelThickness:0.002, bevelSize:0.002, bevelSegments:1, curveSegments:4 });
+  pg.translate(0, 0, -th/2); pg.computeVertexNormals();
+  for (const a of [0, Math.PI/2]) { const p = new THREE.Mesh(pg, wal); p.rotation.y = a; g.add(p); }
+  // glassplate: klart, svakt grønt glass med tydelig grønn kant
+  const glassTop = new THREE.MeshPhysicalMaterial({ color:0xe3f1ea, roughness:0.03, metalness:0, transparent:true, opacity:0.22, ior:1.52, clearcoat:1, clearcoatRoughness:0.02, envMapIntensity:1.0, side:THREE.DoubleSide, depthWrite:false });
+  const top = new THREE.Mesh(new THREE.CylinderGeometry(D/2, D/2, tg, 96, 1, true), new THREE.MeshStandardMaterial({ color:0x5c9a82, roughness:0.15, transparent:true, opacity:0.85 }));
+  top.position.y = H + tg/2; g.add(top);
+  for (const y of [H + tg, H]) { const f = new THREE.Mesh(new THREE.CircleGeometry(D/2, 96), glassTop); f.rotation.x = -Math.PI/2; f.position.y = y; f.renderOrder = 3; g.add(f); }
+  return g; }
+/* Brettbord fra nettbildet: rund plate Ø 59 med opphøyd kant på en sylinderfot Ø 33, 33 cm høyt, brun valnøtt */
+function exampleTray() {
+  const g = new THREE.Group(), R = 0.295, Ht = 0.33, foot = 0.165, trayH = 0.06, rim = 0.015, lip = 0.014, yb = Ht - trayH;
+  const tint = 0x857063, t = (rot, rx, ry) => { const x = oakTex().clone(); x.rotation = rot; x.repeat.set(rx, ry); x.needsUpdate = true; return x; };
+  const mTop = new THREE.MeshStandardMaterial({ color:tint, map:t(0, 1.4, 1.4), roughness:0.45 });
+  const mSide = new THREE.MeshStandardMaterial({ color:tint, map:t(0, 4.5, 0.25), roughness:0.45, side:THREE.DoubleSide });
+  const mFoot = new THREE.MeshStandardMaterial({ color:0x7d685c, map:t(Math.PI/2, 2.6, 0.8), roughness:0.5 });
+  // fot: tykk sylinder med loddrette årer
+  const f = new THREE.Mesh(new THREE.CylinderGeometry(foot, foot, yb, 64, 1, true), mFoot); f.position.y = yb/2; g.add(f);
+  // brett: underside, utvendig side, avrundet kant og innvendig vegg (dreid profil), og bunnen inni
+  const prof = [[foot, yb], [R - 0.006, yb], [R, yb + 0.006], [R, Ht - 0.004], [R - 0.003, Ht], [R - rim + 0.003, Ht], [R - rim, Ht - 0.004], [R - rim, Ht - lip]]
+    .map(([r, y]) => new THREE.Vector2(r, y));
+  const side = new THREE.Mesh(new THREE.LatheGeometry(prof, 96), mSide); g.add(side);
+  const floor = new THREE.Mesh(new THREE.CircleGeometry(R - rim, 96), mTop); floor.rotation.x = -Math.PI/2; floor.position.y = Ht - lip; g.add(floor);
+  const under = new THREE.Mesh(new THREE.CircleGeometry(foot + 0.001, 64), mSide); under.rotation.x = Math.PI/2; under.position.y = yb; g.add(under);
+  return g; }
+function exampleLow() { const g = new THREE.Group(), m = woodMat(); m.color.set(0x8a7466);
+  const top = new THREE.Mesh(new RoundedBoxGeometry(1.2, 0.04, 0.6, 3, 0.012), m); top.position.y = 0.33; g.add(top);
+  const shelf = new THREE.Mesh(new RoundedBoxGeometry(1.08, 0.025, 0.5, 3, 0.008), m); shelf.position.y = 0.12; g.add(shelf);
+  for (const [x, z] of [[-0.56,-0.26],[0.56,-0.26],[-0.56,0.26],[0.56,0.26]]) { const l = new THREE.Mesh(new THREE.BoxGeometry(0.035, 0.31, 0.035), m); l.position.set(x, 0.155, z); g.add(l); }
+  return g; }
+
+/* ---------- Plan-geometri: kollisjon, settbord, mål ---------- */
+const wrapA = a => ((a % (2*Math.PI)) + 2*Math.PI) % (2*Math.PI);
+function corners(st, s) { const c = Math.cos(st.rot), n = Math.sin(st.rot), h = s/2; return [[-h,-h],[h,-h],[h,h],[-h,h]].map(([a,b]) => [st.x + a*c - b*n, st.z + a*n + b*c]); }
+const rectPoly = (x0, x1, z0, z1) => [[x0,z0],[x1,z0],[x1,z1],[x0,z1]];
+function axes(p) { const r = []; for (let i = 0; i < p.length; i++) { const a = p[i], b = p[(i+1)%p.length]; r.push([-(b[1]-a[1]), b[0]-a[0]]); } return r; }
+function overlap(p, q, eps = 0.003) { for (const ax of [...axes(p), ...axes(q)]) { const L = Math.hypot(...ax), u = [ax[0]/L, ax[1]/L]; const pr = P => P.map(v => v[0]*u[0] + v[1]*u[1]); const a = pr(p), b = pr(q); if (Math.max(...a) <= Math.min(...b) + eps || Math.max(...b) <= Math.min(...a) + eps) return false; } return true; }
+function segDist(p, a, b) { const dx = b[0]-a[0], dz = b[1]-a[1]; let t = ((p[0]-a[0])*dx + (p[1]-a[1])*dz)/(dx*dx+dz*dz); t = Math.max(0, Math.min(1, t)); return Math.hypot(p[0]-a[0]-t*dx, p[1]-a[1]-t*dz); }
+function inside(p, poly) { let s = 0; for (let i = 0; i < poly.length; i++) { const a = poly[i], b = poly[(i+1)%poly.length]; const c = (b[0]-a[0])*(p[1]-a[1]) - (b[1]-a[1])*(p[0]-a[0]); if (c !== 0) { const sg = Math.sign(c); if (s === 0) s = sg; else if (sg !== s) return false; } } return true; }
+function ptPoly(p, poly) { if (inside(p, poly)) return 0; let d = Infinity; for (let i = 0; i < poly.length; i++) d = Math.min(d, segDist(p, poly[i], poly[(i+1)%poly.length])); return d; }
+function polyDist(p, q) { if (overlap(p, q, -0.0001)) return 0; let d = Infinity; for (const v of p) d = Math.min(d, ptPoly(v, q)); for (const v of q) d = Math.min(d, ptPoly(v, p)); return d; }
+const SOFA_POLYS = [rectPoly(0, SOFA.dybde, SOFA.z0, SOFA.ze), rectPoly(0, SOFA.sjeselong, SOFA.zc, SOFA.ze)];
+const KITCHEN = rectPoly(0, Math.max(ROM.kjokken.x1, ...(ROM.veggstykker || []).map(v => v.x1)), Dp - 0.66, Dp);
+const TVP = rectPoly(M.tv.x - 0.2, Wd, M.tv.z - M.tv.bredde/2, M.tv.z + M.tv.bredde/2);
+function nestInfo(st) { const B = st.big, S = st.small; let dr = wrapA(S.rot - B.rot) % Math.PI; if (dr > Math.PI/2) dr -= Math.PI; const c = Math.cos(-B.rot), n = Math.sin(-B.rot), dx = S.x - B.x, dz = S.z - B.z; return { dr, lx: dx*c - dz*n, lz: dx*n + dz*c }; }
+function valid(st, id) {
+  const poly = corners(st[id], SIZE[id]);
+  for (const [x, z] of poly) if (x < 0.01 || x > Wd - 0.01 || z < 0.01 || z > Dp - 0.01) return false;
+  for (const p of [...SOFA_POLYS, KITCHEN, TVP]) if (overlap(poly, p)) return false;
+  if (ptPoly([DINE.x, DINE.z], poly) < DINE.diameter/2 + 0.25) return false;
+  const o = id === 'big' ? 'small' : 'big';
+  if (overlap(poly, corners(st[o], SIZE[o]))) { const ni = nestInfo(st); if (!(Math.abs(ni.dr) < 0.001 && Math.abs(ni.lx) < 0.001)) return false; }
+  return true;
+}
+function trySnapNest(st, id) {
+  const o = id === 'big' ? 'small' : 'big';
+  if (!overlap(corners(st[id], SIZE[id]), corners(st[o], SIZE[o]))) return st;
+  const ni = nestInfo(st); if (Math.abs(ni.dr) > 0.14 || Math.abs(ni.lx) > 0.09) return st;
+  const out = { ...st, big:{ ...st.big }, small:{ ...st.small } };
+  if (id === 'small') { out.small.rot = out.big.rot + Math.round((out.small.rot - out.big.rot)/Math.PI)*Math.PI; const c = Math.cos(out.big.rot), n = Math.sin(out.big.rot); out.small.x = out.big.x - ni.lz*n; out.small.z = out.big.z + ni.lz*c; }
+  else { out.big.rot = out.small.rot + Math.round((out.big.rot - out.small.rot)/Math.PI)*Math.PI; const c = Math.cos(out.big.rot), n = Math.sin(out.big.rot); out.big.x = out.small.x + ni.lz*n; out.big.z = out.small.z - ni.lz*c; }
+  return out;
+}
+function propose(id, patch) { if (id === 'alt') return altPropose(patch); let next = { ...state, big:{ ...state.big }, small:{ ...state.small } }; Object.assign(next[id], patch); next = trySnapNest(next, id); if (valid(next, id)) { state.big = next.big; state.small = next.small; return true; } return false; }
+function isNested() { if (!overlap(corners(state.big, SIZE.big), corners(state.small, SIZE.small))) return false; const ni = nestInfo(state); return Math.abs(ni.dr) < 0.001 && Math.abs(ni.lx) < 0.001; }
+function measure(id) {
+  const poly = id === 'alt' ? altCorners() : corners(state[id], SIZE[id]);
+  const dSofa = Math.min(...SOFA_POLYS.map(p => polyDist(poly, p)));
+  let inRug = 0, N = 0; const [c0, c1, , c3] = poly;
+  for (let i = 0; i < 9; i++) for (let j = 0; j < 9; j++) { const u = i/8, v = j/8; const x = c0[0] + u*(c1[0]-c0[0]) + v*(c3[0]-c0[0]), z = c0[1] + u*(c1[1]-c0[1]) + v*(c3[1]-c0[1]); N++; if (x >= RUG.x0 && x <= RUG.x0 + RUG.bredde && z >= RUG.z0 && z <= RUG.z0 + RUG.lengde) inRug++; }
+  return { dSofa, rug: inRug/N, dDine: Math.max(0, ptPoly([DINE.x, DINE.z], poly) - DINE.diameter/2) };
+}
+const cm = m => Math.round(m*100);
+const rugText = f => f > 0.995 ? 'on the rug' : f < 0.005 ? 'off the rug' : Math.round(f*100) + ' % on the rug';
+/* MyCrib (Synne 14.11): a white rounded outline on the floor around the chosen table */
+const haloMat = new THREE.MeshBasicMaterial({ color:0xffffff, transparent:true, opacity:0.95, depthWrite:false, polygonOffset:true, polygonOffsetFactor:-4 });
+const haloFill = new THREE.MeshBasicMaterial({ color:0xffffff, transparent:true, opacity:0.22, depthWrite:false, polygonOffset:true, polygonOffsetFactor:-4 });
+function haloFor(grp) {
+  if (grp.userData.halo) return grp.userData.halo;
+  grp.updateMatrixWorld(true);
+  const inv = new THREE.Matrix4().copy(grp.matrixWorld).invert();
+  const box = new THREE.Box3();
+  grp.traverse(o => { if (o.isMesh && o.geometry) { o.geometry.computeBoundingBox(); box.union(o.geometry.boundingBox.clone().applyMatrix4(new THREE.Matrix4().multiplyMatrices(inv, o.matrixWorld))); } });
+  if (box.isEmpty()) box.set(new THREE.Vector3(-0.4, 0, -0.3), new THREE.Vector3(0.4, 0.4, 0.3));
+  const w = box.max.x - box.min.x + 0.16, d = box.max.z - box.min.z + 0.16, r = Math.min(0.1, w / 4, d / 4), t = 0.026;
+  const rr = (w, d, r) => { const s = new THREE.Shape(), x = -w / 2, y = -d / 2;
+    s.moveTo(x + r, y); s.lineTo(x + w - r, y); s.quadraticCurveTo(x + w, y, x + w, y + r); s.lineTo(x + w, y + d - r);
+    s.quadraticCurveTo(x + w, y + d, x + w - r, y + d); s.lineTo(x + r, y + d); s.quadraticCurveTo(x, y + d, x, y + d - r);
+    s.lineTo(x, y + r); s.quadraticCurveTo(x, y, x + r, y); return s; };
+  const ring = rr(w, d, r); ring.holes.push(rr(w - 2 * t, d - 2 * t, Math.max(0.001, r - t)));
+  const m = new THREE.Mesh(new THREE.ShapeGeometry(ring, 8), haloMat);
+  // a soft light patch inside the outline, like a spot on the floor
+  const fill = new THREE.Mesh(new THREE.ShapeGeometry(rr(w - 2 * t, d - 2 * t, Math.max(0.001, r - t)), 8), haloFill);
+  fill.raycast = () => {}; m.add(fill);
+  m.rotation.x = -Math.PI / 2;
+  // just above the rug, so the rug does not hide it; the table itself stands in front of it
+  m.position.set((box.min.x + box.max.x) / 2, box.min.y + 0.022, (box.min.z + box.max.z) / 2);
+  m.renderOrder = 2; m.raycast = () => {};
+  grp.add(m); grp.userData.halo = m; return m;
+}
+function updateReadout() {
+  const m = measure(state.sel);
+  document.getElementById('readout').innerHTML = `<b>${cm(m.dSofa)} cm</b> to the sofa<span class="dot">·</span><span>${rugText(m.rug)}</span><span class="dot">·</span><b>${cm(m.dDine)} cm</b> to the dining table`;
+  for (const id of ['big','small']) { const e = tables[id].userData.edgeMat, on = state.hl && id === state.sel; e.color.set(on ? 0xf4efe8 : 0x140d09); e.opacity = on ? 0.6 : 0.55; }
+  document.getElementById('selBig').setAttribute('aria-pressed', state.sel === 'big');
+  document.getElementById('selSmall').setAttribute('aria-pressed', state.sel === 'small');
+  document.getElementById('selAlt').setAttribute('aria-pressed', state.sel === 'alt');
+  if (alt.edge) alt.edge.opacity = state.hl && state.sel === 'alt' ? 0.7 : 0;
+  // MyCrib (Synne 14.11): the chosen table gets a clear white outline on the floor, so a tap is easy to see
+  for (const [id, grp] of [['big', tables.big], ['small', tables.small], ['alt', alt.grp]]) {
+    if (!grp) continue;
+    const on = state.hl && state.sel === id && grp.visible !== false;
+    if (on) haloFor(grp).visible = true; else if (grp.userData.halo) grp.userData.halo.visible = false;
+  }
+  document.getElementById('bar').hidden = !state.hl;   // verktøy og mål bare når et bord er valgt
+}
+
+/* ---------- Dra bordene ---------- */
+const ray = new THREE.Raycaster(), ndc = new THREE.Vector2(); let drag = null;
+function setRay(e) { const r = renderer.domElement.getBoundingClientRect(); ndc.set(((e.clientX - r.left)/r.width)*2 - 1, -((e.clientY - r.top)/r.height)*2 + 1); ray.setFromCamera(ndc, camera); }
+function hideHint() { const h = document.getElementById('hint'); if (h) { h.style.opacity = 0; setTimeout(() => h.remove(), 450); } }
+renderer.domElement.addEventListener('pointerdown', e => {
+  // a second finger while a table is held: twist to turn it (Rathi 29.10)
+  if (drag && e.pointerId !== drag.pid) {
+    drag.twist = { pid:e.pointerId, a0:Math.atan2(e.clientY - drag.at.y, e.clientX - drag.at.x), rot0:twistRot(drag.id), done:0 };
+    renderer.domElement.setPointerCapture(e.pointerId); e.stopImmediatePropagation(); return;
+  }
+  hideHint(); closeMenu(); setRay(e);
+  const pick = state.mode === 'alt' && alt.grp ? [] : [...tables.big.children, ...tables.small.children].filter(o => o.isMesh);
+  if (state.mode === 'alt' && alt.grp) alt.grp.traverse(o => { if (o.isMesh) pick.push(o); });
+  const hits = ray.intersectObjects(pick, false);
+  if (!hits.length) { if (state.hl) { state.hl = false; updateReadout(); requestRender(); } return; }   // trykk utenfor: skjul markeringen
+  const id = hits[0].object.userData.table.userData.id; state.sel = id; state.hl = true;
+  const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), -(id === 'alt' ? alt.h : SIZE[id])), p = new THREE.Vector3();
+  drag = { id, plane, off:[0, 0], pid:e.pointerId, at:{ x:e.clientX, y:e.clientY } };
+  if (ray.ray.intersectPlane(plane, p)) drag.off = [cur(id).x - p.x, cur(id).z - p.z];
+  // held at the top (the table top) it moves; held low down (legs, shelf, the lower glass) it turns
+  // when dragged sideways – right is clockwise (Rathi 29.10)
+  if (hits[0].point.y < (id === 'alt' ? alt.h : SIZE[id])*0.55) drag.spin = { x0:e.clientX, rot0:twistRot(id), done:0 };
+  controls.enabled = false; renderer.domElement.setPointerCapture(e.pointerId); updateReadout(); requestRender();
+}, true);
+// the angle the table is turned now, and the point it turns around
+function twistRot(id) { return cur(id).rot; }
+function twistCenter(id) { return id !== 'alt' && isNested() ? { x:(state.big.x + state.small.x)/2, z:(state.big.z + state.small.z)/2 } : { x:cur(id).x, z:cur(id).z }; }
+// turn to rot0 + da, snapping to whole quarter turns near them; only what fits is kept
+function twistTo(t, id, da) {
+  let want = t.rot0 + da; const q = Math.round(want/(Math.PI/2))*(Math.PI/2); if (Math.abs(want - q) < 0.09) want = q;
+  if (rotateBy(id, want - twistRot(id))) t.done = want - t.rot0;
+  updateReadout(); requestRender();
+}
+renderer.domElement.addEventListener('pointermove', e => {
+  if (drag && drag.twist && (e.pointerId === drag.twist.pid || e.pointerId === drag.pid)) {
+    if (e.pointerId === drag.pid) drag.at = { x:e.clientX, y:e.clientY }; else drag.twist.at2 = { x:e.clientX, y:e.clientY };
+    const b = drag.twist.at2; if (b) twistTo(drag.twist, drag.id, Math.atan2(b.y - drag.at.y, b.x - drag.at.x) - drag.twist.a0);
+    return;
+  }
+  if (drag && drag.spin && e.pointerId === drag.pid) { twistTo(drag.spin, drag.id, (e.clientX - drag.spin.x0)*0.012); return; }
+  if (drag && e.pointerId === drag.pid) drag.at = { x:e.clientX, y:e.clientY };
+  if (!drag || e.pointerId !== drag.pid) return; setRay(e); const p = new THREE.Vector3();
+  if (drag.reoff && ray.ray.intersectPlane(drag.plane, p)) { drag.off = [cur(drag.id).x - p.x, cur(drag.id).z - p.z]; drag.reoff = false; }
+  if (ray.ray.intersectPlane(drag.plane, p)) { const nx = p.x + drag.off[0], nz = p.z + drag.off[1]; if (!propose(drag.id, { x:nx, z:nz })) { if (!propose(drag.id, { x:nx })) propose(drag.id, { z:nz }); } updateReadout(); requestRender(); }
+});
+function endDrag(e) {
+  if (drag && drag.twist && e.pointerId === drag.twist.pid) { drag.twist = null; drag.reoff = true; return; }   // second finger up: keep holding the table
+  if (drag && e.pointerId === drag.pid) { drag = null; controls.enabled = true; }
+}
+renderer.domElement.addEventListener('pointerup', endDrag); renderer.domElement.addEventListener('pointercancel', endDrag);
+controls.addEventListener('start', () => { hideHint(); closeMenu(); });
+
+/* ---------- Knapper ---------- */
+function select(id) { state.sel = id; state.hl = true; showMode(id === 'alt' ? 'alt' : 'glass'); updateReadout(); requestRender(); }
+document.getElementById('selBig').onclick = () => select('big');
+document.getElementById('selSmall').onclick = () => select('small');
+document.getElementById('selAlt').onclick = () => select('alt');
+const altDlg = document.getElementById('altDlg'), altMsg = document.getElementById('altMsg');
+document.getElementById('altClose').onclick = () => { altDlg.hidden = true; };
+altDlg.addEventListener('click', e => { if (e.target === altDlg) altDlg.hidden = true; });
+document.getElementById('altGlass').onclick = () => { altDlg.hidden = true; select('big'); };
+document.getElementById('altMine').onclick = async () => {
+  altMsg.textContent = 'Henter bordet …';
+  const { GLTFLoader } = await import('three/addons/loaders/GLTFLoader.js');
+  oakLoad(new GLTFLoader(), gltf => {
+    gltf.scene.traverse(o => { if (o.isMesh) { o.geometry = boxUV(o.geometry); o.material = new THREE.MeshStandardMaterial({ color:0xffffff, map:oakTex(), roughness:0.6, side:THREE.DoubleSide }); } });   // mørk eik med treårer
+    altDlg.hidden = true; setAlt(gltf.scene, 'Ditt runde bord', 'Ø 87 cm');
+  }, undefined, () => { altMsg.textContent = 'Fant ikke bordfila (rundt_bord.json).'; });
+};
+document.getElementById('altOak').onclick = () => { altDlg.hidden = true; setAlt(exampleOak(), 'Rundt eikebord', 'Ø 80 cm'); };
+document.getElementById('altLow').onclick = () => { altDlg.hidden = true; setAlt(exampleLow(), 'Lavt sofabord', '120 × 60 cm'); };
+document.getElementById('altGlassWal').onclick = () => { altDlg.hidden = true; setAlt(exampleGlassWalnut(), 'Rundt glassbord', 'Ø 90 cm'); };
+document.getElementById('altTray').onclick = () => { altDlg.hidden = true; setAlt(exampleTray(), 'Brettbord i valnøtt', 'Ø 59 cm'); };
+document.getElementById('altFile').onchange = async e => {
+  const f = e.target.files[0]; if (!f) return; altMsg.textContent = 'Leser ' + f.name + ' …';
+  try {
+    const { GLTFLoader } = await import('three/addons/loaders/GLTFLoader.js');
+    const buf = await f.arrayBuffer();
+    new GLTFLoader().parse(buf, '', gltf => {
+      const g = gltf.scene; const bb = new THREE.Box3().setFromObject(g), sz = bb.getSize(new THREE.Vector3());
+      const big = Math.max(sz.x, sz.y, sz.z); if (big > 5) g.scale.setScalar(0.01);   // skannet i cm, ikke meter
+      if (big < 0.05) g.scale.setScalar(100);
+      altDlg.hidden = true; setAlt(g, f.name.replace(/\.(glb|gltf)$/i, ''));
+      toast('Bordet er lagt inn. Sjekk at målene stemmer.');
+    }, err => { altMsg.textContent = 'Klarte ikke å lese filen. Bruk .glb eller en .gltf med alt innebygd.'; });
+  } catch { altMsg.textContent = 'Klarte ikke å lese filen. Bruk .glb eller en .gltf med alt innebygd.'; }
+  e.target.value = '';
+};
+
+/* ---------- Hylla med bord: bilder laget fra 3D-modellene, dra inn i rommet eller trykk for å bytte ---------- */
+/* the round table model: GLB as base64 in a .json file, parsed here (artifacts block data: URLs and don't serve .glb) */
+function oakLoad(loader, onLoad, _progress, onError) {
+  fetch('rundt_bord_glb.json').then(r => r.json()).then(j => {
+    const b = atob(j.glb), u = new Uint8Array(b.length); for (let i = 0; i < b.length; i++) u[i] = b.charCodeAt(i);
+    loader.parse(u.buffer, '', onLoad, onError);
+  }).catch(onError);
+}
+const MINE = import('three/addons/loaders/GLTFLoader.js').then(({ GLTFLoader }) => new Promise((res, rej) => oakLoad(new GLTFLoader(), gl => {
+  gl.scene.traverse(o => { if (o.isMesh) { o.geometry = boxUV(o.geometry); o.material = new THREE.MeshStandardMaterial({ color:0xffffff, map:oakTex(), roughness:0.6, side:THREE.DoubleSide }); } });
+  res(gl.scene); }, undefined, rej)));
+function glassPair() { const g = new THREE.Group(), a = new THREE.Mesh(bentGlass(SIZE.big), glassMat), b = new THREE.Mesh(bentGlass(SIZE.small), glassMat); b.position.set(SIZE.big*0.5 + 0.08, 0, 0.12); g.add(a, b); return g; }
+const TABLES = [
+  { id:'glass', name:'Glassbordene', size:'42 + 36', thumb:() => glassPair() },
+  { id:'mine', name:'Ditt runde bord', size:'Ø 87', make:() => MINE.then(s => s.clone(true)) },
+  { id:'tray', name:'Brettbord', size:'Ø 59', make:() => exampleTray() },
+  { id:'glasswal', name:'Rundt glassbord', size:'Ø 90', make:() => exampleGlassWalnut() },
+  { id:'oak', name:'Rundt eikebord', size:'Ø 80', make:() => exampleOak() },
+  { id:'low', name:'Lavt sofabord', size:'120 × 60', make:() => exampleLow() },
+];
+// små bilder av bordene, tegnet én gang med en egen liten renderer
+const thumbR = new THREE.WebGLRenderer({ antialias:true, alpha:true, preserveDrawingBuffer:true });
+thumbR.setPixelRatio(1); thumbR.setSize(240, 176, false); thumbR.toneMapping = THREE.ACESFilmicToneMapping; thumbR.toneMappingExposure = 0.95;
+const tScene = new THREE.Scene(); tScene.environment = new THREE.PMREMGenerator(thumbR).fromScene(new RoomEnvironment(thumbR), 0.04).texture; tScene.environmentIntensity = 0.6;
+tScene.add(new THREE.HemisphereLight(0xfffaf3, 0x9c8a76, 0.9)); { const l = new THREE.DirectionalLight(0xfff1df, 1.6); l.position.set(2, 4, 3); tScene.add(l); }
+const tCam = new THREE.PerspectiveCamera(26, 240/176, 0.01, 50);
+function thumbOf(obj) {
+  const h = new THREE.Group(); h.add(obj); tScene.add(h); h.updateMatrixWorld(true);
+  const bb = new THREE.Box3().setFromObject(h), c = bb.getCenter(new THREE.Vector3()), R = bb.getSize(new THREE.Vector3()).length()/2, d = R/Math.sin(THREE.MathUtils.degToRad(13))*0.92;
+  tCam.position.set(c.x + d*0.55, c.y + d*0.5, c.z + d*0.67); tCam.lookAt(c);
+  thumbR.render(tScene, tCam); const url = thumbR.domElement.toDataURL('image/png'); tScene.remove(h); return url;
+}
+const shelfIn = document.getElementById('shelfInner'), ghost = document.getElementById('ghost'), tileEls = {};
+for (const T of TABLES) {
+  const b = document.createElement('button'); b.className = 'tile'; b.type = 'button'; b.setAttribute('aria-pressed', 'false');
+  b.setAttribute('aria-label', `${T.name}, ${T.size} cm. Dra inn i rommet eller trykk for å bytte.`);
+  b.innerHTML = `<div class="ph">…</div><b>${T.name}</b><span>${T.size}</span>`; shelfIn.appendChild(b); tileEls[T.id] = b;
+  Promise.resolve(T.thumb ? T.thumb() : T.make()).then(o => { const im = document.createElement('img'); im.alt = ''; im.src = thumbOf(o); b.querySelector('.ph').replaceWith(im); }).catch(() => {});
+  dragTile(b, T.id);
+}
+{ const up = document.createElement('label'); up.className = 'tile'; up.htmlFor = 'altFile'; up.innerHTML = '<div class="ph">＋</div><b>Last opp</b><span>.glb</span>'; up.title = 'Last opp et skannet bord (.glb eller .gltf)'; shelfIn.appendChild(up); }
+new MutationObserver(() => { if (altDlg.hidden && altMsg.textContent) toast(altMsg.textContent); }).observe(altMsg, { childList:true, characterData:true, subtree:true });
+function markActive(id) { for (const [k, el] of Object.entries(tileEls)) el.setAttribute('aria-pressed', String(k === id)); }
+markActive('glass');
+function floorAt(e) {
+  const r = renderer.domElement.getBoundingClientRect(); if (e.clientY > document.getElementById('shelf').getBoundingClientRect().top - 4) return null;
+  setRay(e); const p = new THREE.Vector3(); if (!ray.ray.intersectPlane(new THREE.Plane(new THREE.Vector3(0, 1, 0), 0), p)) return null;
+  return { x: Math.min(Wd, Math.max(0, p.x)), z: Math.min(Dp, Math.max(0, p.z)) };
+}
+function placeAltNear(x, z) {
+  if (altValid({ x, z, rot:alt.rot })) { alt.x = x; alt.z = z; return; }
+  for (let r = 0.05; r < 3; r += 0.05) for (let a = 0; a < 6.28; a += 0.3) { const nx = x + r*Math.cos(a), nz = z + r*Math.sin(a); if (altValid({ x:nx, z:nz, rot:alt.rot })) { alt.x = nx; alt.z = nz; return; } }
+}
+function moveSel(p) {
+  if (state.mode === 'alt') { if (!altPropose({ x:p.x, z:p.z })) { if (!altPropose({ x:p.x })) altPropose({ z:p.z }); } }
+  else { const dx = p.x - state.big.x, dz = p.z - state.big.z; if (propose('big', { x:p.x, z:p.z })) propose('small', { x:state.small.x + dx, z:state.small.z + dz }); }
+  updateReadout(); requestRender();
+}
+async function chooseTable(id, p) {
+  markActive(id);
+  if (id === 'glass') { select('big'); if (p) moveSel(p); return; }
+  const T = TABLES.find(t => t.id === id);
+  try { const g = await T.make(); setAlt(g, T.name, T.size.startsWith('Ø') ? T.size + ' cm' : T.size + ' cm'); }
+  catch { toast('Table not found'); return; }
+  if (p) placeAltNear(p.x, p.z);
+  updateReadout(); requestRender();
+}
+function dragTile(el, id) {
+  let d = null;
+  el.addEventListener('pointerdown', e => { if (e.button > 0) return; d = { x0:e.clientX, y0:e.clientY, started:false, placing:null, last:null, pid:e.pointerId }; });
+  el.addEventListener('pointermove', e => {
+    if (!d || e.pointerId !== d.pid) return;
+    const dx = e.clientX - d.x0, dy = e.clientY - d.y0;
+    if (!d.started) {
+      if (dy < -8 && Math.abs(dy) > Math.abs(dx)) { d.started = true; el.setPointerCapture(e.pointerId); hideHint(); closeMenu(); const im = el.querySelector('img'); if (im) { ghost.src = im.src; ghost.hidden = false; } }
+      else if (Math.abs(dx) > 10) { d = null; return; }   // vannrett: bla i hylla
+      else return;
+    }
+    e.preventDefault(); ghost.style.left = e.clientX + 'px'; ghost.style.top = e.clientY + 'px';
+    const p = floorAt(e); if (!p) { ghost.hidden = !ghost.src; return; }
+    ghost.hidden = true; d.last = p;
+    if (!d.placing) { d.placing = chooseTable(id, p).then(() => { if (d && d.last) moveSel(d.last); }); }
+    else if (state.mode === (id === 'glass' ? 'glass' : 'alt')) moveSel(p);
+  });
+  const end = e => {
+    if (!d || e.pointerId !== d.pid) return;
+    const tap = !d.started; ghost.hidden = true; ghost.removeAttribute('src'); d = null;
+    if (tap && e.type === 'pointerup') chooseTable(id);
+  };
+  el.addEventListener('pointerup', end); el.addEventListener('pointercancel', e => { if (d) { ghost.hidden = true; d = null; } });
+  el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); chooseTable(id); } });
+}
+let toastT; function toast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.style.opacity = 1; clearTimeout(toastT); toastT = setTimeout(() => t.style.opacity = 0, 1800); }
+function rotateBy(id, d) {
+  if (id !== 'alt' && isNested()) {   // the nested glass tables turn together, around their middle
+    const cx = (state.big.x + state.small.x)/2, cz = (state.big.z + state.small.z)/2, c = Math.cos(d), n = Math.sin(d);
+    const next = { ...state, big:{ ...state.big }, small:{ ...state.small } };
+    for (const k of ['big', 'small']) { const dx = state[k].x - cx, dz = state[k].z - cz; next[k].x = cx + dx*c - dz*n; next[k].z = cz + dx*n + dz*c; next[k].rot = state[k].rot + d; }
+    if (valid(next, 'big') && valid(next, 'small')) { state.big = next.big; state.small = next.small; return true; }
+    return false;
+  }
+  return propose(id, { rot: cur(id).rot + d });
+}
+function rotate(deg) { const id = state.sel; if (!propose(id, { rot: cur(id).rot + deg*Math.PI/180 })) toast('The table won’t fit if it is rotated'); updateReadout(); requestRender(); }
+document.getElementById('rotL').onclick = () => rotate(-15);
+document.getElementById('rotR').onclick = () => rotate(15);
+const menu = document.getElementById('menu'), btnMore = document.getElementById('btnMore');
+function closeMenu() { menu.hidden = true; btnMore.setAttribute('aria-expanded', 'false'); }
+btnMore.onclick = e => { e.stopPropagation(); menu.hidden = !menu.hidden; btnMore.setAttribute('aria-expanded', String(!menu.hidden)); };
+document.addEventListener('click', e => { if (!menu.hidden && !menu.contains(e.target) && e.target !== btnMore) closeMenu(); });
+document.getElementById('btnReset').onclick = () => { closeMenu(); state.big = { ...DEFAULTS.big }; state.small = { ...DEFAULTS.small }; updateReadout(); requestRender(); toast('The tables are back'); };
+document.getElementById('btnView').onclick = () => { closeMenu(); setTop(false); resetView(); requestRender(); };
+const btnTop = document.getElementById('btnTop');
+let saved = null;
+function setTop(on) {
+  state.top = on; btnTop.setAttribute('aria-pressed', on);
+  if (on) { saved = { p:camera.position.clone(), t:controls.target.clone() }; camera.position.set(Wd/2, 8.5, Dp/2 + 0.001); controls.target.set(Wd/2, 0, Dp/2); controls.enableRotate = false; }
+  else { if (saved) { camera.position.copy(saved.p); controls.target.copy(saved.t); } controls.enableRotate = true; }
+  controls.update(); requestRender();
+}
+btnTop.onclick = () => setTop(!state.top);
+document.getElementById('btnCopy').onclick = () => {
+  closeMenu();
+  const out = { rom: ROM.navn, koordinater: ROM.koordinater.replace('meter','cm'),
+    bord: ['big','small'].map(id => { const m = measure(id); return { navn: id === 'big' ? 'Stort glassbord' : 'Lite glassbord', mål_cm: cm(SIZE[id]), x: cm(state[id].x), z: cm(state[id].z), rotasjon: Math.round(wrapA(state[id].rot)*180/Math.PI) % 180, til_sofaen_cm: cm(m.dSofa), på_teppet_prosent: Math.round(m.rug*100), til_spisebordet_cm: cm(m.dDine) }; }),
+    lite_bord_under_stort: isNested() };
+  const txt = JSON.stringify(out, null, 2);
+  const fallback = () => { const card = about.querySelector('.card'); about.hidden = false; let ta = document.getElementById('copybox'); if (!ta) { ta = document.createElement('textarea'); ta.id = 'copybox'; ta.readOnly = true; card.insertBefore(ta, card.lastElementChild); } ta.value = txt; ta.focus(); ta.select(); };
+  try { navigator.clipboard.writeText(txt).then(() => toast('Position copied'), fallback); } catch { fallback(); }
+};
+
+/* ---------- «Mål»: tabell over mål og kilder fra rom.json ---------- */
+const about = document.getElementById('about');
+function fillSources() {
+  const rows = [], cmv = v => `${Math.round(v*100)} cm`, src = s => `<span class="src ${s}">${s}</span>`, K = ROM.kilder;
+  rows.push(['Stua, bredde × dybde', `${cmv(Wd)} × ${cmv(Dp)}`, R.kilde.bredde]);
+  rows.push(['Takhøyde', cmv(Ht), R.kilde.takhoyde]);
+  for (const w of Object.values(ROM.vegger)) for (const o of w.apninger) rows.push([o.navn, `${cmv(o.til - o.fra)} bred, ${cmv(o.fra)}–${cmv(o.til)} langs veggen`, o.kilde]);
+  rows.push(['Kjøkken', `${cmv(ROM.kjokken.x1 - ROM.kjokken.x0)} langs badveggen, ${cmv(ROM.kjokken.dybde)} dypt`, ROM.kjokken.kilde]);
+  rows.push(['Sofa', `${cmv(SOFA.lengde)} lang, sjeselong ${cmv(SOFA.sjeselong)}, dybde ${cmv(SOFA.dybde)}, armlene ${cmv(SOFA.armlenehoyde)}`, SOFA.kilde.lengde]);
+  rows.push(['Sofaens plassering', `${cmv(SOFA.z0)} fra balkongveggen, inntil sofaveggen`, SOFA.kilde.plassering]);
+  rows.push(['Setehøyde', cmv(SOFA.setehoyde), SOFA.kilde.setehoyde]);
+  rows.push(['Teppe', `${cmv(RUG.bredde)} × ${cmv(RUG.lengde)}`, RUG.kilde.mål]);
+  rows.push(['Teppets plassering', `${cmv(RUG.x0)} fra sofaveggen, ${cmv(RUG.z0)} fra balkongveggen`, RUG.kilde.plassering]);
+  rows.push(['Glassbord', `${cmv(SIZE.big)} og ${cmv(SIZE.small)} (bredde = dybde = høyde)`, M.stort.kilde]);
+  rows.push(['Spisebord', `Ø ${cmv(DINE.diameter)}, høyde ${cmv(DINE.hoyde)}`, DINE.kilde.mål]);
+  rows.push(['TV på stativ', `${cmv(M.tv.bredde)} bred`, M.tv.kilde]);
+  document.querySelector('#srcTable tbody').innerHTML = rows.map(([a, b, s]) => `<tr><td>${a}</td><td class="num">${b}</td><td>${src(s)}</td></tr>`).join('');
+  about.querySelector('p').insertAdjacentHTML('beforeend', ' ' + Object.entries(K).map(([k, v]) => `«${k}» = ${v}`).join(', ') + '.');
+}
+fillSources();
+document.getElementById('btnAbout').onclick = () => { about.hidden = false; document.getElementById('aboutClose').focus(); };
+document.getElementById('aboutClose').onclick = () => { about.hidden = true; };
+about.addEventListener('click', e => { if (e.target === about) about.hidden = true; });
+window.addEventListener('keydown', e => {
+  if (!altDlg.hidden) { if (e.key === 'Escape') altDlg.hidden = true; return; }
+  if (!about.hidden) { if (e.key === 'Escape') about.hidden = true; return; }
+  if (e.key === 'Escape') closeMenu();
+  const id = state.sel, st = 0.05, m = { ArrowLeft:[-st,0], ArrowRight:[st,0], ArrowUp:[0,-st], ArrowDown:[0,st] }[e.key];
+  if (m) { e.preventDefault(); propose(id, { x: cur(id).x + m[0], z: cur(id).z + m[1] }); updateReadout(); requestRender(); }
+  if (e.key === 'q' || e.key === 'Q') rotate(-15);
+  if (e.key === 'e' || e.key === 'E') rotate(15);
+});
+
+/* ---------- Tegning ---------- */
+function resize() { const w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h, false); camera.aspect = w/h; camera.fov = w/h < 0.8 ? 58 : 42; camera.updateProjectionMatrix(); requestRender(); }
+window.addEventListener('resize', resize);
+let pending = false;
+function requestRender() { if (pending) return; pending = true; requestAnimationFrame(frame); }
+function frame() { pending = false; const moving = controls.update(); updateWalls(); applyTables(); renderer.render(scene, camera); if (moving) requestRender(); }
+controls.addEventListener('change', requestRender);
+document.getElementById('loading').remove();
+resize(); updateReadout(); requestRender();
+setTimeout(hideHint, 6000);
+
+/* ---------- MyCrib bridge (Rathi, 28.10) ----------
+   The app sends the coffee table that stands in the room (name, size, colour, position in cm from the sofa wall and
+   the balcony wall); the page shows it and tells the app when it is tapped or moved. */
+if (document.body.classList.contains('embed') && window.parent !== window) {
+  const post = m => window.parent.postMessage(Object.assign({ src:'furnie' }, m), '*');
+  let altKey = '';
+  const near = (a, b) => Math.abs(a - b) < 0.01;
+  // one piece of bent glass: legs span `span` apart, `hgt` high, `len` long (the open direction)
+  function bentPiece(span, hgt, len, t = 0.012, R = 0.022) {
+    const h = span/2, sh = new THREE.Shape();
+    sh.moveTo(-h, 0); sh.lineTo(-h, hgt - R); sh.absarc(-h + R, hgt - R, R, Math.PI, Math.PI/2, true);
+    sh.lineTo(h - R, hgt); sh.absarc(h - R, hgt - R, R, Math.PI/2, 0, true); sh.lineTo(h, 0);
+    sh.lineTo(h - t, 0); sh.lineTo(h - t, hgt - R); sh.absarc(h - R, hgt - R, R - t, 0, Math.PI/2, false);
+    sh.lineTo(-h + R, hgt - t); sh.absarc(-h + R, hgt - R, R - t, Math.PI/2, Math.PI, false); sh.lineTo(-h + t, 0); sh.closePath();
+    const g = new THREE.ExtrudeGeometry(sh, { depth:len, bevelEnabled:true, bevelThickness:0.002, bevelSize:0.002, bevelSegments:2, curveSegments:10 });
+    g.translate(0, 0, -len/2); g.computeVertexNormals(); return g;
+  }
+  // ---- product models (Rathi 11.11): the suggested tables drawn after their product pages ----
+  // PRODUCT_MODELS.<MODEL> = it => THREE.Group, in metres, x = width, z = depth, y up from the floor.
+  // A table without its own builder is drawn by genericTable as before.
+  const PM = (() => {
+    const grain = (hex, dark) => canvasTex(512, 512, (g, w, h) => {
+      g.fillStyle = hex; g.fillRect(0, 0, w, h);
+      for (let i = 0; i < 140; i++) {   // long, slightly wavy grain lines
+        const y = Math.random()*h, a = 0.04 + Math.random()*0.08, amp = 2 + Math.random()*6, f = 0.004 + Math.random()*0.01;
+        g.strokeStyle = `rgba(${dark ? '40,25,12' : '90,60,30'},${a})`; g.lineWidth = 0.6 + Math.random()*1.8; g.beginPath();
+        for (let x = 0; x <= w; x += 8) g.lineTo(x, y + Math.sin(x*f + i)*amp);
+        g.stroke();
+      }
+    });
+    const speckle = (hex, veins) => canvasTex(512, 512, (g, w, h) => {
+      g.fillStyle = hex; g.fillRect(0, 0, w, h);
+      for (let i = 0; i < 2600; i++) { g.fillStyle = `rgba(${Math.random() < 0.5 ? '255,255,255' : '90,75,55'},${0.05 + Math.random()*0.08})`; g.fillRect(Math.random()*w, Math.random()*h, 1 + Math.random()*2, 1 + Math.random()*2); }
+      for (let i = 0; i < veins; i++) {   // travertine: thin horizontal bands with small holes
+        const y = Math.random()*h; g.fillStyle = 'rgba(120,100,70,0.10)'; g.fillRect(0, y, w, 1 + Math.random()*3);
+        for (let k = 0; k < 12; k++) { g.fillStyle = 'rgba(110,90,60,0.22)'; g.beginPath(); g.ellipse(Math.random()*w, y + Math.random()*4, 2 + Math.random()*5, 0.8 + Math.random()*1.4, 0, 0, 6.3); g.fill(); }
+      }
+    });
+    const tex = (t, rx, ry) => { t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(rx, ry); return t; };
+    return {
+      wood: (hex, o = {}) => new THREE.MeshStandardMaterial({ map:tex(grain(hex, o.dark), o.rx || 1, o.ry || 1), roughness:o.rough ?? 0.55 }),
+      stone: (hex, o = {}) => new THREE.MeshStandardMaterial({ map:tex(speckle(hex, o.veins ?? 18), o.rx || 1, o.ry || 1), roughness:o.rough ?? 0.85 }),
+      matte: (hex, rough = 0.6, metal = 0) => new THREE.MeshStandardMaterial({ color:new THREE.Color(hex), roughness:rough, metalness:metal }),
+      // a round or oval top: rx, rz are the radii, t the thickness, its top face at y
+      disc(g, rx, rz, t, mat, y, edge = 0.004) {
+        const m = new THREE.Mesh(new THREE.CylinderGeometry(1, 1, t, 64, 1), mat); m.scale.set(rx, 1, rz); m.position.y = y - t/2; g.add(m);
+        if (edge) { const e = new THREE.Mesh(new THREE.TorusGeometry(1, edge/Math.max(rx, rz), 8, 64), mat); e.rotation.x = Math.PI/2; e.scale.set(rx, rz, 1); e.position.y = y - edge; g.add(e); }
+        return m;
+      },
+      // a rectangular top or shelf with rounded edges
+      slab(g, w, t, d, mat, y, r = 0.004) { const m = new THREE.Mesh(new RoundedBoxGeometry(w, t, d, 3, Math.min(r, t/2 - 0.0005)), mat); m.position.y = y - t/2; g.add(m); return m; },
+      // a tapered leg from the floor to y (top), leaning out by `splay` radians towards (dx, dz)
+      leg(g, x, z, y, rTop, rBot, mat, splay = 0, dx = 0, dz = 0, square = false) {
+        const geo = square ? new THREE.CylinderGeometry(rTop, rBot, y, 4, 1) : new THREE.CylinderGeometry(rTop, rBot, y, 20, 1);
+        if (square) geo.rotateY(Math.PI/4);
+        const m = new THREE.Mesh(geo, mat), len = Math.hypot(dx, dz) || 1;
+        m.position.set(x + Math.sin(splay)*y/2*dx/len, y/2, z + Math.sin(splay)*y/2*dz/len);
+        if (splay) { m.rotation.z = -splay*dx/len; m.rotation.x = splay*dz/len; }
+        g.add(m); return m;
+      },
+      // a drum or cone base: radius rTop under the top, rBot on the floor
+      pedestal(g, rTop, rBot, y, mat, sx = 1, sz = 1) { const m = new THREE.Mesh(new THREE.CylinderGeometry(rTop, rBot, y, 64, 1), mat); m.scale.set(sx, 1, sz); m.position.y = y/2; g.add(m); return m; },
+    };
+  })();
+  const PRODUCT_MODELS = {};
+  // TONSTAD, oak veneer, 84 × 82 × 35 cm: a thick top with rounded corners, a box with a drawer on each side
+  // (20 cm free under it), and four round legs at the corners
+  PRODUCT_MODELS.TONSTAD = it => {
+    const g = new THREE.Group(), w = it.width/100, d = it.depth/100, h = it.height/100;
+    const oak = PM.wood('#9a8058', { rx:1, ry:1 }), oakSide = PM.wood('#8b7150', { rx:2, ry:0.5 });
+    PM.slab(g, w, 0.03, d, oak, h, 0.012);
+    PM.slab(g, w - 0.05, 0.12, d - 0.05, oakSide, h - 0.03, 0.003);
+    for (const sx of [-1, 1]) {   // a thin line around each drawer front
+      const line = new THREE.Mesh(new THREE.BoxGeometry(0.002, 0.095, d - 0.12), PM.matte('#8a6a43', 0.8));
+      line.position.set(sx*(w/2 - 0.024), h - 0.03 - 0.06, 0); g.add(line);
+    }
+    for (const sx of [-1, 1]) for (const sz of [-1, 1]) PM.leg(g, sx*(w/2 - 0.03), sz*(d/2 - 0.03), h - 0.03, 0.022, 0.021, oak);
+    return g;
+  };
+  // VITTSJÖ, light beige/glass, Ø75 × 45 cm: a glass top in a thin beige ring, four square beige legs, and a
+  // walnut-coloured round shelf low down
+  PRODUCT_MODELS['VITTSJÖ'] = it => {
+    const g = new THREE.Group(), r = it.width/200, h = it.height/100;
+    const beige = PM.matte('#d6cdbb', 0.45, 0.35);
+    const glass = new THREE.MeshPhysicalMaterial({ color:0xe6eeec, roughness:0.04, transparent:true, opacity:0.28, ior:1.52, clearcoat:1, side:THREE.DoubleSide, depthWrite:false });
+    const top = new THREE.Mesh(new THREE.CylinderGeometry(r - 0.006, r - 0.006, 0.006, 64), glass); top.position.y = h - 0.006; top.renderOrder = 3; g.add(top);
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(r - 0.006, 0.007, 8, 72), beige); ring.rotation.x = Math.PI/2; ring.position.y = h - 0.008; g.add(ring);
+    const walnut = PM.wood('#6a4a32', { dark:true });
+    PM.disc(g, r*0.9, r*0.9, 0.016, walnut, 0.15, 0.003);
+    for (let i = 0; i < 4; i++) { const a = Math.PI/4 + i*Math.PI/2, rr = r - 0.025; PM.leg(g, Math.cos(a)*rr, Math.sin(a)*rr, h - 0.012, 0.016, 0.016, beige, 0, 0, 0, true); }
+    return g;
+  };
+  // HOLMERUD, dark brown, 90 × 55 × 40 cm: a step shape – a tall part with a top and an open shelf, and a low
+  // part to one side, made of boards
+  PRODUCT_MODELS.HOLMERUD = it => {
+    const g = new THREE.Group(), w = it.width/100, d = it.depth/100, h = it.height/100, t = 0.018;
+    const brown = PM.wood('#2c221b', { dark:true, rx:1.5 });
+    const board = (bw, bh, x, y) => { const m = new THREE.Mesh(new RoundedBoxGeometry(bw, bh, d, 2, 0.002), brown); m.position.set(x, y, 0); g.add(m); };
+    const x0 = -w/2, tall = w*0.62, low = 0.13;
+    board(t, h, x0 + t/2, h/2);                          // left side, floor to top
+    board(tall, t, x0 + tall/2, h - t/2);                // the top
+    board(w - t, t, x0 + t + (w - t)/2, low - t/2);      // the shelf, running on as the low top
+    board(t, h - low, x0 + tall - t/2, low + (h - low)/2); // the partition
+    board(t, low, w/2 - t/2, low/2);                     // the low end
+    return g;
+  };
+  function genericTable(it) {
+    const own = PRODUCT_MODELS[String((it.product && it.product.model) || '').toUpperCase()];
+    if (own) { try { return own(it); } catch (e) { console.warn('product model', e); } }
+    const w = it.width/100, d = it.depth/100, h = it.height/100, g = new THREE.Group();
+    const glassy = /glass|smoke|røyk|acryl/i.test((it.name || '') + ' ' + (it.colorName || ''));
+    if (glassy) {
+      // bent glass like the real tables: a top and two sides with soft bends, open at the ends.
+      // Nesting sets slide into each other along the table's length (Telemark: 42 + 36 cm, 70 cm together).
+      const clear = /clear|klar/i.test((it.name || '') + ' ' + (it.colorName || ''));
+      const mat = clear ? new THREE.MeshPhysicalMaterial({ color:0xdfe8e6, metalness:0, roughness:0.03, transparent:true, opacity:0.32, ior:1.52,
+        clearcoat:1, clearcoatRoughness:0.02, side:THREE.DoubleSide, depthWrite:false }) : glassMat.clone();
+      if (!clear && it.color) mat.color.set(it.color).multiplyScalar(0.45);   // the colour picked in the app (smoked brown / grey)
+      const em = new THREE.LineBasicMaterial({ color:clear ? 0x6f8a86 : 0x140d09, transparent:true, opacity:0.55 });
+      const n = /3 ?pcs|3 ?stk|three/i.test(it.name || '') ? 3 : /nest|set|telemark|side ?tables|sidetable/i.test(it.name || '') ? 2 : 1;
+      const k = n === 1 ? 1 : 0.86, L1 = n === 1 ? w : Math.min(d, w/(1 + (n - 1)*k*0.8));
+      for (let i = 0; i < n; i++) {
+        const f = Math.pow(k, i), len = L1*f, span = (n === 1 ? d : d)*f, hh = h*f;
+        const geo = bentPiece(span, hh, len), m = new THREE.Mesh(geo, mat);
+        m.rotation.y = Math.PI/2; m.renderOrder = 3 + i;
+        const x = n === 1 ? 0 : (i === 0 ? -w/2 + len/2 : i === n - 1 ? w/2 - len/2 : (-w/2 + L1/2 + w/2 - L1*Math.pow(k, n - 1)/2)/2);
+        m.position.x = x; g.add(m);
+        const e = new THREE.LineSegments(new THREE.EdgesGeometry(geo, 35), em); e.rotation.y = Math.PI/2; e.position.x = x; e.renderOrder = 4 + i; g.add(e);
+      }
+    } else {
+      const m = new THREE.MeshStandardMaterial({ color:new THREE.Color(it.color || '#a68b6d'), roughness:0.6 });
+      const tt = Math.min(0.04, h*0.12), L = 0.035, lh = h - tt;
+      // round and oval tables (the suggested JYSK GADBJERG and Bohus NOVA, Rathi 11.11): a round top, legs inside the edge
+      const round = it.shape === 'round' || /round|oval|rund/i.test(it.name || '');
+      const top = new THREE.Mesh(round ? new THREE.CylinderGeometry(0.5, 0.5, tt, 48) : new THREE.BoxGeometry(w, tt, d), m);
+      if (round) top.scale.set(w, 1, d);
+      top.position.y = h - tt/2; g.add(top);
+      const lx = round ? w*0.3 : w/2 - L, lz = round ? d*0.3 : d/2 - L;
+      for (const sx of [-1, 1]) for (const sz of [-1, 1]) { const l = new THREE.Mesh(new THREE.BoxGeometry(L, lh, L), m); l.position.set(sx*lx, lh/2, sz*lz); g.add(l); }
+    }
+    return g;
+  }
+  function glassBox() {
+    const p = [...corners(state.big, SIZE.big), ...corners(state.small, SIZE.small)];
+    return { x0:Math.min(...p.map(q => q[0])), z0:Math.min(...p.map(q => q[1])) };
+  }
+  let glassKey = 'f_ctable|Glass side tables|42|67|42|#c9b79c', glassRot = 0;
+  const isNestPair = it => /glass|smoke|røyk|acryl/i.test((it.name || '') + ' ' + (it.colorName || '')) && !/3 ?pcs|3 ?stk|three/i.test(it.name || '')
+    && /nest|set|telemark|side ?tables|sidetable/i.test(it.name || '');
+  // the glass as in the room (smoked brown); only a grey or clear version of the product changes it
+  function tintPair(it) {
+    const t = (it.name || '') + ' ' + (it.colorName || ''), clear = /clear|klar/i.test(t);
+    glassMat.color.set(clear ? 0xb9c6c3 : /gr[ae]y|grå/i.test(t) ? 0x232323 : 0x2b1f18);
+    glassMat.opacity = clear ? 0.4 : 0.66;
+  }
+  function arrangePair(it, rot90, fw, fd) {
+    const own = it.id === 'f_ctable', x0 = it.x/100, z0 = it.y/100;
+    const s1 = own ? M.stort.storrelse : Math.min(it.depth, it.height)/100, s2 = own ? M.lite.storrelse : s1*0.86;
+    if (!near(SIZE.big, s1) || !near(SIZE.small, s2)) {
+      for (const k of ['big', 'small']) scene.remove(tables[k]);
+      SIZE.big = s1; SIZE.small = s2; tables.big = makeTable('big', s1); tables.small = makeTable('small', s2);
+    }
+    tintPair(it);
+    if (own) {   // as they stand in the room: the small table half under the big one, towards the kitchen
+      Object.assign(state.big, { x:x0 + s1/2, z:z0 + s1/2, rot:0 });
+      Object.assign(state.small, { x:x0 + s1/2, z:z0 + fd - s2/2, rot:0 });
+    } else if (!rot90) {   // nested along the table's length (left to right in the plan), open ends along it
+      Object.assign(state.big, { x:x0 + s1/2, z:z0 + fd/2, rot:Math.PI/2 });
+      Object.assign(state.small, { x:x0 + fw - s2/2, z:z0 + fd/2, rot:Math.PI/2 });
+    } else {
+      Object.assign(state.big, { x:x0 + fw/2, z:z0 + s1/2, rot:0 });
+      Object.assign(state.small, { x:x0 + fw/2, z:z0 + fd - s2/2, rot:0 });
+    }
+  }
+  // hide the glass tables completely: not drawn, and taps go through them (layer 0 is what the camera and the ray see)
+  function setGlass(on) { for (const k of ['big', 'small']) tables[k].traverse(o => on ? o.layers.enable(0) : o.layers.disable(0)); }
+  setGlass(false);
+  let hasTable = false;
+  let oakLoading = false, oakPicked = false;
+  const isOak = it => /round oak|oak table|eikebord|runde? bord/i.test(it.name || '');
+  function place(it, announce) {
+    hasTable = !!it;
+    if (!it) {   // no table in the room yet (it appears when one has been scanned)
+      setGlass(false); if (alt.grp) alt.grp.visible = false; state.hl = false; updateReadout(); requestRender(); return;
+    }
+    const rot90 = it.rot === 90, fw = (rot90 ? it.depth : it.width)/100, fd = (rot90 ? it.width : it.depth)/100;
+    if (it.id === 'f_ctable' || isNestPair(it)) {
+      // two tables that can each be moved and turned on their own (the room's glass tables, or a scanned nesting pair)
+      const key = [it.id, it.name, it.width, it.depth, it.height, it.color].join('|'), x0 = it.x/100, z0 = it.y/100;
+      glassRot = it.rot === 90 ? 90 : 0;
+      if (key !== glassKey) {
+        const wasOwn = glassKey.startsWith('f_ctable|'); glassKey = key;
+        if (wasOwn && !it.id.startsWith('f_ctable') && near(SIZE.big, Math.min(it.depth, it.height)/100)) {
+          // a scanned pair of the same tables replaces the room's own: keep them exactly as they were shown
+          // (same place, same look) and tell the app they stand lengthwise along the room (70 cm front to back)
+          glassRot = 90; tintPair(it); post({ type:'mycrib:moved', ...report() });   // only the place – nothing in the chat (Rathi 29.10)
+        } else arrangePair(it, rot90, fw, fd);
+      }
+      else {
+        const b = glassBox();
+        if (!near(b.x0, x0) || !near(b.z0, z0)) { const dx = x0 - b.x0, dz = z0 - b.z0; for (const k of ['big', 'small']) { state[k].x += dx; state[k].z += dz; } }
+      }
+      if (state.sel === 'alt') state.sel = 'big';   // the glass tables are measured, not the table that was there
+      setGlass(true); showMode('glass');
+    } else {
+      const key = [it.id, it.name, it.width, it.depth, it.height, it.color].join('|');
+      if (key !== altKey && isOak(it)) {
+        // the round oak table from SketchUp (rundt_bord.json): the real model, loaded once (Rathi 29.10)
+        altKey = key; const hl = state.hl; oakLoading = true; setGlass(false); if (alt.grp) alt.grp.visible = false; requestRender();
+        const show = obj => { if (altKey !== key) return; setAlt(obj, it.name, 'Ø 87 cm'); state.hl = (hl && state.sel === 'alt') || oakPicked; oakLoading = oakPicked = false; place(it, announce); };
+        // if the model can't be loaded, a drawn round oak table of the same size stands there instead
+        MINE.then(s => show(s.clone(true)), () => { const o = exampleOak(); o.scale.set(0.87/0.8, 0.37/0.4, 0.87/0.8); show(o); });
+        return;
+      }
+      if (key !== altKey) { altKey = key; const hl = state.hl; setAlt(genericTable(it), it.name, `${it.width} × ${it.depth} cm`); state.hl = hl && state.sel === 'alt'; }
+      { const b = document.getElementById('selAlt'); if (b && b.firstChild && b.firstChild.nodeType === 3) b.firstChild.textContent = it.name; }
+      const cx = it.x/100 + fw/2, cz = it.y/100 + fd/2, r = rot90 ? Math.PI/2 : 0;
+      if (!near(alt.x, cx) || !near(alt.z, cz) || !near(alt.rot, r)) Object.assign(alt, { x:cx, z:cz, rot:r });
+      if (state.mode !== 'alt') showMode('alt');
+    }
+    updateReadout(); requestRender();
+    // after a swap in the app: the new table's distances, for its chat (Rathi 29.10)
+    if (announce) post({ type:'mycrib:measured', dist:dist() });
+  }
+  function report() {
+    if (state.mode === 'alt') {
+      const r90 = Math.abs(Math.sin(alt.rot)) > 0.7, fw = r90 ? alt.fp[1] : alt.fp[0], fd = r90 ? alt.fp[0] : alt.fp[1];
+      return { x:Math.round((alt.x - fw/2)*100), y:Math.round((alt.z - fd/2)*100), rot:r90 ? 90 : 0 };
+    }
+    const b = glassBox(); return { x:Math.round(b.x0*100), y:Math.round(b.z0*100), rot:glassRot };
+  }
+  let before = null;
+  window.addEventListener('message', e => {
+    const m = e.data; if (!m || typeof m !== 'object') return;
+    if (m.type === 'mycrib:table') place(m.item, m.announce);
+    // the app's carousel marks the table that stands in the room (29.10)
+    if (m.type === 'mycrib:pick' && hasTable) { if (oakLoading) oakPicked = true; else select(state.mode === 'alt' ? 'alt' : 'big'); }
+    if (m.type === 'mycrib:insets') { document.body.style.setProperty('--embed-top', m.top + 'px'); document.body.style.setProperty('--embed-bottom', m.bottom + 'px'); }
+    if (m.type === 'mycrib:deselect' && state.hl) { state.hl = false; updateReadout(); requestRender(); }
+  });
+  const dist = () => { const m = measure(state.sel); return { sofa:cm(m.dSofa), rug:rugText(m.rug), dine:cm(m.dDine) }; };
+  renderer.domElement.addEventListener('pointerdown', () => { before = JSON.stringify(report()); post({ type:'mycrib:select', on:state.hl, dist:state.hl ? dist() : null }); });
+  renderer.domElement.addEventListener('pointerup', () => { if (before && JSON.stringify(report()) !== before) post({ type:'mycrib:moved', ...report(), dist:dist() }); before = null; });
+  /* (the rotate arrows are gone: tables are turned by dragging – two fingers, or the edge with a mouse – Rathi 29.10) */
+  post({ type:'mycrib:ready' });
+}
+</script>
+
+</body></html>

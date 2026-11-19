@@ -1,0 +1,1897 @@
+/* ---------- Design tokens (swap these to apply a visual style later) ---------- */
+:root {
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --bg: #ffffff;
+  --surface: #f4f4f4;
+  --surface-2: #e9e9e9;
+  --line: #d4d4d4;
+  --line-strong: #9a9a9a;
+  --ink: #1a1a1a;
+  --ink-2: #555555;
+  --ink-3: #8a8a8a;
+  --primary: #1a1a1a;
+  --on-primary: #ffffff;
+  --success: #2f6b3f;
+  --backdrop: rgba(0, 0, 0, 0.35);
+  --room-floor: #f7f7f7;
+  --room-wall: #e4e4e4;
+  --room-wall-side: #d6d6d6;
+  --room-window: #ffffff;
+
+  --radius: 12px;
+  --radius-sm: 8px;
+  --tap: 48px;
+  --space: 16px;
+
+  --fs-xs: 12px;
+  --fs-sm: 14px;
+  --fs-md: 16px;
+  --fs-lg: 20px;
+  --fs-xl: 26px;
+}
+
+* {
+  box-sizing: border-box;
+}
+html,
+body,
+#root {
+  margin: 0;
+  height: 100%;
+}
+body {
+  font-family: var(--font);
+  color: var(--ink);
+  background: #e6e6e6;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+button {
+  cursor: pointer;
+}
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+/* ---------- Phone frame ---------- */
+.frame-outer {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.phone {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  background: var(--bg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+@media (min-width: 600px) and (min-height: 700px) {
+  .phone {
+    width: 402px;
+    height: min(874px, calc(100vh - 32px));
+    border-radius: 44px;
+    border: 10px solid #111;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  }
+}
+
+.screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--bg);
+}
+.scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space);
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ---------- Top bar ---------- */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 56px;
+  padding: 4px 4px;
+  border-bottom: 1px solid var(--line);
+  background: var(--bg);
+  flex-shrink: 0;
+}
+.topbar-title {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--fs-md);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-left: 8px;
+}
+.topbar-center {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.topbar-sub {
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+}
+
+/* ---------- Buttons ---------- */
+.icon-btn {
+  width: var(--tap);
+  height: var(--tap);
+  min-width: var(--tap);
+  border: 0;
+  background: transparent;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+.icon-btn:active {
+  background: var(--surface-2);
+}
+.btn {
+  min-height: var(--tap);
+  padding: 0 18px;
+  border-radius: var(--radius);
+  border: 1px solid var(--ink);
+  background: var(--bg);
+  font-weight: 600;
+  font-size: var(--fs-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.btn-primary {
+  background: var(--primary);
+  color: var(--on-primary);
+  border-color: var(--primary);
+}
+.btn-ghost {
+  border-color: transparent;
+  background: transparent;
+  text-decoration: underline;
+  font-weight: 500;
+}
+.btn-block {
+  width: 100%;
+}
+.btn:disabled {
+  opacity: 0.4;
+}
+.btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+/* ---------- Lists & cards ---------- */
+.section-title {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--ink-2);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 24px 0 8px;
+}
+.card {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 12px;
+  background: var(--bg);
+  margin-bottom: 12px;
+}
+.card:active {
+  background: var(--surface);
+}
+.card-title {
+  font-weight: 600;
+  font-size: var(--fs-md);
+}
+.card-meta {
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+  margin-top: 2px;
+}
+.row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 56px;
+  padding: 8px 4px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  text-align: left;
+}
+.row:active {
+  background: var(--surface);
+}
+.row-main {
+  flex: 1;
+  min-width: 0;
+}
+.row-title {
+  font-weight: 500;
+}
+.row-meta {
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+.chev {
+  color: var(--ink-3);
+  font-size: 20px;
+}
+.thumb {
+  width: 72px;
+  height: 56px;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.placeholder-img {
+  background: repeating-linear-gradient(45deg, var(--surface), var(--surface) 8px, var(--surface-2) 8px, var(--surface-2) 16px);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: flex-end;
+  padding: 6px;
+  font-size: var(--fs-xs);
+  color: var(--ink-2);
+}
+
+/* ---------- Forms ---------- */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.field label,
+.label {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+.input,
+select.input,
+textarea.input {
+  min-height: var(--tap);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  font-size: 16px;
+  background: var(--bg);
+  width: 100%;
+}
+textarea.input {
+  min-height: 110px;
+  resize: vertical;
+}
+.dims {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.dims .input {
+  text-align: center;
+  font-weight: 600;
+}
+.hint {
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+  line-height: 1.4;
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.chip {
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 20px;
+  border: 1px solid var(--line-strong);
+  background: var(--bg);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+}
+.chip[aria-pressed='true'] {
+  background: var(--ink);
+  color: var(--on-primary);
+  border-color: var(--ink);
+}
+
+/* ---------- Room screen ---------- */
+.room-stage {
+  position: relative;
+  flex: 1;
+  min-height: 120px;
+  background: var(--bg);
+  overflow: hidden;
+}
+.stage-canvas > svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+  user-select: none;
+}
+.stage-canvas {
+  position: absolute;
+  inset: 58px 0 0 0;
+}
+.stage-tools {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  pointer-events: none;
+}
+.stage-tools > * {
+  pointer-events: auto;
+}
+.segmented {
+  display: inline-flex;
+  border: 1px solid var(--ink);
+  border-radius: 24px;
+  overflow: hidden;
+  background: var(--bg);
+}
+.segmented button {
+  min-width: 52px;
+  height: 40px;
+  border: 0;
+  background: transparent;
+  font-weight: 600;
+  font-size: var(--fs-sm);
+}
+.segmented button[aria-pressed='true'] {
+  background: var(--ink);
+  color: var(--on-primary);
+}
+
+
+/* Context menu for selected furniture */
+.ctx {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  background: var(--bg);
+  border: 1px solid var(--ink);
+  border-radius: var(--radius);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  padding: 8px;
+}
+.ctx-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-left: 6px;
+}
+.ctx-title {
+  flex: 1;
+  font-weight: 600;
+  font-size: var(--fs-sm);
+}
+.ctx-actions {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin-top: 6px;
+}
+.ctx-actions button {
+  min-height: 56px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 4px;
+}
+.ctx-actions button[aria-pressed='true'] {
+  background: var(--ink);
+  color: var(--on-primary);
+}
+.ctx-actions .ico {
+  font-size: 18px;
+}
+.ctx-panel {
+  margin-top: 8px;
+  padding: 8px 4px 2px;
+  border-top: 1px solid var(--line);
+}
+.pad {
+  display: grid;
+  grid-template-columns: repeat(3, var(--tap));
+  gap: 4px;
+  justify-content: center;
+}
+.pad button,
+.stepper button {
+  width: var(--tap);
+  height: var(--tap);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  font-size: 18px;
+}
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.stepper .val {
+  flex: 1;
+  text-align: center;
+  font-weight: 600;
+  font-size: var(--fs-sm);
+}
+.swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.swatch {
+  width: var(--tap);
+  height: var(--tap);
+  border-radius: 50%;
+  border: 2px solid var(--line);
+}
+.swatch[aria-pressed='true'] {
+  border: 3px solid var(--ink);
+}
+
+/* ---------- Chat sheet (docked) ---------- */
+.chat-sheet {
+  flex-shrink: 0;
+  transition: height 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--line-strong);
+  border-radius: 16px 16px 0 0;
+  background: var(--bg);
+  box-shadow: 0 -6px 16px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+.sheet-handle {
+  flex-shrink: 0;
+  height: 36px;
+  border: 0;
+  background: transparent;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  touch-action: none;
+  font-size: var(--fs-xs);
+  color: var(--ink-2);
+  font-weight: 600;
+}
+.grabber {
+  width: 40px;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--line-strong);
+}
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 var(--space) 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.msg {
+  max-width: 88%;
+  font-size: 14px;
+  line-height: 1.4;
+}
+.msg-user {
+  align-self: flex-end;
+  background: var(--surface-2);
+  padding: 6px 12px;
+  border-radius: 18px 18px 4px 18px;
+}
+.msg-ai {
+  align-self: flex-start;
+}
+.thinking {
+  color: var(--ink-2);
+  font-size: var(--fs-sm);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.dots span {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 3px;
+  border-radius: 50%;
+  background: var(--ink-3);
+  animation: blink 1.2s infinite;
+}
+.dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+@keyframes blink {
+  0%,
+  80%,
+  100% {
+    opacity: 0.25;
+  }
+  40% {
+    opacity: 1;
+  }
+}
+
+/* ---------- Composer ---------- */
+.composer {
+  flex-shrink: 0;
+  border-top: 1px solid var(--line);
+  padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
+  background: var(--bg);
+}
+.composer-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+}
+.composer-input {
+  flex: 1;
+  min-height: var(--tap);
+  max-height: 120px;
+  border: 1px solid var(--line-strong);
+  border-radius: 24px;
+  padding: 12px 16px;
+  font-size: 16px;
+  resize: none;
+  line-height: 1.3;
+}
+.round-btn {
+  width: var(--tap);
+  height: var(--tap);
+  min-width: var(--tap);
+  border-radius: 50%;
+  border: 1px solid var(--ink);
+  background: var(--bg);
+  font-size: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.round-btn.primary {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+.round-btn:disabled {
+  opacity: 0.3;
+}
+.attach-chips {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  margin-bottom: 8px;
+}
+.attach-chip {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 4px 4px 4px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  font-size: var(--fs-sm);
+  max-width: 100%;
+}
+.attach-chip .mini {
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  background: var(--bg);
+  flex-shrink: 0;
+}
+.attach-chip .txt {
+  line-height: 1.2;
+  min-width: 0;
+}
+.attach-chip .txt small {
+  color: var(--ink-2);
+  display: block;
+}
+.attach-chip .x {
+  width: 40px;
+  height: 40px;
+  border: 0;
+  background: transparent;
+  font-size: 18px;
+}
+.msg-attach {
+  margin-bottom: 6px;
+}
+
+/* ---------- Modal bottom sheet ---------- */
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background: var(--backdrop);
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  animation: fade 0.15s ease;
+}
+.modal-sheet {
+  background: var(--bg);
+  border-radius: 18px 18px 0 0;
+  max-height: 88%;
+  display: flex;
+  flex-direction: column;
+  animation: up 0.2s ease;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.modal-head {
+  display: flex;
+  align-items: center;
+  padding: 8px 4px 4px 16px;
+}
+.modal-head h2 {
+  flex: 1;
+  font-size: var(--fs-lg);
+  font-weight: 600;
+}
+.modal-body {
+  overflow-y: auto;
+  padding: 4px var(--space) var(--space);
+}
+.modal-foot {
+  padding: 8px var(--space) var(--space);
+  display: flex;
+  gap: 8px;
+}
+.modal-foot .btn {
+  flex: 1;
+}
+@keyframes up {
+  from {
+    transform: translateY(40px);
+    opacity: 0.5;
+  }
+}
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Dialog */
+.dialog-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  background: var(--backdrop);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.dialog {
+  background: var(--bg);
+  border-radius: var(--radius);
+  padding: 20px;
+  width: 100%;
+}
+.dialog h2 {
+  font-size: var(--fs-lg);
+  margin-bottom: 8px;
+}
+.dialog ul {
+  padding-left: 20px;
+  margin: 12px 0;
+  line-height: 1.6;
+}
+.dialog .actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+.dialog .actions .btn {
+  flex: 1;
+}
+
+/* Side panel (chat list) */
+.panel-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  background: var(--backdrop);
+  display: flex;
+  animation: fade 0.15s ease;
+}
+.panel {
+  width: 86%;
+  height: 100%;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  animation: slide 0.2s ease;
+}
+@keyframes slide {
+  from {
+    transform: translateX(-40px);
+    opacity: 0.5;
+  }
+}
+
+
+/* Loading */
+.loading {
+  position: absolute;
+  inset: 0;
+  z-index: 70;
+  background: rgba(255, 255, 255, 0.96);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  text-align: center;
+  padding: 24px;
+}
+.loading.inline {
+  position: static;
+  background: transparent;
+  padding: 40px 0;
+}
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--surface-2);
+  border-top-color: var(--ink);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.progress {
+  width: 200px;
+  height: 6px;
+  background: var(--surface-2);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.progress div {
+  height: 100%;
+  background: var(--ink);
+  animation: grow 2.2s ease forwards;
+}
+@keyframes grow {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* Toast */
+.toast {
+  position: absolute;
+  top: 64px;
+  left: 16px;
+  right: 16px;
+  z-index: 80;
+  background: var(--ink);
+  color: var(--on-primary);
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  animation: fade 0.2s ease;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.fake-camera {
+  height: 260px;
+  border-radius: var(--radius);
+  background: #2a2a2a;
+  color: #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: var(--fs-sm);
+  padding: 20px;
+  margin-bottom: 16px;
+  white-space: pre-line;
+}
+.pins {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.pin {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg);
+  padding: 0;
+  text-align: left;
+  overflow: hidden;
+}
+.pin .placeholder-img {
+  border-radius: 0;
+}
+.pin span {
+  display: block;
+  padding: 8px 10px;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+}
+.empty {
+  color: var(--ink-2);
+  font-size: var(--fs-sm);
+  padding: 16px 0;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+/* Quick add from the home screen */
+.fab {
+  position: absolute;
+  right: 20px;
+  bottom: calc(24px + env(safe-area-inset-bottom));
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--primary);
+  color: var(--on-primary);
+  font-size: 32px;
+  line-height: 1;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  z-index: 10;
+}
+.fab:active {
+  transform: scale(0.96);
+}
+/* extended button: icon + label, so it can't be mistaken for «Nytt rom» */
+.fab-scan {
+  width: auto;
+  height: 56px;
+  padding: 0 20px 0 16px;
+  border-radius: 28px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--fs-md);
+  font-weight: 600;
+}
+
+.pin {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.pin.is-selected {
+  outline: 3px solid var(--ink);
+  outline-offset: -1px;
+}
+.pin-main {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  text-align: left;
+  width: 100%;
+}
+/* small bookmark in the top-right corner; the button itself is a 48px touch target */
+.pin-save {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: var(--tap);
+  height: var(--tap);
+  border: 0;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink);
+}
+.pin-save::before {
+  content: '';
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--bg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+.pin-save svg {
+  position: relative;
+}
+.pin-check {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--on-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 700;
+  pointer-events: none;
+}
+.tabs {
+  display: flex;
+  border-bottom: 1px solid var(--line);
+  margin: 0 calc(-1 * var(--space)) 12px;
+  padding: 0 var(--space);
+}
+.tabs button {
+  flex: 1;
+  min-height: var(--tap);
+  border: 0;
+  border-bottom: 3px solid transparent;
+  background: transparent;
+  font-weight: 600;
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+.tabs button[aria-selected='true'] {
+  color: var(--ink);
+  border-bottom-color: var(--ink);
+}
+
+/* Selected furniture as a small tag in the chat input (like Figma AI's selection tag) */
+.tag-chip {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 0 0 10px;
+  border-radius: 8px;
+  background: var(--surface-2);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  max-width: 100%;
+}
+.tag-chip .tag-icon {
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.tag-chip .tag-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tag-chip button {
+  width: 40px;
+  height: 36px;
+  border: 0;
+  background: transparent;
+  font-size: 15px;
+  color: var(--ink-2);
+}
+.tag-chip.small {
+  height: 26px;
+  padding-right: 10px;
+  font-size: var(--fs-xs);
+  margin-bottom: 4px;
+}
+
+.pill-btn {
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid var(--ink);
+  border-radius: 20px;
+  background: var(--bg);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* one-time hint bubble in the room view */
+.coach {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 4px 4px 14px;
+  border-radius: var(--radius);
+  background: var(--ink);
+  color: var(--on-primary);
+  font-size: var(--fs-sm);
+  line-height: 1.35;
+  animation: fade 0.3s ease;
+}
+.coach span {
+  flex: 1;
+}
+.coach button {
+  width: var(--tap);
+  height: var(--tap);
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 16px;
+}
+
+/* Home screen: room cards with just picture + name */
+.room-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.room-card {
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg);
+  overflow: hidden;
+}
+.room-card-main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  text-align: left;
+}
+.room-card-main:active {
+  background: var(--surface);
+}
+.room-card-img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: var(--surface);
+  overflow: hidden;
+}
+.room-card-img svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.room-card-name {
+  display: block;
+  padding: 10px 12px 12px;
+  font-weight: 600;
+  font-size: var(--fs-md);
+}
+/* pin in the top-right corner of the picture; 48px touch target */
+.pin-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: var(--tap);
+  height: var(--tap);
+  border: 0;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink);
+}
+.pin-btn::before {
+  content: '';
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--bg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+.pin-btn[aria-pressed='true']::before {
+  background: var(--ink);
+}
+.pin-btn[aria-pressed='true'] {
+  color: var(--on-primary);
+}
+.pin-btn svg {
+  position: relative;
+}
+
+/* Room view: «Angre» bottom-left, «Lagre versjon» bottom-right */
+.stage-bottom {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+}
+.stage-bottom > * {
+  pointer-events: auto;
+}
+.coach {
+  bottom: 64px;
+}
+.version-actions {
+  display: flex;
+  gap: 8px;
+  margin: 12px 0 4px;
+}
+.version-actions .btn {
+  flex: 1;
+}
+/* Right-hand side panel (ChatGPT/Claude style) */
+.panel-wrap-right {
+  justify-content: flex-end;
+}
+.panel-right {
+  width: 84%;
+  animation: slide-left 0.2s ease;
+}
+@keyframes slide-left {
+  from {
+    transform: translateX(40px);
+    opacity: 0.5;
+  }
+}
+.panel-scroll {
+  padding: 12px;
+}
+.panel-new {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: var(--tap);
+  padding: 0 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--bg);
+  font-size: var(--fs-md);
+  font-weight: 600;
+  text-align: left;
+}
+.panel-heading {
+  margin: 20px 12px 6px;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.panel-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  min-height: var(--tap);
+  padding: 6px 12px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  text-align: left;
+  font-size: var(--fs-sm);
+}
+.panel-item:active,
+.panel-item[aria-current='true'] {
+  background: var(--surface-2);
+}
+.panel-item-title {
+  display: block;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.panel-item-meta {
+  display: block;
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+}
+.panel-version {
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+}
+.panel-thumb {
+  width: 48px;
+  height: 38px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  background: var(--surface);
+  overflow: hidden;
+}
+.panel-link {
+  min-height: 40px;
+  padding: 0 12px;
+  border: 0;
+  background: transparent;
+  font-size: var(--fs-sm);
+  text-decoration: underline;
+  color: var(--ink-2);
+}
+.panel-foot {
+  border-top: 1px solid var(--line);
+  padding: 8px 12px calc(8px + env(safe-area-inset-bottom));
+}
+.panel-foot .panel-item {
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  font-size: var(--fs-md);
+}
+.version-tag {
+  display: inline-block;
+  font-size: var(--fs-xs);
+  color: var(--ink-2);
+  border: 1px solid var(--line-strong);
+  border-radius: 4px;
+  padding: 0 5px;
+  margin-left: 6px;
+}
+
+/* Above the chat input when furniture is marked: product colours + similar furniture, all one tap */
+.tray {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 0 8px;
+  border-top: 1px solid var(--line);
+  background: var(--bg);
+}
+.tray-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+  min-height: 40px;
+}
+.tray-label {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tray-variants {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+.tray-swatch {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tray-swatch span {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+}
+.tray-swatch[aria-pressed='true'] span {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+.tray-alts {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 2px 12px 2px;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+}
+.alt-card {
+  flex-shrink: 0;
+  width: 96px;
+  min-height: 112px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  text-align: left;
+  scroll-snap-align: start;
+}
+.alt-card[aria-pressed='true'] {
+  border: 2px solid var(--ink);
+  padding: 5px;
+}
+.alt-img {
+  display: block;
+  height: 52px;
+  padding: 4px;
+  border-radius: 6px;
+  background: var(--surface);
+  margin-bottom: 2px;
+}
+.alt-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+.alt-name {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.alt-sub {
+  font-size: 11px;
+  color: var(--ink-2);
+  line-height: 1.25;
+}
+.alt-loading {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 8px;
+  background: var(--surface);
+  border-style: dashed;
+}
+.alt-skeleton {
+  background: linear-gradient(90deg, var(--surface) 0%, var(--surface-2) 50%, var(--surface) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.1s linear infinite;
+  border-color: transparent;
+}
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+.spinner.small {
+  width: 22px;
+  height: 22px;
+  border-width: 3px;
+}
+
+/* Recognised product in the furniture preview */
+.product-line {
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+  margin: -4px 0 12px;
+}
+
+/* «Bytt ut» comparison */
+.compare {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+.compare-col {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: var(--fs-sm);
+}
+.compare-label {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.compare-img {
+  height: 90px;
+  padding: 8px;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  margin-bottom: 4px;
+}
+.compare-arrow {
+  font-size: 20px;
+  color: var(--ink-3);
+  margin-top: 56px;
+}
+.compare-diff {
+  margin-top: 12px;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
+/* icon-only undo arrow in the room view */
+.undo-btn {
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+
+/* «Gjelder: Sofa» – the chat's context when a piece of furniture is marked */
+.context-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 4px 6px;
+  font-size: var(--fs-xs);
+  color: var(--ink-2);
+}
+.context-line strong {
+  color: var(--ink);
+}
+.context-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  border: 2px solid var(--ink);
+}
+
+/* «Nytt rom» in the home top bar */
+.new-room-btn {
+  flex-shrink: 0;
+  font-size: 32px;
+  font-weight: 300;
+  line-height: 1;
+}
+
+/* Home: «Rommene dine» as a smaller section heading, with «Nytt rom» next to it */
+.home-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 4px 0 12px;
+}
+.home-heading {
+  font-size: var(--fs-md);
+  font-weight: 600;
+  margin: 0 4px;
+}
+/* rooms that aren't pinned: horizontal carousel, most recently opened first */
+.room-carousel {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  margin: 0 calc(-1 * var(--space));
+  padding: 0 var(--space) 4px;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+}
+.room-card-small {
+  flex-shrink: 0;
+  width: 140px;
+  scroll-snap-align: start;
+}
+.room-card-small .room-card-name {
+  font-size: var(--fs-sm);
+  padding: 8px 10px 10px;
+}
+
+/* Opprett rom: all sources on one page, combine freely */
+.source-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.source-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 64px;
+  padding: 10px 10px 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg);
+}
+.source-row.is-added {
+  border-color: var(--ink);
+}
+.source-icon {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+.source-row.is-added .source-icon {
+  background: var(--ink);
+  color: var(--on-primary);
+}
+.source-btn {
+  flex-shrink: 0;
+  padding: 0 14px;
+  font-size: var(--fs-sm);
+}
+
+/* «Sjekk målene»: plan + every measurement editable */
+.measure {
+  border: 1px solid var(--ink);
+  border-radius: var(--radius);
+  padding: 10px 12px 4px;
+}
+.measure-plan {
+  position: relative;
+  height: 300px;
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.measure-views {
+  position: relative; /* so the tabs' offsetLeft is measured from the row */
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  margin-bottom: 8px;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+}
+.measure-views .chip {
+  flex-shrink: 0;
+  scroll-snap-align: center;
+}
+
+/* ---------- Simulated room scan (full screen "camera") ---------- */
+.scan {
+  position: absolute;
+  inset: 0;
+  z-index: 70;
+  display: flex;
+  flex-direction: column;
+  background: #1c1c1c;
+  color: #fff;
+  animation: fade 0.2s ease;
+}
+.scan-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 8px;
+}
+.scan-cancel {
+  color: #fff;
+  width: 72px;
+}
+.scan-title {
+  font-weight: 600;
+}
+.scan-view {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  margin: 8px 16px;
+  border-radius: var(--radius);
+  background: radial-gradient(circle at 50% 40%, #3a3a3a, #1c1c1c 75%);
+  overflow: hidden;
+}
+.scan-hint {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  text-align: center;
+  font-size: var(--fs-sm);
+  color: rgba(255, 255, 255, 0.8);
+}
+.scan-bottom {
+  padding: 8px 16px calc(16px + env(safe-area-inset-bottom));
+}
+.scan-progress {
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.15);
+  overflow: hidden;
+}
+.scan-progress div {
+  height: 100%;
+  background: #fff;
+}
+.scan-step {
+  margin: 10px 0 6px;
+  font-weight: 600;
+  text-align: center;
+}
+.scan-found {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  min-height: 28px;
+  margin-bottom: 10px;
+}
+.scan-found span {
+  font-size: var(--fs-xs);
+  padding: 4px 10px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.12);
+}
+.scan-btn {
+  background: #fff;
+  color: var(--ink);
+  border-color: #fff;
+}
+.scan-btn:disabled {
+  opacity: 0.6;
+}
+
+/* floor plan picker */
+.plan-thumb {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+.plan-preview {
+  height: 200px;
+  padding: 10px;
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+/* photo picker */
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+.photo-tile {
+  position: relative;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: transparent;
+}
+.photo-tile .placeholder-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  text-align: left;
+}
+.photo-tile.is-selected {
+  outline: 3px solid var(--ink);
+  outline-offset: -3px;
+}
+.photo-strip {
+  display: flex;
+  gap: 4px;
+  margin-top: 6px;
+}
+.photo-strip .placeholder-img {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: 5px;
+}
+.source-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+.source-actions .source-btn {
+  min-height: 34px;
+}
+
+/* measurement fields placed right on the drawing */
+.measure-field {
+  position: absolute;
+  width: 58px;
+  height: 32px;
+  transform: translate(-50%, -50%);
+  border: 1px solid var(--ink);
+  border-radius: 16px;
+  background: var(--bg);
+  text-align: center;
+  font-size: 16px; /* 16px stops iOS from zooming in on focus */
+  font-weight: 700;
+  padding: 0 4px;
+}
+.measure-field.is-active,
+.measure-field:focus {
+  outline: none;
+  background: var(--ink);
+  color: var(--on-primary);
+}
+.measure-caption {
+  margin: 8px 0 4px;
+  min-height: 2.6em;
+}
+/* «Målene går ikke helt opp» */
+.measure-warning {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+  padding: 8px 8px 8px 12px;
+  border: 2px dashed var(--ink);
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-sm);
+  line-height: 1.35;
+}
+.measure-warning span {
+  flex: 1;
+}
+
+/* adding outlets, lights, windows, radiators in the measurement drawing */
+.fixture-tools {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  margin-bottom: 8px;
+}
+.fixture-tools .chip {
+  flex-shrink: 0;
+}
+.measure-plan.is-placing {
+  outline: 2px dashed var(--ink);
+  outline-offset: -2px;
+  cursor: crosshair;
+}
+.measure-picked {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--ink);
+  font-weight: 600;
+}
+.measure-group-title {
+  display: block;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 4px 0 2px;
+}
+.door-options {
+  border-top: 1px solid var(--line);
+  padding: 8px 0 4px;
+}
+.door-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: var(--tap);
+  font-size: var(--fs-sm);
+}
+.door-row .segmented button {
+  min-width: 0;
+  padding: 0 10px;
+  font-size: var(--fs-xs);
+}
+
+/* flip through the floor plan and the walls: ‹ tabs › */
+.measure-nav {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-bottom: 8px;
+}
+.measure-nav .measure-views {
+  flex: 1;
+  min-width: 0;
+  margin-bottom: 0;
+}
+.measure-arrow {
+  flex-shrink: 0;
+  width: 32px;
+  height: var(--tap);
+  border: 0;
+  background: transparent;
+  font-size: 26px;
+  line-height: 1;
+  color: var(--ink);
+}
+
+/* «Lagre versjon» as a round button in the room view's top-right corner */
+.stage-save {
+  background: var(--bg);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+/* «Chat | Forslag» next to «Gjelder: Sofa» */
+.context-text {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.panel-toggle {
+  flex-shrink: 0;
+}
+.panel-toggle button {
+  min-width: 0;
+  height: 36px;
+  padding: 0 14px;
+  font-size: var(--fs-xs);
+}

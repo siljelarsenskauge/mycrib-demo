@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" width="300" height="400">
+  <rect width="300" height="400" fill="#ffffff"/>
+  <g fill="none" stroke="#1d1d1d" stroke-width="6" stroke-linejoin="square">
+    <path d="M30 40 H270 V250 H190 V360 H30 Z"/>
+    <path d="M30 200 H140 M140 200 V360 M190 250 V200 H270"/>
+  </g>
+  <g fill="none" stroke="#1d1d1d" stroke-width="2">
+    <path d="M60 40 h50 M200 40 h45 M270 90 v60"/>
+    <path d="M140 300 a40 40 0 0 1 -40 -40" stroke-dasharray="4 4"/>
+  </g>
+  <g font-family="Helvetica, Arial, sans-serif" font-size="14" fill="#555">
+    <text x="110" y="120">Living room 24 m²</text>
+    <text x="50" y="290">Bedroom</text>
+    <text x="150" y="330">Bath</text>
+    <text x="200" y="230">Hall</text>
+  </g>
+</svg>

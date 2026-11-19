@@ -1,0 +1,107 @@
+/*
+ * Design tokens for the «Chic» direction, read from Figma (Designsystem – Chic (12.11): Color / Semantic, mode «Chic»,
+ * and Spacing & Shape). Synne 12.11. Imported last, so these values win over tokens.css and chic.css.
+ * Change a value in Figma first, then here.
+ *
+ * Rules (also on the Figma page):
+ *  - Surfaces: WHITE = something you tap or type in (always with --chic-lift). SAND = chosen. AUBERGINE = main action
+ *    and active filter. CITRON = accent only (the AI chat bubble), never on buttons.
+ *  - Corners: 4 image · 8 box · 20 overlay · full for everything else you tap.
+ *  - Spacing: 4 between photos · 6 screen edge to photos/fields · 8 related · 16 inset/text · 24 between sections.
+ *  - WCAG 2.1 AA: text 4.5:1 (large text 3:1), icons and the parts needed to understand a control 3:1, touch targets
+ *    at least 44 × 44 px (we use 48), visible focus, and motion turned off with prefers-reduced-motion.
+ */
+:root {
+  /* ---------- Primitives (Color / Primitives → chic/*) ---------- */
+  --chic-cream: #f7f5ef; /* warmer, less green (Synne 13.11; was #F6F6E8) */
+  --chic-citron: #ededd2;
+  --chic-sand: #d5ceb4;
+  --chic-aubergine: #200611;
+  --chic-plum: #4d1022;
+  --chic-olive: #5c6516;
+  --chic-muted: #6b5c60;
+  --chic-white: #ffffff;
+  --chic-wine: #7a1c2c;
+  --chic-blush: #fbe9f1; /* light pink: your messages in the chat (Silje 17.11) */
+  --chic-rose: #d69c9d; /* dusty rose: the + on MyCrib (Silje 17.11) */
+  --chic-error: #a93a2c;
+
+  /* ---------- Semantic (Color / Semantic, mode Chic) ---------- */
+  --color-background-default: var(--chic-cream);
+  --color-background-default-transparent: rgba(247, 245, 239, 0);
+  --color-surface-default: var(--chic-white); /* things you tap: white */
+  --color-surface-subtle: var(--chic-white);
+  --color-surface-raised: var(--chic-white);
+  --color-surface-input: var(--chic-white);
+  --color-surface-inverse: var(--chic-aubergine);
+  --color-surface-accent: var(--chic-sand);
+  --color-text-primary: var(--chic-aubergine); /* 17.6:1 on cream */
+  --color-text-secondary: var(--chic-muted); /* 5.8:1 on cream, 6.3:1 on white – never on sand (4.0:1) */
+  --color-text-placeholder: var(--chic-muted);
+  --color-text-inverse: var(--chic-cream);
+  --color-text-on-primary: var(--chic-cream);
+  --color-text-on-accent: var(--chic-cream);
+  --color-text-on-secondary: var(--chic-aubergine);
+  --color-action-primary: var(--chic-aubergine);
+  --color-action-secondary: var(--chic-white);
+  --color-action-accent: var(--chic-aubergine);
+  --color-border-default: var(--chic-citron);
+  --color-border-strong: var(--chic-sand);
+  --color-border-selected: var(--chic-aubergine);
+  --proposal-primary: var(--chic-aubergine);
+  --proposal-accent: var(--chic-olive);
+
+  --chic-surface-chosen: var(--chic-sand); /* surface/chosen */
+  --chic-surface-settings: var(--chic-white); /* surface/settings */
+  --chic-icon-bg: var(--chic-white); /* icon-button/background */
+  --chic-selected-photo: var(--chic-wine); /* state/selected-photo */
+  --chic-accent: var(--chic-citron); /* accent only: AI chat bubble */
+
+  /* glass material (Synne 14.11, from the chat bar): clear, strongly blurred, edged by two hairlines – bright along the
+     top, thin and dark round the sides – with a small soft shadow. One material for everything that floats.
+     --chic-glass-fill is for small controls; --chic-glass-fill-text for menus and notes with running text, a little
+     whiter so the text keeps 4.5:1 on any photo. */
+  --chic-glass-fill: rgba(255, 255, 255, 0.28);
+  --chic-glass-fill-text: rgba(255, 255, 255, 0.72);
+  --chic-glass-filter: blur(20px) saturate(1.9) brightness(1.04);
+  --chic-glass-edge: inset 0 1px 0 rgba(255, 255, 255, 0.95), inset 0 0 0 0.5px rgba(255, 255, 255, 0.4),
+    0 0 0 0.5px rgba(32, 6, 17, 0.22), 0 4px 14px rgba(32, 6, 17, 0.1);
+  /* glass for the floating bars: white, see-through */
+  --chic-glass: rgba(255, 255, 255, 0.92);
+  --chic-glass-blur: blur(18px) saturate(1.3);
+
+  /* effect style Chic/Lift: lifts every white element off the cream without a stroke */
+  --chic-lift: 0 1px 4px rgba(32, 6, 17, 0.08);
+  --chic-float: 0 6px 20px rgba(32, 6, 17, 0.1);
+
+  /* ---------- Shape (Spacing & Shape) ---------- */
+  --chic-radius-image: 4px; /* corner/image */
+  --chic-radius-box: 8px; /* corner/box */
+  --chic-radius-overlay: 20px; /* corner/overlay */
+  --chic-radius-field: 16px; /* fields with several lines (Synne 13.11) */
+  --chic-radius-full: 999px; /* corner/full */
+  --image-radius: var(--chic-radius-image);
+  --corner-lg: var(--chic-radius-box);
+  --corner-sm: var(--chic-radius-box);
+  --corner-xl: var(--chic-radius-overlay);
+
+  /* ---------- Spacing ---------- */
+  --chic-gap-image: 4px; /* spacing/image-gap */
+  --chic-edge: 6px; /* spacing/edge */
+  --chic-gap-related: 8px; /* spacing/related */
+  --chic-inset: 16px; /* spacing/inset */
+  --chic-gap-section: 24px; /* spacing/section */
+  --image-gap: var(--chic-gap-image);
+
+  /* ---------- Type ---------- */
+  --chic-label: 400 14px/18px var(--font-body); /* section labels, lower case */
+  --chic-choice-font: 500 13px/16px var(--font-body); /* tabs and chips */
+  --chic-title: 400 32px/36px var(--font-body); /* page titles, -3.5 % */
+
+  /* ---------- Motion ---------- */
+  --chic-glide: 520ms cubic-bezier(0.32, 0.72, 0, 1);
+
+  /* ---------- Accessibility ---------- */
+  --chic-touch: 48px; /* size/touch-target */
+  --chic-focus: 0 0 0 2px var(--chic-cream), 0 0 0 4px var(--chic-aubergine);
+}

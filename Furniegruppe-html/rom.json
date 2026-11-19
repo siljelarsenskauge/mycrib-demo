@@ -1,0 +1,46 @@
+{
+  "_om": "Felles mål for stua i Stueplanleggeren. Alle mål i meter. Origo er midt på gulvet. x går mot høyre sett fra kameraet i 3D, z går mot kameraet. Bakveggen med vinduet ligger på z = -2.05. rot er rotasjon i grader rundt loddlinjen. Hentet fra 3D-modellen (3d.html) 15.10.2026.",
+  "rom": {
+    "bredde": 3.0,
+    "dybde": 4.1,
+    "takhoyde": 2.5,
+    "vindu": {
+      "vegg": "bak",
+      "fra_x": -0.6,
+      "til_x": 0.6,
+      "fra_hoyde": 0.8,
+      "til_hoyde": 2.0
+    }
+  },
+  "mobler": [
+    {
+      "id": "sofa",
+      "navn": "Sofa",
+      "beskrivelse": "Tresetersofa, 242 x 81 cm",
+      "x": 0,
+      "z": -1.6245,
+      "rot": 0,
+      "bredde": 2.42,
+      "dybde": 0.811,
+      "hoyde": 0.854
+    },
+    {
+      "id": "table",
+      "navn": "Sofabord",
+      "beskrivelse": "Hvitt sofabord, 90 x 55 cm",
+      "x": 0,
+      "z": -0.731,
+      "rot": 0,
+      "bredde": 0.9,
+      "dybde": 0.55,
+      "hoyde": 0.4
+    }
+  ],
+  "tepper": [
+    { "id": "ull", "navn": "Ullteppe", "beskrivelse": "160 x 230 cm, ull, naturhvit", "bredde": 1.6, "lengde": 2.3 },
+    { "id": "berber", "navn": "Berber-teppe", "beskrivelse": "200 x 290 cm, ull", "bredde": 2.0, "lengde": 2.9 },
+    { "id": "kelim", "navn": "Kelim-teppe", "beskrivelse": "170 x 240 cm, bomull", "bredde": 1.7, "lengde": 2.4 },
+    { "id": "stripet", "navn": "Stripet teppe", "beskrivelse": "180 x 260 cm, jute", "bredde": 1.8, "lengde": 2.6 }
+  ],
+  "teppe_startplassering": { "x": -0.05, "z": -0.45, "rot": 90 }
+}

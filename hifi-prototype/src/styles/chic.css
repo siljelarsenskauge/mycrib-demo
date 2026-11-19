@@ -1,0 +1,5748 @@
+/*
+ * «Chic» – visual proposal (Synne 11.11: simple, chic, modern; Figma 844:9955, 844:14066, 844:9958, 844:9949 and her
+ * MYCRIB colour board). NOT part of the design system.
+ * The photos carry the app: big, edge to edge, small gaps, almost square corners, white text laid on the photo.
+ * One clean grotesk (Inter) with tight, large headings and small «[ labels ]». Colours from Synne's board: a cream
+ * page, aubergine instead of black, plum, olive and citron only as small details.
+ */
+:root {
+  /* Synne's board */
+  --chic-cream: #fbfaf2;
+  --chic-citron: #ededd2;
+  --chic-sand: #d6cfb8;
+  --chic-aubergine: #200611;
+  --chic-plum: #4d1022;
+  --chic-olive: #5c6516;
+  --chic-muted: #6b5c60; /* 5.9:1 on cream, WCAG AA */
+
+  --color-background-default: var(--chic-cream);
+  --color-background-default-transparent: rgba(251, 250, 242, 0);
+  --color-surface-default: var(--chic-citron);
+  --color-surface-subtle: var(--chic-citron);
+  --color-surface-input: var(--chic-citron);
+  --color-surface-inverse: var(--chic-aubergine);
+  --color-text-primary: var(--chic-aubergine);
+  --color-text-secondary: var(--chic-muted);
+  --color-text-placeholder: var(--chic-muted);
+  --color-action-primary: var(--chic-aubergine);
+  --color-action-accent: var(--chic-plum);
+  --color-border-default: var(--chic-sand);
+  --color-border-selected: var(--chic-aubergine);
+  --proposal-primary: var(--chic-aubergine);
+  --proposal-accent: var(--chic-olive);
+  --fade-tint: rgba(32, 6, 17, 0.28);
+  --fade-tint-transparent: rgba(32, 6, 17, 0);
+
+  /* photos: small gaps, almost square corners */
+  --image-gap: 4px;
+  --image-radius: 4px;
+  --corner-lg: 4px;
+  --corner-sm: 4px;
+
+  --chic-shade: linear-gradient(to top, rgba(20, 4, 10, 0.62), rgba(20, 4, 10, 0) 55%);
+  --type-headline-small: 400 30px/34px var(--font-body);
+}
+
+/* ---------- Type: one grotesk, big and tight ---------- */
+.home-title {
+  font: 600 44px/1 var(--font-brand);
+  letter-spacing: -0.04em;
+  color: var(--chic-aubergine);
+}
+.nav-title {
+  font: 400 32px/36px var(--font-body);
+  letter-spacing: -0.035em;
+  color: var(--chic-aubergine);
+}
+/* section labels as small [ brackets ], lower case */
+.section-title {
+  font: 400 12px/16px var(--font-body);
+  letter-spacing: 0.02em;
+  text-transform: lowercase;
+  color: var(--chic-aubergine);
+}
+.section-title::before {
+  content: '[ ';
+}
+.section-title::after {
+  content: ' ]';
+}
+.section-link {
+  font: 500 12px/16px var(--font-body);
+  letter-spacing: 0;
+  text-transform: none;
+  text-decoration: none;
+  color: var(--chic-aubergine);
+}
+.discover-heading {
+  font: 400 12px/16px var(--font-body);
+  letter-spacing: 0.02em;
+  text-transform: lowercase;
+}
+.discover-heading::before {
+  content: '[ ';
+}
+.discover-heading::after {
+  content: ' ]';
+}
+
+/* ---------- Room cards: the photo, with the name on it ---------- */
+.room-card {
+  width: 156px;
+}
+.room-row {
+  gap: var(--image-gap);
+}
+.room-card-main {
+  position: relative;
+}
+.room-card-img {
+  position: relative;
+  width: 100%;
+  border-radius: var(--image-radius);
+}
+.room-card-img::after,
+.board-cover::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--chic-shade);
+  pointer-events: none;
+}
+.room-card-name {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  font: 500 15px/20px var(--font-body);
+  letter-spacing: -0.01em;
+  color: var(--chic-white);
+}
+
+/* ---------- Moodboards: the same, name on the photo ---------- */
+.board-grid {
+  gap: var(--image-gap);
+}
+.board-card {
+  position: relative;
+}
+.board-cover {
+  position: relative;
+  border-radius: var(--image-radius);
+  overflow: hidden;
+  gap: 2px;
+}
+.board-card-name,
+.board-card-meta {
+  position: absolute;
+  left: 10px;
+  z-index: 1;
+  color: var(--chic-white);
+}
+.board-card-name {
+  bottom: 26px;
+  font: 500 15px/20px var(--font-body);
+  letter-spacing: -0.01em;
+}
+.board-card-meta {
+  bottom: 10px;
+  font: 400 11px/14px var(--font-body);
+  opacity: 0.85;
+}
+
+/* ---------- Explore: tight grid, quiet search and chips ---------- */
+.inspo-tile {
+  margin-bottom: var(--image-gap);
+}
+.inspo-tile-title {
+  display: block;
+  margin: 6px 2px 10px;
+  font: 400 12px/16px var(--font-body);
+  color: var(--chic-muted);
+}
+.discover-search {
+  border-radius: var(--corner-full);
+  background: var(--chic-citron);
+}
+.chip {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--chic-sand);
+  color: var(--chic-aubergine);
+}
+.chip[aria-pressed='true'] {
+  background: var(--chic-aubergine);
+  color: var(--chic-cream);
+  box-shadow: none;
+}
+.nature-pick img {
+  border-radius: var(--image-radius);
+}
+.nature-pick.is-active img {
+  outline: 2px solid var(--chic-aubergine);
+}
+
+/* ---------- Tabs: frosted glass over the photos, + in aubergine ---------- */
+.surface-switch {
+  background: rgba(251, 250, 242, 0.62);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  backdrop-filter: blur(20px) saturate(1.5);
+  box-shadow: 0 8px 28px rgba(32, 6, 17, 0.14), inset 0 0 0 0.5px rgba(255, 255, 255, 0.7);
+}
+.surface-switch button {
+  font: 500 13px/1 var(--font-body);
+  color: var(--chic-aubergine);
+}
+.surface-switch .is-active {
+  background: var(--chic-aubergine);
+  color: var(--chic-cream);
+}
+.home-fab {
+  background: var(--chic-aubergine);
+  color: var(--chic-cream);
+  box-shadow: 0 8px 24px rgba(32, 6, 17, 0.3);
+}
+
+/* ---------- Nature: the room edge to edge, the line on the photo ---------- */
+.nature-x {
+  background: var(--chic-cream);
+}
+.nature-x-stage,
+.nature-x.in-room .nature-x-stage {
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 572px;
+  border-radius: 0;
+}
+.nature-x-stage::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(20, 4, 10, 0.55), rgba(20, 4, 10, 0) 38%),
+    linear-gradient(to bottom, rgba(20, 4, 10, 0.35), rgba(20, 4, 10, 0) 22%);
+  pointer-events: none;
+}
+.nature-x-title {
+  top: 448px;
+  left: var(--space-16);
+  right: 96px;
+  font: 400 32px/34px var(--font-body);
+  letter-spacing: -0.035em;
+  color: var(--chic-white);
+}
+.nature-x-top {
+  top: calc(var(--status-h) + var(--space-8));
+}
+.nature-x-bottom,
+.nature-x.in-room .nature-x-bottom {
+  top: calc(572px + var(--space-12));
+}
+.nature-x-info {
+  margin: 0 var(--space-16);
+}
+.nature-x-name {
+  font: 500 15px/20px var(--font-body);
+  color: var(--chic-aubergine);
+}
+.nature-x-palette {
+  gap: 0;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.nature-x-palette i {
+  width: 22px;
+  height: 22px;
+  border-radius: 0;
+  box-shadow: none;
+}
+.nature-x-picks {
+  gap: var(--image-gap);
+  padding: 2px var(--space-16) var(--space-8);
+}
+.nature-x-pick,
+.nature-x-pick.is-on {
+  width: 84px;
+}
+.nature-x-pick img {
+  width: 84px;
+  height: 108px;
+  border-radius: var(--image-radius);
+  opacity: 0.6;
+  transition: opacity 0.25s ease;
+}
+.nature-x-pick.is-on img {
+  outline: none;
+  opacity: 1;
+}
+
+/* a light cream fade behind the tabs, not a coloured fog */
+:root {
+  --fade-tint: rgba(251, 250, 242, 0.92);
+  --fade-tint-transparent: rgba(251, 250, 242, 0);
+}
+.home-block + .home-block {
+  margin-top: var(--space-8);
+}
+
+/* ---------- Version 2, after Synne's own edits in Figma (section 18, 11.11) ---------- */
+/* labels without brackets: «recent rooms», «moodboards» */
+.section-title::before,
+.section-title::after,
+.discover-heading::before,
+.discover-heading::after {
+  content: none;
+}
+.discover-heading {
+  text-transform: none;
+}
+.section-link {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+/* the profile as a filled sand circle */
+.home-header .icon-btn {
+  background: var(--chic-sand);
+  border-color: var(--chic-sand);
+}
+/* the chosen tab in citron, not aubergine */
+.surface-switch .is-active {
+  background: var(--chic-citron);
+  color: var(--chic-aubergine);
+}
+/* chips filled with citron, the chosen one in aubergine */
+.chip {
+  background: var(--chic-citron);
+  box-shadow: none;
+}
+/* the big grid: square photos */
+.inspo-tile-main,
+.inspo-tile-main img {
+  border-radius: 0;
+}
+/* Explore: a quiet sand card into Nature */
+.explore-try-nature {
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  height: 88px;
+  margin: var(--space-8) 0 var(--space-12);
+  padding: var(--space-12);
+  border-radius: 7px;
+  background: var(--chic-sand);
+  font: 400 24px/28px var(--font-body);
+  letter-spacing: -0.035em;
+  color: var(--chic-aubergine);
+  text-align: left;
+}
+
+/* Nature: the line on cream at the top, the room as a framed photo under it */
+.nature-x-stage::after {
+  content: none;
+}
+.nature-x-title {
+  top: calc(var(--status-h) + 24px);
+  left: var(--space-16);
+  right: var(--space-16);
+  font: 400 32px/36px var(--font-body);
+  letter-spacing: -0.035em;
+  color: var(--chic-aubergine);
+}
+.nature-x-stage,
+.nature-x.in-room .nature-x-stage {
+  top: calc(var(--status-h) + 156px);
+  left: var(--space-16);
+  right: var(--space-16);
+  height: 440px;
+  border-radius: var(--image-radius);
+  background: var(--chic-citron);
+}
+.nature-x-top {
+  top: calc(var(--status-h) + 156px + var(--space-12));
+  left: calc(var(--space-16) + var(--space-12));
+  right: calc(var(--space-16) + var(--space-12));
+}
+.nature-x-tools .nature-x-save:last-child {
+  margin-left: auto;
+}
+.nature-x-bottom,
+.nature-x.in-room .nature-x-bottom {
+  top: calc(var(--status-h) + 619px);
+}
+.nature-x-name {
+  font: 500 12px/16px var(--font-body);
+  letter-spacing: 0.02em;
+}
+.nature-x-palette {
+  border-radius: 0;
+}
+.nature-x-palette i {
+  width: 22px;
+  height: 8px;
+}
+.nature-x-picks {
+  gap: var(--space-8);
+  padding: 4px var(--space-16) var(--space-8);
+}
+.nature-x-pick,
+.nature-x-pick.is-on {
+  width: 76px;
+  border-radius: 6px;
+}
+.nature-x-pick img,
+.nature-x-pick.is-on img {
+  width: 76px;
+  height: 108px;
+  opacity: 1;
+}
+/* the chosen photo: a thin wine-red frame with a little air (Synne's Figma) */
+.nature-x-pick.is-on img {
+  outline: 2px solid var(--chic-selected-photo);
+  outline-offset: 2px;
+}
+/* fit under the phone's status bar: title, room 432 px, then name, palette and photos above the tabs */
+.nature-x-title {
+  top: calc(var(--status-h) + 16px);
+  right: 110px;
+}
+.nature-x-stage,
+.nature-x.in-room .nature-x-stage {
+  top: calc(var(--status-h) + 100px);
+  height: 432px;
+}
+.nature-x-top {
+  top: calc(var(--status-h) + 100px + var(--space-12));
+}
+.nature-x-bottom,
+.nature-x.in-room .nature-x-bottom {
+  top: calc(var(--status-h) + 544px);
+}
+
+/* ---------- Version 3, after Synne's Figma comments (11.11) ---------- */
+
+/* texture: a very faint paper grain over the cream, so the page is not flat */
+.screen.home::before,
+.screen.all-rooms::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.07;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.13 0 0 0 0 0.02 0 0 0 0 0.07 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.screen.home,
+.screen.all-rooms {
+  position: relative;
+}
+/* (was «.screen.home > *», which also caught sheets, menus and full-screen overlays and hid them – fixed 13.11) */
+.screen.home > .screen-scroll,
+.screen.all-rooms > .screen-scroll,
+.screen.all-rooms > .topbar {
+  position: relative;
+  z-index: 1;
+}
+.screen.home > .surface-switch,
+.screen.home > .home-fab,
+.screen.home > .surface-fade {
+  position: absolute;
+}
+/* layers that cover the screen keep their own position and stacking – the rule above would make them relative
+   with z-index 1: «Scan item» collapsed to 0 px and the + menus ended up under the «Add» sheet (Silje 13.11) */
+.screen.home > .screen-overlay,
+.screen.all-rooms > .screen-overlay {
+  position: absolute;
+  z-index: 45;
+}
+.screen.home > .menu-layer,
+.screen.all-rooms > .menu-layer {
+  position: absolute;
+  z-index: 30;
+}
+.screen.home > .menu-layer-over-sheet,
+.screen.all-rooms > .menu-layer-over-sheet {
+  z-index: 50;
+}
+
+/* a thin «S» instead of the profile icon */
+.home-avatar {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--corner-full);
+  background: var(--chic-sand);
+  font: 300 24px/1 var(--font-body);
+  letter-spacing: -0.02em;
+  color: var(--chic-aubergine);
+}
+
+/* rooms: more variation in size – the room you opened last is the big one */
+.home-room-row .room-card:first-child {
+  width: 212px;
+}
+.home-room-row .room-card:first-child .room-card-name {
+  font-size: 17px;
+}
+.home-room-row .room-card:not(:first-child) .room-card-img {
+  aspect-ratio: 3 / 4;
+}
+
+/* ---------- Moodboards as a bento board ---------- */
+.bento {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-auto-rows: 58px;
+  grid-auto-flow: dense;
+  gap: var(--image-gap);
+  margin-top: var(--space-4);
+}
+.bento-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--image-radius);
+  background: var(--chic-citron);
+  text-align: left;
+}
+.bento-card:nth-child(3n + 1) {
+  grid-column: span 4;
+  grid-row: span 4;
+}
+.bento-card:nth-child(3n + 2) {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+.bento-card:nth-child(3n + 3) {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+/* every second group of three mirrors, so the board does not repeat itself */
+.bento-card:nth-child(6n + 4) {
+  grid-column: 3 / span 4;
+}
+.bento-main {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.bento-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--chic-shade);
+  pointer-events: none;
+}
+/* the nature photo as a small inset in the corner of a big room photo */
+.bento-0 .bento-second {
+  position: absolute;
+  z-index: 1;
+  top: 8px;
+  right: 8px;
+  width: 30%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: 3px;
+  box-shadow: 0 0 0 2px var(--chic-cream);
+}
+/* room and nature side by side */
+.bento-2 .bento-main {
+  right: 50%;
+  width: 50%;
+}
+.bento-2 .bento-second {
+  position: absolute;
+  inset: 0 0 0 50%;
+  width: 50%;
+  height: 100%;
+  object-fit: cover;
+  border-left: 2px solid var(--chic-cream);
+}
+.bento-name {
+  position: absolute;
+  z-index: 2;
+  left: 10px;
+  bottom: 9px;
+  font: 500 14px/18px var(--font-body);
+  letter-spacing: -0.01em;
+  color: var(--chic-white);
+}
+.bento-card:nth-child(3n + 1) .bento-name {
+  font: 400 22px/26px var(--font-body);
+  letter-spacing: -0.03em;
+  left: 12px;
+  bottom: 12px;
+}
+
+/* ---------- Explore: a wide and a narrow column, starting on the same line ---------- */
+.inspo-grid.inspo-grid-asym {
+  columns: auto;
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  align-items: start;
+  gap: var(--image-gap);
+}
+.inspo-col {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- Tabs: a softer edge and a smooth slide, no bounce ---------- */
+.seg-tabs {
+  padding: 3px;
+  background: var(--chic-citron);
+  box-shadow: inset 0 0 0 1px rgba(214, 207, 184, 0.55);
+}
+.seg-thumb,
+.seg-tabs.is-moving .seg-thumb {
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  width: calc((100% - 6px) / var(--seg-n));
+  scale: 1;
+  background: var(--chic-cream);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: 0 1px 2px rgba(32, 6, 17, 0.06), 0 4px 12px rgba(32, 6, 17, 0.06);
+  transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.seg-tab {
+  font: 500 12px/16px var(--font-body);
+  transition: color 300ms ease;
+}
+
+/* ---------- Nature: rooms as tabs, the chosen photo clearer ---------- */
+.nature-x-rooms {
+  position: absolute;
+  z-index: 3;
+  top: calc(var(--status-h) + 100px);
+  left: var(--space-16);
+  right: var(--space-16);
+}
+.nature-x-rooms .seg-tab {
+  padding: 0 4px;
+  white-space: nowrap;
+}
+.nature-x:not(.in-room) .nature-x-stage {
+  top: calc(var(--status-h) + 148px);
+  height: 384px;
+}
+.nature-x:not(.in-room) .nature-x-top {
+  top: calc(var(--status-h) + 148px + var(--space-12));
+}
+.nature-x:not(.in-room) .nature-x-bottom {
+  top: calc(var(--status-h) + 544px);
+}
+.nature-x-name {
+  font: 500 20px/24px var(--font-body);
+  letter-spacing: -0.02em;
+}
+.nature-x-pick img {
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+.nature-x-pick.is-on img {
+  opacity: 1;
+}
+/* Nature fills the screen from the top, as before the grain layer was added */
+.screen.home > .home-scroll:has(.nature-x) {
+  position: static;
+}
+.screen.home:has(.nature-x) {
+  position: static;
+}
+
+/* ---------- Version 4, after Synne's comments (11.11, evening) ---------- */
+
+/* one background everywhere: no grain layer that darkens only part of the screen, and a warm light sand for big
+   surfaces instead of citron (citron looked sickly on Settings) */
+.screen.home::before,
+.screen.all-rooms::before {
+  content: none;
+}
+:root {
+  --chic-surface: var(--chic-surface-settings);
+  --color-surface-default: var(--chic-surface);
+  --color-surface-subtle: var(--chic-surface);
+  --color-surface-input: var(--chic-surface);
+}
+.discover-search,
+.chip,
+.seg-tabs {
+  background: var(--chic-surface);
+}
+
+/* tabs at the bottom: the chosen one clearly marked – sand behind, the others quieter */
+.surface-switch button {
+  color: var(--chic-muted);
+}
+.surface-switch .is-active {
+  background: var(--chic-sand);
+  color: var(--chic-aubergine);
+  font-weight: 600;
+}
+
+/* segmented tabs: no outline */
+.seg-tabs {
+  box-shadow: none;
+}
+
+/* more air at the top of every main screen */
+.home-header {
+  padding-top: var(--space-24);
+  margin-bottom: var(--space-8);
+}
+
+/* rooms: a plain carousel again, all the same size */
+.home-room-row .room-card:first-child {
+  width: 156px;
+}
+.home-room-row .room-card:first-child .room-card-name {
+  font-size: 15px;
+}
+.home-room-row .room-card:not(:first-child) .room-card-img {
+  aspect-ratio: var(--room-card-ratio);
+}
+
+/* All rooms: the same 4 px gap across and down, cards fill their column */
+.room-grid {
+  gap: var(--image-gap);
+}
+.room-grid .room-card {
+  width: auto;
+}
+
+/* Explore: the same corners as every other photo */
+.inspo-tile-main,
+.inspo-tile-main img {
+  border-radius: var(--image-radius);
+}
+
+/* moodboards: one photo each, the name on it */
+.board-simple {
+  position: relative;
+  flex: none;
+  width: 156px;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: var(--image-radius);
+  background: var(--chic-surface);
+  text-align: left;
+  scroll-snap-align: start;
+}
+.board-simple img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.board-simple::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--chic-shade);
+}
+.board-simple-name {
+  position: absolute;
+  z-index: 1;
+  left: 10px;
+  bottom: 10px;
+  font: 500 15px/20px var(--font-body);
+  letter-spacing: -0.01em;
+  color: var(--chic-white);
+}
+.board-simple-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--image-gap);
+}
+.board-simple-grid .board-simple {
+  width: auto;
+}
+
+/* Nature: more air above the line and around the photo */
+.nature-x-title {
+  top: calc(var(--status-h) + 32px);
+}
+.nature-x-rooms {
+  top: calc(var(--status-h) + 120px);
+}
+.nature-x:not(.in-room) .nature-x-stage {
+  top: calc(var(--status-h) + 172px);
+  height: 360px;
+}
+.nature-x:not(.in-room) .nature-x-top {
+  top: calc(var(--status-h) + 172px + var(--space-12));
+}
+.nature-x:not(.in-room) .nature-x-bottom {
+  top: calc(var(--status-h) + 548px);
+}
+
+/* ---------- Version 5 (Synne 11.11) ---------- */
+/* citron back on the small surfaces (search, chips, tabs); only Settings gets the light sand */
+:root {
+  --chic-surface: var(--chic-citron);
+}
+.settings,
+.settings-page {
+  --color-surface-default: var(--chic-surface-settings);
+  --color-surface-subtle: var(--chic-surface-settings);
+  --color-surface-input: var(--chic-surface-settings);
+}
+
+/* moodboards: tall cards, two side by side, going down; one, two or three photos in each */
+.board-tall-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--image-gap);
+  margin-top: var(--space-4);
+}
+.board-tall {
+  position: relative;
+  display: grid;
+  gap: 2px;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: var(--image-radius);
+  background: var(--chic-cream);
+  text-align: left;
+}
+.board-tall img {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  object-fit: cover;
+}
+.board-tall-1 {
+  grid-template: 1fr / 1fr;
+}
+.board-tall-2 {
+  grid-template: 1fr 1fr / 1fr;
+}
+.board-tall-3 {
+  grid-template: 2fr 1fr / 1fr 1fr;
+}
+.board-tall-3 img:first-child {
+  grid-column: 1 / -1;
+}
+.board-tall::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--chic-shade);
+  pointer-events: none;
+}
+/* the room carousel and the moodboards start further left: 6 px from the screen edge (Synne 11.11) */
+.home-room-row {
+  padding-left: 6px;
+  scroll-padding: 0 6px;
+}
+.home .board-tall-grid,
+.all-rooms .board-tall-grid {
+  margin-left: calc(6px - var(--screen-edge));
+  margin-right: calc(6px - var(--screen-edge));
+}
+/* Explore: darker captions and the photos closer to the screen edge – 6 px, like the rooms (Synne 11.11) */
+.inspo-tile-title {
+  color: var(--chic-aubergine);
+}
+.inspo-grid.inspo-grid-asym {
+  margin-left: calc(6px - var(--screen-edge));
+  margin-right: calc(6px - var(--screen-edge));
+}
+.home-scroll .nature-strip {
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+/* Nature (Synne 11.11): a taller room photo, save at the top left, and the room tabs inside the photo as a small,
+   quiet glass control, like Apple's */
+.nature-x:not(.in-room) .nature-x-stage {
+  top: calc(var(--status-h) + 120px);
+  height: 416px;
+}
+.nature-x:not(.in-room) .nature-x-top {
+  top: calc(var(--status-h) + 120px + var(--space-12));
+}
+.nature-x-tools .nature-x-save:last-child {
+  margin-left: 0;
+}
+.nature-x-rooms {
+  top: calc(var(--status-h) + 120px + 416px - 12px - 32px);
+  left: 50%;
+  right: auto;
+  translate: -50% 0;
+  width: max-content;
+  padding: 2px;
+  border-radius: var(--corner-full);
+  background: rgba(20, 10, 14, 0.28);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  backdrop-filter: blur(16px) saturate(1.4);
+  box-shadow: none;
+}
+.nature-x-rooms .seg-thumb {
+  top: 2px;
+  bottom: 2px;
+  left: 2px;
+  width: calc((100% - 4px) / var(--seg-n));
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: none;
+}
+.nature-x-rooms .seg-tab {
+  min-height: 28px;
+  padding: 0 10px;
+  font: 500 11px/14px var(--font-body);
+  color: rgba(255, 255, 255, 0.92);
+}
+.nature-x-rooms .seg-tab[aria-selected='true'] {
+  color: var(--chic-aubergine);
+}
+.nature-x-rooms .seg-tab {
+  padding: 0 8px;
+}
+/* a little bigger text on rooms and moodboards (Synne 11.11) */
+.section-title {
+  font-size: 14px;
+  line-height: 18px;
+}
+.section-link {
+  font-size: 13px;
+}
+.room-card-name,
+.board-simple-name {
+  font-size: 16px;
+  line-height: 20px;
+}
+
+/* smooth tabs (Synne 11.11): one easing for all tab movement, a soft Apple-like glide without bounce */
+:root {
+  --chic-glide: 520ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+.surface-switch.has-pill {
+  position: absolute;
+}
+.surface-pill {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  height: calc(100% - 8px);
+  border-radius: var(--corner-full);
+  background: var(--chic-sand);
+  transition: transform var(--chic-glide), width var(--chic-glide);
+}
+.surface-switch.has-pill button {
+  position: relative;
+  z-index: 1;
+  transition: color 300ms ease;
+}
+.surface-switch.has-pill .is-active {
+  background: transparent;
+}
+.seg-thumb,
+.seg-tabs.is-moving .seg-thumb {
+  transition: transform var(--chic-glide);
+}
+.seg-tab {
+  transition: color 360ms ease;
+}
+
+/* Nature: photos closer to the screen edge (6 px), a smaller, quieter save at the top left of the room photo */
+.nature-x:not(.in-room) .nature-x-stage,
+.nature-x.in-room .nature-x-stage {
+  left: 6px;
+  right: 6px;
+}
+.nature-x-top,
+.nature-x:not(.in-room) .nature-x-top {
+  left: calc(6px + 10px);
+  right: calc(6px + 10px);
+}
+.nature-x-top .nature-x-save {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  background: rgba(20, 10, 14, 0.22);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  box-shadow: none;
+  color: var(--chic-white);
+}
+.nature-x-top .nature-x-save::before {
+  content: none;
+}
+.nature-x-top .nature-x-save svg {
+  width: 18px;
+  height: 18px;
+}
+.nature-x:not(.in-room) .nature-x-top {
+  top: calc(var(--status-h) + 120px + 10px);
+}
+.nature-x-picks {
+  padding-left: 6px;
+  padding-right: 6px;
+}
+.board-masonry {
+  align-items: start;
+}
+.board-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--image-gap);
+}
+/* save at the top right of the room photo (Synne 11.11) */
+.nature-x-tools .nature-x-save:last-child {
+  margin-left: auto;
+}
+/* room tabs at the top left of the photo, in the app's own colours: cream glass, sand for the chosen room (Synne 11.11) */
+.nature-x-rooms {
+  top: calc(var(--status-h) + 120px + 10px);
+  left: 16px;
+  translate: none;
+  background: rgba(251, 250, 242, 0.72);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
+  backdrop-filter: blur(16px) saturate(1.3);
+}
+.nature-x-rooms .seg-thumb {
+  background: var(--chic-sand);
+}
+.nature-x-rooms .seg-tab {
+  min-height: 32px;
+  color: var(--chic-muted);
+}
+.nature-x-rooms .seg-tab[aria-selected='true'] {
+  color: var(--chic-aubergine);
+}
+/* the chosen tab is marked by the pill and the darker colour, not bold (Synne 11.11) */
+.surface-switch .is-active,
+.surface-switch.has-pill .is-active {
+  font-weight: 500;
+}
+/* the room tabs on the photo: as wide as their names */
+.nature-x-rooms {
+  display: flex;
+  position: absolute;
+  z-index: 3;
+  padding: 2px;
+  border-radius: var(--corner-full);
+}
+.room-tabs-pill {
+  position: absolute;
+  top: 2px;
+  left: 0;
+  height: calc(100% - 4px);
+  border-radius: var(--corner-full);
+  background: var(--chic-sand);
+  transition: transform var(--chic-glide), width var(--chic-glide);
+}
+.room-tab {
+  position: relative;
+  z-index: 1;
+  min-height: 30px;
+  padding: 0 10px;
+  border-radius: var(--corner-full);
+  font: 500 11px/14px var(--font-body);
+  white-space: nowrap;
+  color: var(--chic-muted);
+  transition: color 360ms ease;
+}
+.room-tab[aria-selected='true'] {
+  color: var(--chic-aubergine);
+}
+/* 44 px tap area even though the tab is slimmer */
+.room-tab::after {
+  content: '';
+  position: absolute;
+  inset: -7px 0;
+}
+/* moodboards: the same space above and below a board as between the two columns (Silje 18.11; it was 14 px, Synne 11.11) */
+.board-tall-grid.board-masonry {
+  --board-gap: 6px;
+  column-gap: var(--board-gap);
+}
+.board-masonry .board-col {
+  gap: var(--board-gap);
+}
+
+/* search: no heavy dark outline when typing, and the suggestions on a calm cream card instead of the muddy glass */
+.discover-search:focus-within {
+  outline: 1px solid var(--chic-sand);
+}
+.search-dropdown.glass {
+  z-index: 6;
+  border-radius: 12px;
+  background: var(--chic-cream);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: 0 12px 32px rgba(32, 6, 17, 0.1), 0 0 0 1px rgba(214, 207, 184, 0.6);
+}
+.search-dropdown.glass::before {
+  content: none;
+}
+.search-dropdown-title {
+  font: 400 13px/18px var(--font-body);
+  letter-spacing: 0;
+  text-transform: lowercase;
+  color: var(--chic-muted);
+}
+.search-dropdown .menu-item {
+  min-height: 44px;
+  font: 400 15px/20px var(--font-body);
+  color: var(--chic-aubergine);
+}
+.search-dropdown .menu-item svg {
+  width: 16px;
+  height: 16px;
+  color: var(--chic-muted);
+}
+.search-dropdown .menu-item:active {
+  background: var(--chic-citron);
+}
+
+/* the + stands out on dark photos too: a thin cream ring around it */
+.home-fab {
+  box-shadow: 0 0 0 2px rgba(251, 250, 242, 0.9), 0 8px 24px rgba(32, 6, 17, 0.3);
+}
+
+/* Nature: the page takes a soft tint of the chosen nature photo – 14 % of its main colour into the cream */
+.nature-x,
+.nature-x.in-room {
+  background: color-mix(in srgb, var(--nature-tint, var(--chic-cream)) 14%, var(--chic-cream));
+  transition: background-color 600ms ease;
+}
+.screen.home:has(.nature-x) {
+  --fade-tint: transparent;
+  --fade-tint-transparent: transparent;
+}
+/* no strokes (Synne 11.11): the + in sand with an aubergine plus, so it stands out on dark photos without a ring */
+.home-fab {
+  background: var(--chic-sand);
+  color: var(--chic-aubergine);
+  box-shadow: 0 8px 24px rgba(32, 6, 17, 0.28);
+}
+.discover-search:focus-within {
+  outline: none;
+}
+.phone:has(.nature-x),
+.phone:has(.nature-x) .screen {
+  background: color-mix(in srgb, var(--nature-tint, var(--chic-cream)) 14%, var(--chic-cream));
+  transition: background-color 600ms ease;
+}
+/* the + back in aubergine, as Synne liked it – no ring (11.11) */
+.home-fab {
+  background: var(--chic-aubergine);
+  color: var(--chic-cream);
+  box-shadow: 0 8px 24px rgba(32, 6, 17, 0.3);
+}
+
+/* Nature: a clearer change – a stronger tint, and the nature photo itself blurred far out as a soft texture behind
+   the page, fading in when you pick another photo */
+.nature-x,
+.nature-x.in-room,
+.phone:has(.nature-x),
+.phone:has(.nature-x) .screen {
+  background: color-mix(in srgb, var(--nature-tint, var(--chic-cream)) 24%, var(--chic-cream));
+}
+.nature-x-ambient {
+  position: absolute;
+  inset: -60px;
+  z-index: 0;
+  background-size: cover;
+  background-position: center;
+  filter: blur(48px) saturate(1.15);
+  opacity: 0.38;
+  pointer-events: none;
+  animation: nature-ambient-in 700ms ease both;
+}
+@keyframes nature-ambient-in {
+  from {
+    opacity: 0;
+  }
+}
+.nature-x > :not(.nature-x-ambient) {
+  z-index: 1;
+}
+/* the + gets a soft light glow behind it, so it stands out on dark photos – a glow, not a stroke (Synne 11.11) */
+.home-fab {
+  box-shadow: 0 0 22px 8px rgba(251, 250, 242, 0.55), 0 8px 24px rgba(32, 6, 17, 0.3);
+}
+
+/* the + sheet in the app's own language (Synne 11.11): calm light-sand tiles, no border, no citron; icon at the top,
+   name at the bottom left, like the sand card Synne drew for Explore */
+.sheet {
+  background: var(--chic-cream);
+}
+.plus-tiles {
+  gap: var(--image-gap);
+}
+.plus-tiles .nr-tile {
+  align-items: flex-start;
+  justify-content: space-between;
+  aspect-ratio: 1;
+  min-height: 0;
+  padding: var(--space-12);
+  border: none;
+  border-radius: var(--image-radius);
+  background: var(--chic-sand);
+  box-shadow: none;
+  font: 400 15px/19px var(--font-body);
+  letter-spacing: -0.01em;
+  color: var(--chic-aubergine);
+  text-align: left;
+}
+.plus-tiles .nr-tile .icon,
+.plus-tiles .nr-tile svg {
+  width: 24px;
+  height: 24px;
+  color: var(--chic-aubergine);
+}
+.plus-tiles .nr-tile:active,
+.plus-tiles .nr-tile[aria-expanded='true'] {
+  background: var(--chic-sand);
+}
+/* a plain X in the sheet header, no glass circle */
+.sheet-head .icon-btn-glass {
+  background: transparent;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.sheet-head .icon-btn-glass::before {
+  content: none;
+}
+
+/* the glow behind the + much more discreet */
+.home-fab {
+  box-shadow: 0 0 10px 1px rgba(251, 250, 242, 0.35), 0 6px 18px rgba(32, 6, 17, 0.25);
+}
+
+/* Nature: no colour change after all (Synne 11.11) – plain cream like the rest; the tint and the blurred photo are
+   switched off here, not deleted, so they can come back */
+.nature-x-ambient {
+  display: none;
+}
+.nature-x,
+.nature-x.in-room,
+.phone:has(.nature-x),
+.phone:has(.nature-x) .screen {
+  background: var(--chic-cream);
+}
+
+/* Nature (Synne 11.11): save in the same style as the room tabs; the chosen room in the sand of the profile circle,
+   on a lighter glass so it reads as the darker one; a taller room photo */
+.nature-x-rooms {
+  background: rgba(251, 250, 242, 0.86);
+}
+.room-tabs-pill {
+  background: var(--chic-sand);
+}
+.nature-x-top .nature-x-save {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  background: rgba(251, 250, 242, 0.86);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
+  backdrop-filter: blur(16px) saturate(1.3);
+  color: var(--chic-aubergine);
+}
+.nature-x-top .nature-x-save svg {
+  width: 16px;
+  height: 16px;
+}
+.nature-x-title {
+  top: calc(var(--status-h) + 20px);
+}
+.nature-x:not(.in-room) .nature-x-stage {
+  top: calc(var(--status-h) + 104px);
+  height: 456px;
+}
+.nature-x:not(.in-room) .nature-x-top,
+.nature-x-rooms {
+  top: calc(var(--status-h) + 104px + 10px);
+}
+.nature-x:not(.in-room) .nature-x-bottom {
+  top: calc(var(--status-h) + 104px + 456px + 12px);
+}
+.nature-x-pick img,
+.nature-x-pick.is-on img {
+  height: 100px;
+}
+.nature-x:not(.in-room) .nature-x-stage {
+  height: 440px;
+}
+.nature-x:not(.in-room) .nature-x-bottom {
+  top: calc(var(--status-h) + 104px + 440px + 12px);
+}
+
+/* the + sheet as photos, like the room and moodboard cards (Synne 11.11): a photo per choice, white name on it */
+.plus-tiles .nr-tile {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 3 / 4;
+  justify-content: flex-end;
+  background: var(--chic-citron) center / cover no-repeat;
+  color: var(--chic-white);
+  font: 500 15px/19px var(--font-body);
+}
+.plus-tiles .nr-tile:nth-child(1) {
+  background-image: url('/rooms/my_living.jpg');
+}
+.plus-tiles .nr-tile:nth-child(2) {
+  background-image: url('/inspo/r_brown_modular.jpg');
+}
+.plus-tiles .nr-tile:nth-child(3) {
+  background-image: url('/inspo/n_fig.jpg');
+}
+.plus-tiles .nr-tile::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--chic-shade);
+}
+.plus-tiles .nr-tile > * {
+  position: relative;
+  z-index: 1;
+}
+.plus-tiles .nr-tile .icon,
+.plus-tiles .nr-tile svg {
+  display: none;
+}
+.plus-tiles .nr-tile:active,
+.plus-tiles .nr-tile[aria-expanded='true'] {
+  filter: brightness(0.9);
+}
+
+/* tabs slide (Synne 11.11): the new content glides in from the side you switch to, with the same soft easing as the
+   tab pill; short and calm, no bounce */
+@keyframes slide-from-right {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+}
+@keyframes slide-from-left {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+}
+.slide-from-right {
+  animation: slide-from-right 460ms cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+.slide-from-left {
+  animation: slide-from-left 460ms cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+.nature-x-stage img.slide-from-right,
+.nature-x-stage img.slide-from-left {
+  animation-duration: 520ms;
+}
+@media (prefers-reduced-motion: reduce) {
+  .slide-from-right,
+  .slide-from-left {
+    animation: none;
+  }
+}
+/* on Nature the page itself slides, so its fixed layout is not shifted while moving */
+.home-scroll.slide-from-right:has(.nature-x),
+.home-scroll.slide-from-left:has(.nature-x) {
+  animation: none;
+}
+.home-scroll.slide-from-right .nature-x {
+  animation: slide-from-right 460ms cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+.home-scroll.slide-from-left .nature-x {
+  animation: slide-from-left 460ms cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+
+/* bug fix: the row with the save button lay over the room tabs, so they could not be tapped */
+.nature-x-tools {
+  pointer-events: none;
+}
+.nature-x-tools > * {
+  pointer-events: auto;
+}
+.nature-x-rooms {
+  z-index: 4;
+}
+
+/* Explore: the search field as wide as the photos, 6 px from the edge (Synne 11.11) */
+.discover-search {
+  margin-left: calc(6px - var(--screen-edge));
+  margin-right: calc(6px - var(--screen-edge));
+}
+
+/* the + sheet as plain buttons with an icon (Synne 11.11): one under the other, pill-shaped in citron like the search
+   field and the chips */
+.plus-tiles {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+.plus-tiles .nr-tile {
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--space-12);
+  aspect-ratio: auto;
+  min-height: 52px;
+  padding: 0 var(--space-20);
+  border-radius: var(--corner-full);
+  background: var(--chic-citron);
+  background-image: none !important;
+  color: var(--chic-aubergine);
+  font: 400 15px/20px var(--font-body);
+}
+.plus-tiles .nr-tile::before {
+  content: none;
+}
+.plus-tiles .nr-tile .icon,
+.plus-tiles .nr-tile svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+  color: var(--chic-aubergine);
+}
+.plus-tiles .nr-tile:active,
+.plus-tiles .nr-tile[aria-expanded='true'] {
+  filter: none;
+  background: var(--chic-sand);
+}
+/* All rooms: the photos 6 px from the screen edge, like everywhere else (Synne 11.11) */
+.all-rooms .room-grid {
+  margin-left: calc(6px - var(--space-16));
+  margin-right: calc(6px - var(--space-16));
+}
+/* one label style everywhere (Synne 11.11): «moodboards» on MyCrib and «If nature says it fits…» on Explore */
+.section-title,
+.discover-heading {
+  font: 400 14px/18px var(--font-body);
+  letter-spacing: 0.02em;
+  color: var(--chic-aubergine);
+}
+
+/* the + sheet as three boxes again (Synne 12.11): low, icon and name centred, light sand like Settings – no citron,
+   no border, no photos */
+.plus-tiles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--image-gap);
+}
+.plus-tiles .nr-tile {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+  aspect-ratio: auto;
+  min-height: 96px;
+  padding: var(--space-12) var(--space-8);
+  border: none;
+  border-radius: 8px;
+  background: var(--chic-surface-settings);
+  font: 400 14px/18px var(--font-body);
+  text-align: center;
+  color: var(--chic-aubergine);
+}
+.plus-tiles .nr-tile:active,
+.plus-tiles .nr-tile[aria-expanded='true'] {
+  background: var(--chic-sand);
+}
+/* no scrollbar in the sheet */
+.sheet,
+.sheet * {
+  scrollbar-width: none;
+}
+.sheet ::-webkit-scrollbar {
+  display: none;
+}
+.plus-tiles .nr-tile .icon,
+.plus-tiles .nr-tile svg {
+  width: 26px;
+  height: 26px;
+}
+
+/* every icon button (+, X, back, menu …) sits in a circle (Synne 12.11): citron, like the search field and the chips.
+   The 48 px tap area stays; the circle is 40 px */
+.topbar .icon-btn,
+.sheet-head .icon-btn,
+.sheet-head .icon-btn-glass {
+  position: relative;
+  background: transparent;
+  box-shadow: none;
+}
+.topbar .icon-btn::before,
+.sheet-head .icon-btn::before,
+.sheet-head .icon-btn-glass::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  z-index: -1;
+  border-radius: var(--corner-full);
+  background: var(--chic-citron);
+}
+.topbar .icon-btn,
+.sheet-head .icon-btn {
+  isolation: isolate;
+}
+.topbar .icon-btn svg,
+.sheet-head .icon-btn svg {
+  width: 20px;
+  height: 20px;
+}
+.sheet-head .icon-btn,
+.sheet-head .icon-btn-glass {
+  border: none;
+  outline: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.sheet-head .icon-btn::after,
+.sheet-head .icon-btn-glass::after {
+  content: none;
+}
+
+/* the + down beside the tab bar, in the light fade, so it never sits on top of a photo (Synne 12.11) */
+.home-fab {
+  bottom: calc(var(--bottom-safe) + var(--space-16));
+  right: var(--space-16);
+  width: 56px;
+  height: 56px;
+}
+.home .surface-switch {
+  left: calc(50% - 32px);
+}
+.home-fab {
+  z-index: 6;
+}
+.home .surface-switch {
+  left: 50%;
+}
+.home:has(.home-fab) .surface-switch {
+  left: calc(50% - 32px);
+}
+
+/* ---------- One way to show «chosen» (Synne 12.11) ----------
+   Tab bar, room tabs, chips and segmented tabs all follow the same rule: chosen = sand (var(--chic-sand), the profile circle)
+   with aubergine text; not chosen = muted text on the same surface; no shadow, no stroke; the same type */
+:root {
+  --chic-chosen: var(--chic-sand);
+  --chic-choice-font: 500 13px/16px var(--font-body);
+}
+/* text */
+.surface-switch button,
+.room-tab,
+.chip,
+.seg-tab {
+  font: var(--chic-choice-font);
+  letter-spacing: 0;
+  color: var(--chic-muted);
+}
+.surface-switch .is-active,
+.surface-switch.has-pill .is-active,
+.room-tab[aria-selected='true'],
+.chip[aria-pressed='true'],
+.seg-tab[aria-selected='true'] {
+  font-weight: 500;
+  color: var(--chic-aubergine);
+}
+/* the chosen shape */
+.surface-pill,
+.room-tabs-pill,
+.seg-thumb,
+.seg-tabs.is-moving .seg-thumb,
+.chip[aria-pressed='true'] {
+  background: var(--chic-chosen);
+  box-shadow: none;
+}
+/* the surfaces: one light glass for the bars that float, citron for chips and the segmented tabs on the page */
+.chip {
+  background: var(--chic-citron);
+  box-shadow: none;
+}
+.seg-tabs {
+  background: var(--chic-citron);
+  box-shadow: none;
+}
+.surface-switch,
+.nature-x-rooms {
+  background: rgba(251, 250, 242, 0.86);
+  -webkit-backdrop-filter: blur(18px) saturate(1.3);
+  backdrop-filter: blur(18px) saturate(1.3);
+  box-shadow: 0 6px 20px rgba(32, 6, 17, 0.1);
+}
+/* the + back where it was, above the tab bar on the right (Synne 12.11) */
+.home-fab {
+  bottom: calc(var(--bottom-safe) + var(--space-64) + var(--space-16));
+  right: var(--space-16);
+  width: var(--fab-size);
+  height: var(--fab-size);
+}
+.home .surface-switch,
+.home:has(.home-fab) .surface-switch {
+  left: 50%;
+}
+/* MYCRIB as the original logo (Synne 12.11): Hanken Grotesk, regular weight, 50 px, tight */
+.home-title {
+  font: var(--type-display-brand);
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+  color: var(--chic-aubergine);
+}
+/* segmented tabs on the page look exactly like the tab bar (Synne 12.11): light cream surface with a soft shadow,
+   sand pill – sand on citron looked muddy */
+.seg-tabs {
+  background: rgba(251, 250, 242, 0.95);
+  box-shadow: 0 4px 16px rgba(32, 6, 17, 0.08);
+}
+/* Explore's chips follow the same rule: citron, chosen in sand with aubergine text */
+.inspo-chip {
+  background: var(--chic-citron);
+  box-shadow: none;
+  font: var(--chic-choice-font);
+  color: var(--chic-muted);
+}
+.inspo-chip.is-active {
+  background: var(--chic-chosen);
+  color: var(--chic-aubergine);
+}
+/* the chosen filter chip back in dark aubergine with light text, as Synne liked it (12.11) */
+.inspo-chip.is-active,
+.chip[aria-pressed='true'] {
+  background: var(--chic-aubergine);
+  color: var(--chic-cream);
+}
+
+/* Explore's search field after Synne's Figma frame (936:7819, 12.11): almost white, a thin citron outline */
+.discover-search {
+  height: 48px;
+  padding: 0 var(--space-16);
+  background: var(--chic-white);
+  box-shadow: inset 0 0 0 1px var(--chic-citron);
+}
+.discover-search input::placeholder {
+  color: var(--chic-muted);
+}
+.discover-search svg {
+  color: var(--chic-muted);
+}
+
+/* All rooms tabs: the chosen pill in the light green (citron) on the light surface (Synne 12.11) */
+.all-rooms-tabs .seg-thumb,
+.all-rooms-tabs.is-moving .seg-thumb {
+  background: var(--chic-citron);
+}
+
+/* ---------- One rule for width (Synne 12.11): every photo grid and photo card sits 6 px from the screen edge,
+   on every screen and in sheets, so new screens follow it too ---------- */
+:root {
+  --chic-edge: 6px;
+}
+.inspo-grid,
+.room-grid,
+.board-grid,
+.board-tall-grid,
+.room-pick,
+.discover-search {
+  margin-left: calc(var(--chic-edge) - var(--space-16));
+  margin-right: calc(var(--chic-edge) - var(--space-16));
+}
+.room-row,
+.home-room-row,
+.nature-strip,
+.home-scroll .nature-strip {
+  padding-left: var(--chic-edge);
+  padding-right: var(--chic-edge);
+  scroll-padding: 0 var(--chic-edge);
+}
+.moodboard .inspo-grid {
+  margin-top: var(--space-4);
+}
+
+/* «Use in rooms»: the room photo fills its card (a citron band showed above it), the name on the photo like every
+   other room card, the chosen room in sand */
+.room-pick {
+  gap: var(--image-gap);
+}
+.room-pick-card {
+  position: relative;
+  gap: 0;
+}
+.room-pick-img {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  margin-bottom: 0;
+  border-radius: var(--image-radius);
+}
+.room-pick-img img {
+  display: block;
+}
+.room-pick-img::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--chic-shade);
+}
+.room-pick-name {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  z-index: 1;
+  font: 500 15px/20px var(--font-body);
+  color: var(--chic-white);
+}
+/* the name sits on the photo, above «Opened …» – not in a white box at the bottom of the card (Silje 13.11) */
+.room-pick-card:has(.room-pick-meta) .room-pick-name {
+  bottom: 26px;
+}
+.room-pick-card.is-active .room-pick-img {
+  outline: 2px solid var(--chic-aubergine);
+  outline-offset: 2px;
+}
+
+/* the name as a field in the header while editing a moodboard */
+.topbar-title-input {
+  flex: 1;
+  min-width: 0;
+  height: 36px;
+  margin: 0 var(--space-8);
+  padding: 0 var(--space-12);
+  border: none;
+  border-radius: var(--corner-full);
+  background: var(--chic-citron);
+  font: 500 15px/20px var(--font-body);
+  text-align: center;
+  color: var(--chic-aubergine);
+}
+/* icon buttons in a plain, neutral circle (Synne 12.11) */
+.topbar .icon-btn::before,
+.sheet-head .icon-btn::before,
+.sheet-head .icon-btn-glass::before {
+  background: var(--chic-white);
+}
+/* chips not chosen: dark text on the citron (Synne 12.11) */
+.inspo-chip,
+.chip {
+  color: var(--chic-aubergine);
+}
+.inspo-chip.is-active,
+.chip[aria-pressed='true'] {
+  color: var(--chic-cream);
+}
+/* icon buttons in a white circle with a very soft shadow, so they show on the cream (Synne 12.11) */
+.topbar .icon-btn::before,
+.sheet-head .icon-btn::before,
+.sheet-head .icon-btn-glass::before {
+  background: var(--chic-white);
+  box-shadow: 0 1px 4px rgba(32, 6, 17, 0.08);
+}
+/* the editable moodboard name: a white field with an outline and a pencil (Synne 12.11) */
+.topbar-title-edit {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  height: 40px;
+  margin: 0 var(--space-8);
+  padding: 0 var(--space-12);
+  border-radius: var(--corner-full);
+  background: var(--chic-white);
+  box-shadow: inset 0 0 0 1px var(--chic-sand);
+  color: var(--chic-muted);
+}
+.topbar-title-edit:focus-within {
+  box-shadow: inset 0 0 0 1.5px var(--chic-aubergine);
+}
+.topbar-title-edit .topbar-title-input {
+  flex: 1;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  text-align: left;
+  outline: none;
+}
+
+
+/* TEST (Synne 12.11): background halfway between citron var(--chic-citron) and white = var(--chic-cream). Delete this block to go back */
+:root {
+  --chic-cream: var(--chic-cream);
+  --color-background-default: var(--chic-cream);
+  --color-background-default-transparent: rgba(246, 246, 232, 0);
+  --fade-tint: rgba(246, 246, 232, 0.92);
+  --fade-tint-transparent: rgba(246, 246, 232, 0);
+}
+.phone,
+.screen,
+.sheet,
+.nature-x,
+.nature-x.in-room,
+.phone:has(.nature-x),
+.phone:has(.nature-x) .screen {
+  background: var(--chic-cream);
+}
+
+/* =====================================================================================================
+   Design system rules (Synne 12.11), from Figma «Designsystem – Chic». Values come from tokens-chic.css.
+   This block is the source of truth; the blocks above are the history of the iterations.
+   ===================================================================================================== */
+
+/* ---------- Surfaces ---------- */
+/* WHITE + lift: something you tap or type in */
+.discover-search,
+.inspo-chip:not(.is-active),
+.chip:not([aria-pressed='true']),
+.topbar-title-edit,
+.card.profile-card,
+.settings .group {
+  background: var(--chic-white);
+  box-shadow: var(--chic-lift);
+}
+.settings .group {
+  border-radius: var(--chic-radius-box);
+}
+.discover-search,
+.topbar-title-edit {
+  box-shadow: var(--chic-lift);
+}
+.topbar .icon-btn::before,
+.sheet-head .icon-btn::before,
+.sheet-head .icon-btn-glass::before {
+  background: var(--chic-icon-bg);
+  box-shadow: var(--chic-lift);
+}
+/* floating bars: white glass */
+.surface-switch,
+.seg-tabs,
+.nature-x-rooms,
+.nature-x-top .nature-x-save {
+  background: var(--chic-glass);
+  -webkit-backdrop-filter: var(--chic-glass-blur);
+  backdrop-filter: var(--chic-glass-blur);
+}
+.surface-switch,
+.seg-tabs {
+  box-shadow: var(--chic-float);
+}
+/* SAND: chosen */
+.surface-pill,
+.room-tabs-pill,
+.seg-thumb,
+.seg-tabs.is-moving .seg-thumb,
+.all-rooms-tabs .seg-thumb,
+.all-rooms-tabs.is-moving .seg-thumb,
+.plus-tiles .nr-tile,
+.home-avatar,
+.settings .avatar {
+  background: var(--chic-surface-chosen);
+}
+.settings .avatar {
+  color: var(--chic-aubergine);
+}
+/* AUBERGINE: main action and active filter */
+.home-fab,
+.inspo-chip.is-active,
+.chip[aria-pressed='true'],
+.chat-bubble-user {
+  background: var(--chic-aubergine);
+  color: var(--chic-cream);
+}
+/* CITRON: accent only */
+.chat-bubble-ai {
+  background: var(--chic-accent);
+  color: var(--chic-aubergine);
+}
+
+/* ---------- Corners ---------- */
+.room-card-img,
+.board-tall,
+.board-simple,
+.inspo-tile-main,
+.inspo-tile-main img,
+.nature-pick img,
+.nature-x-pick img,
+.nature-x-stage,
+.room-pick-img {
+  border-radius: var(--chic-radius-image);
+}
+.plus-tiles .nr-tile,
+.card.profile-card,
+.settings .group {
+  border-radius: var(--chic-radius-box);
+}
+.sheet {
+  border-radius: var(--chic-radius-overlay) var(--chic-radius-overlay) 0 0;
+}
+.dialog,
+.add-menu,
+.context-menu,
+.nature-x-menu {
+  border-radius: var(--chic-radius-overlay);
+}
+.chat-bubble {
+  border-radius: var(--chic-radius-overlay);
+}
+.chat-bubble-user {
+  border-bottom-right-radius: 4px;
+}
+.chat-bubble-ai {
+  border-bottom-left-radius: 4px;
+}
+.input,
+.discover-search,
+.topbar-title-edit,
+.inspo-chip,
+.chip,
+.surface-switch,
+.seg-tabs,
+.nature-x-rooms {
+  border-radius: var(--chic-radius-full);
+}
+
+/* ---------- Spacing ---------- */
+.home-block + .home-block {
+  margin-top: var(--chic-gap-section);
+}
+.inspo-chips {
+  gap: var(--chic-gap-related);
+}
+
+/* ---------- Type ---------- */
+.section-title,
+.discover-heading {
+  font: var(--chic-label);
+}
+
+/* ---------- Accessibility (WCAG 2.1 AA) ---------- */
+/* visible focus for keyboard users, in the app's own colours */
+:where(button, a, input, select, textarea, [role='tab'], [role='radio']):focus-visible {
+  outline: none;
+  box-shadow: var(--chic-focus);
+}
+/* muted text never on sand (4.0:1): text on a chosen pill is aubergine */
+.surface-switch .is-active,
+.room-tab[aria-selected='true'],
+.seg-tab[aria-selected='true'] {
+  color: var(--chic-aubergine);
+}
+/* touch targets at least 48 px, also where the visible pill is slimmer */
+.room-tab,
+.inspo-chip,
+.chip {
+  position: relative;
+}
+.inspo-chip::after,
+.chip::after {
+  content: '';
+  position: absolute;
+  inset: -6px 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .surface-pill,
+  .room-tabs-pill,
+  .seg-thumb {
+    transition: none;
+  }
+}
+
+/* ---------- 13.11 (Synne) ---------- */
+/* background less green: everything that used the old cream literally follows the token */
+.phone,
+.screen,
+.sheet,
+.nature-x,
+.nature-x.in-room,
+.phone:has(.nature-x),
+.phone:has(.nature-x) .screen {
+  background: var(--chic-cream);
+}
+:root {
+  --fade-tint: rgba(247, 245, 239, 0.92);
+  --fade-tint-transparent: rgba(247, 245, 239, 0);
+}
+/* + sheet: white boxes with lift (sand looked heavy) */
+.plus-tiles .nr-tile {
+  background: var(--chic-white);
+  box-shadow: var(--chic-lift);
+}
+.plus-tiles .nr-tile:active,
+.plus-tiles .nr-tile[aria-expanded='true'] {
+  background: var(--chic-surface-chosen);
+}
+/* wider tab bar: three equal tabs, 280 px */
+.surface-switch {
+  min-width: 280px;
+}
+.surface-switch button {
+  flex: 1;
+  padding: 0 var(--space-16);
+}
+/* the side menu in the room has the app's background, not white (Synne 13.11) */
+.side-panel {
+  background: var(--chic-cream);
+}
+/* «Find more photos» as frosted glass over the photos, dark text – stands out without being a heavy dark button (Synne 13.11) */
+.moodboard-cta .btn {
+  background: rgba(255, 255, 255, 0.72);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  backdrop-filter: blur(20px) saturate(1.4);
+  color: var(--chic-aubergine);
+  box-shadow: 0 8px 24px rgba(32, 6, 17, 0.14), inset 0 0 0 0.5px rgba(255, 255, 255, 0.8);
+}
+
+/* fix (Synne 13.11): only single-line fields are fully round; a field with several lines is a box (corner/box) */
+textarea.input,
+.input.textarea {
+  border-radius: var(--chic-radius-box);
+  padding: var(--space-12);
+}
+/* fields follow the surface rule: white with lift, no stroke; a dark ring when in use */
+.input {
+  border: none;
+  box-shadow: var(--chic-lift);
+}
+.input:focus,
+.input:focus-within {
+  box-shadow: var(--chic-lift), inset 0 0 0 1.5px var(--chic-aubergine);
+}
+/* placeholders at WCAG AA contrast (muted, 6.3:1 on white) */
+input::placeholder,
+textarea::placeholder {
+  color: var(--chic-muted);
+  opacity: 1;
+}
+/* chips everywhere follow the surface rule: white with lift, no stroke (the old .chip had an outline) */
+.chip,
+.chip:not([aria-pressed='true']) {
+  border: none;
+  outline: none;
+  box-shadow: var(--chic-lift);
+}
+.chip::after {
+  border: none;
+}
+/* a disabled primary button: the same aubergine, faded, so the text stays readable */
+.btn-primary:disabled {
+  background: var(--chic-aubergine);
+  color: var(--chic-cream);
+  opacity: 0.35;
+}
+/* no focus stroke inside the search field and other pill fields (Synne 13.11): the cursor shows where you type */
+.discover-search input:focus-visible,
+.topbar-title-edit input:focus-visible,
+.composer textarea:focus-visible,
+.composer input:focus-visible {
+  box-shadow: none;
+  outline: none;
+}
+/* the AI instructions field a little rounder */
+textarea.input,
+.input.textarea {
+  border-radius: var(--chic-radius-field);
+}
+/* X in sheets: a solid white circle (Synne 13.11) – the glass variant drew its own see-through fill */
+.sheet-head .icon-btn,
+.sheet-head .icon-btn-glass {
+  background: var(--chic-white);
+  box-shadow: var(--chic-lift);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  margin: 4px;
+  border-radius: var(--chic-radius-full);
+}
+.sheet-head .icon-btn::before,
+.sheet-head .icon-btn-glass::before,
+.sheet-head .icon-btn-glass::after {
+  content: none;
+}
+/* the + sheet a little taller: taller boxes and more air under them */
+.plus-tiles .nr-tile {
+  min-height: 128px;
+}
+.plus-tiles {
+  padding-bottom: var(--space-16);
+}
+.sheet-body:has(.plus-tiles) {
+  padding-top: var(--space-8);
+  padding-bottom: calc(var(--bottom-safe) + var(--space-32));
+}
+/* «Connect to a room» in New moodboard: the room name on the photo, like every room card (Synne 13.11) */
+.room-strip .nature-pick {
+  position: relative;
+}
+.room-strip .nature-pick::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--chic-radius-image);
+  background: var(--chic-shade);
+  pointer-events: none;
+}
+.room-strip .nature-pick img,
+.room-strip .room-strip-iso {
+  margin-bottom: 0;
+}
+.room-strip .nature-pick > span:last-child {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  z-index: 1;
+  font: 500 13px/16px var(--font-body);
+  color: #fff;
+}
+.room-strip .nature-pick {
+  width: 96px;
+}
+.room-strip .nature-pick img,
+.room-strip .room-strip-iso {
+  height: 104px;
+}
+.room-strip {
+  padding-bottom: var(--space-12);
+}
+/* sheets grow to fit their content (up to the max height) instead of cutting the last row */
+.sheet-body {
+  flex: 0 1 auto;
+}
+.sheet-body:has(.room-strip) {
+  flex: none;
+  overflow: visible;
+}
+/* bug fix (13.11): an old rule from the paper-grain test (11.11) made every child of the home screen
+   position: relative – also the sheets, so they could only be as tall as their content area and cut the last row */
+.screen.home > .scrim,
+.screen.all-rooms > .scrim,
+.screen.home > .menu-backdrop {
+  position: absolute;
+  z-index: 40;
+}
+/* back on the image page: the same white circle as every icon button (Synne 13.11) */
+.image-back,
+.image-back.icon-btn-glass {
+  background: var(--chic-white);
+  box-shadow: var(--chic-lift);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  color: var(--chic-aubergine);
+}
+.image-back::before {
+  content: none;
+}
+.plus-tiles .nr-tile {
+  min-height: 112px;
+}
+.sheet-body:has(.plus-tiles) {
+  padding-bottom: calc(var(--bottom-safe) + var(--space-20));
+}
+
+/* ---------- Room and chat (Synne 13.11: «bug i chaten», «den grønne chaten var rar», buttons all different) ---------- */
+/* chat: the bubble is on the text, not on the whole row (my rule painted the row and left white text on white) */
+.chat-bubble-user,
+.chat-bubble-ai {
+  background: none;
+  color: inherit;
+  border-radius: 0;
+}
+/* your message: white pill, dark text */
+.chat-bubble-user p {
+  background: var(--chic-white);
+  color: var(--chic-aubergine);
+  box-shadow: var(--chic-lift);
+}
+/* the AI answers as plain text – no green bubble */
+.chat-bubble-ai,
+.chat-bubble-ai p {
+  color: var(--chic-aubergine);
+}
+/* one kind of icon button on the photo: white circle, 40 px, lift – back, menu, save, undo */
+.stage-save,
+.stage-undo,
+.stage .icon-btn-glass,
+.room .icon-btn-glass {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  margin: 4px;
+  background: var(--chic-white);
+  box-shadow: var(--chic-lift);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  color: var(--chic-aubergine);
+  border-radius: var(--chic-radius-full);
+}
+.stage-save::before,
+.stage-undo::before,
+.room .icon-btn-glass::before {
+  content: none;
+}
+/* the 360° pill: white too, same height as the circles */
+.view-select,
+.view-select.glass {
+  height: 40px;
+  background: var(--chic-white);
+  box-shadow: var(--chic-lift);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  color: var(--chic-aubergine);
+}
+.view-select.glass::before {
+  content: none;
+}
+
+/* ---------- The room (Synne 13.11): one glass for every control, fixed places ----------
+   top row: back · room name · menu.  Under it, left: the view (360°/3D/2D).
+   Bottom left above the chat: undo | redo.  Screen edges: the older version (left) and newer (right). */
+.glass-chic,
+.room .topbar .icon-btn,
+.room .view-select,
+.room .view-select.glass {
+  background: rgba(255, 255, 255, 0.62);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  backdrop-filter: blur(18px) saturate(1.4);
+  box-shadow: 0 2px 10px rgba(32, 6, 17, 0.1), inset 0 0 0 0.5px rgba(255, 255, 255, 0.7);
+  color: var(--chic-aubergine);
+}
+.room .topbar .icon-btn::before,
+.room .nature-close::before {
+  content: none;
+}
+/* the ✕ that takes the colours from nature away: the same round glass button as the ones in the top bar (Silje 18.11) */
+.room .nature-close {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  border-radius: 50%;
+}
+/* 48 px to tap, though it looks like 40 */
+.room .nature-close::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+}
+.room .topbar .icon-btn {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  margin: 4px;
+  border-radius: var(--chic-radius-full);
+}
+.room .view-select {
+  height: 40px;
+  padding: 0 var(--space-12) 0 var(--space-16);
+  border-radius: var(--chic-radius-full);
+}
+/* undo | redo: one pill, two arrows */
+.undo-redo {
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 2px;
+  border-radius: var(--chic-radius-full);
+}
+.undo-redo .icon-btn {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  background: none;
+  box-shadow: none;
+  color: var(--chic-aubergine);
+}
+.undo-redo .icon-btn::before {
+  content: none;
+}
+.undo-redo .icon-btn:disabled {
+  opacity: 0.3;
+}
+.undo-redo .redo svg {
+  transform: scaleX(-1);
+}
+/* the older version waits at the left edge, the newer one at the right */
+.version-edge {
+  position: absolute;
+  z-index: 3;
+  top: 46%;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  height: 44px;
+  padding: 0 12px 0 6px;
+  font: 500 12px/16px var(--font-body);
+  touch-action: pan-y;
+}
+.version-edge-left {
+  left: 0;
+  border-radius: 0 var(--chic-radius-full) var(--chic-radius-full) 0;
+}
+.version-edge-right {
+  right: 0;
+  padding: 0 6px 0 12px;
+  border-radius: var(--chic-radius-full) 0 0 var(--chic-radius-full);
+}
+/* looking at an older version: a bar above the chat with «Continue from here» */
+.version-bar {
+  position: absolute;
+  z-index: 3;
+  left: var(--space-16);
+  right: var(--space-16);
+  bottom: calc(var(--sheet-h) + var(--bottom-safe) + var(--space-12));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-8);
+  min-height: 48px;
+  padding: 4px 4px 4px var(--space-16);
+  border-radius: var(--chic-radius-full);
+}
+.version-bar-text {
+  font: 500 14px/18px var(--font-body);
+}
+.version-bar-go {
+  min-height: 40px;
+  padding: 0 var(--space-16);
+  border-radius: var(--chic-radius-full);
+  background: var(--chic-aubergine);
+  color: var(--chic-cream);
+  font: 500 13px/16px var(--font-body);
+}
+/* the room slides when you change version: the older one comes in from the left */
+@keyframes version-from-left {
+  from {
+    transform: translateX(-28%);
+    opacity: 0.3;
+  }
+}
+@keyframes version-from-right {
+  from {
+    transform: translateX(28%);
+    opacity: 0.3;
+  }
+}
+.version-slide-left {
+  animation: version-from-left 460ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+.version-slide-right {
+  animation: version-from-right 460ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .version-slide-left,
+  .version-slide-right {
+    animation: none;
+  }
+}
+/* versions as pages: dots under the room name, a thin grip at the edge to swipe from (Synne 13.11, «ikke piler midt på skjermen») */
+.version-edge {
+  display: none;
+}
+.version-dots {
+  position: absolute;
+  z-index: 3;
+  top: calc(var(--top-h) - 4px);
+  left: 50%;
+  translate: -50% 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  border-radius: var(--chic-radius-full);
+  background: rgba(255, 255, 255, 0.5);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+}
+.version-dot {
+  position: relative;
+  width: 6px;
+  height: 6px;
+  padding: 0;
+  border-radius: var(--chic-radius-full);
+  background: rgba(32, 6, 17, 0.25);
+  transition: width var(--chic-glide), background 300ms ease;
+}
+.version-dot::after {
+  content: '';
+  position: absolute;
+  inset: -12px -4px;
+}
+.version-dot.is-on {
+  width: 16px;
+  background: var(--chic-aubergine);
+}
+.version-dots-label {
+  margin-left: 2px;
+  font: 500 11px/14px var(--font-body);
+  color: var(--chic-aubergine);
+}
+/* swipe zones along the edges, under the top bar and above the chat; only a thin grip shows */
+.version-swipe {
+  position: absolute;
+  z-index: 2;
+  top: calc(var(--top-h) + 64px);
+  bottom: calc(var(--sheet-h) + var(--bottom-safe) + 64px);
+  width: 22px;
+  display: flex;
+  align-items: center;
+  touch-action: pan-y;
+}
+.version-swipe-left {
+  left: 0;
+  justify-content: flex-start;
+}
+.version-swipe-right {
+  right: 0;
+  justify-content: flex-end;
+}
+.version-grip {
+  width: 4px;
+  height: 44px;
+  border-radius: var(--chic-radius-full);
+  background: rgba(255, 255, 255, 0.75);
+  box-shadow: 0 1px 4px rgba(32, 6, 17, 0.2);
+}
+.version-swipe-left .version-grip {
+  margin-left: 4px;
+}
+.version-swipe-right .version-grip {
+  margin-right: 4px;
+}
+/* the version pill above the chat, swipe it like Safari's tab bar (Synne 13.11) */
+.version-swipe {
+  display: none;
+}
+.version-pill {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  translate: -50% 0;
+  bottom: calc(var(--sheet-h) + var(--bottom-safe) + var(--space-12));
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  height: 40px;
+  padding: 0 var(--space-16);
+  border-radius: var(--chic-radius-full);
+  touch-action: pan-y;
+  user-select: none;
+  cursor: grab;
+}
+.version-pill-label {
+  font: 500 12px/16px var(--font-body);
+  color: var(--chic-aubergine);
+}
+.version-pill .version-dots {
+  position: static;
+  translate: none;
+  padding: 0;
+  background: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+/* the «Continue from here» bar sits above the pill */
+.version-bar {
+  bottom: calc(var(--sheet-h) + var(--bottom-safe) + var(--space-12) + 48px);
+}
+/* the AI's answer as a short note above the chat field; tap it to open the chat (Synne 13.11) */
+.chat-peek {
+  position: absolute;
+  z-index: 4;
+  left: var(--space-16);
+  right: var(--space-16);
+  bottom: calc(var(--sheet-h) + var(--bottom-safe) + var(--space-12) + 52px);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  padding: var(--space-12) var(--space-16);
+  border-radius: var(--chic-radius-overlay);
+  font: 400 14px/20px var(--font-body);
+  text-align: left;
+  color: var(--chic-aubergine);
+  animation: slide-from-right 0s, peek-in 360ms var(--ease-out);
+}
+@keyframes peek-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+/* the version pill and undo/redo sit clear of the chat's drag handle, above it in z-order */
+.version-pill,
+.stage-row,
+.chat-peek {
+  z-index: 25;
+}
+.version-pill,
+.stage-row {
+  bottom: calc(var(--sheet-h) + var(--bottom-safe) + var(--space-20));
+}
+.chat-peek {
+  bottom: calc(var(--sheet-h) + var(--bottom-safe) + var(--space-20) + 52px);
+}
+
+/* ---------- Versions behind a clock (Synne 13.11) ---------- */
+/* the clock sits to the right of the chat field; the field makes room for it when the chat is folded */
+.history-btn {
+  position: absolute;
+  z-index: 26;
+  right: var(--space-12);
+  bottom: calc(var(--bottom-safe) + 12px);
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  border-radius: var(--chic-radius-full);
+  color: var(--chic-aubergine);
+}
+.history-btn.is-on {
+  background: var(--chic-aubergine);
+  color: var(--chic-cream);
+}
+.room .chat-sheet-wrap:not(.is-full) {
+  right: calc(var(--space-12) + 48px + var(--space-8));
+}
+/* the row of version cards above the field: oldest left, «now» right */
+.version-row {
+  position: absolute;
+  z-index: 25;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--sheet-h) + var(--bottom-safe) + var(--space-20));
+  display: flex;
+  gap: var(--chic-gap-related);
+  padding: 4px var(--space-12);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  animation: peek-in 300ms var(--ease-out);
+}
+.version-row::-webkit-scrollbar {
+  display: none;
+}
+.version-card {
+  flex: none;
+  width: 116px;
+  padding: 6px 6px 8px;
+  border-radius: var(--chic-radius-box);
+  text-align: left;
+  scroll-snap-align: end;
+}
+.version-card.is-on {
+  box-shadow: inset 0 0 0 2px var(--chic-aubergine), 0 2px 10px rgba(32, 6, 17, 0.12);
+}
+.version-card-img {
+  display: block;
+  height: 72px;
+  overflow: hidden;
+  border-radius: var(--chic-radius-image);
+  background: var(--chic-cream);
+  pointer-events: none;
+}
+.version-card-name {
+  display: block;
+  margin-top: 6px;
+  font: 500 13px/16px var(--font-body);
+  color: var(--chic-aubergine);
+}
+.version-card-date {
+  display: block;
+  font: 400 11px/14px var(--font-body);
+  color: var(--chic-muted);
+}
+/* undo/redo moves up when the cards are open */
+.room:has(.version-row) .stage-row,
+.room:has(.version-row) .chat-peek {
+  display: none;
+}
+
+/* ---------- The chat field in the room, after Synne's Figma (987:14787 and 987:14820, 13.11) ----------
+   At rest: + in a sand circle, a white pill field, and the clock in a sand circle to the right.
+   Writing: the field grows into a white box (corner 24) with + bottom left and a dark send button bottom right. */
+.room .chat-sheet:not(:has(.chat-messages)) {
+  padding: 0;
+  background: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: none;
+}
+.room .chat-sheet:not(:has(.chat-messages))::before,
+.room .chat-sheet:not(:has(.chat-messages)) .chat-sheet-handle {
+  display: none;
+}
+/* at rest */
+.room .chat-sheet-wrap:not(.is-writing) .chat-sheet:not(:has(.chat-messages)) .composer-row {
+  gap: 6px;
+  padding: 0;
+  background: none;
+  box-shadow: none;
+}
+.room .chat-sheet-wrap:not(.is-writing) .chat-sheet:not(:has(.chat-messages)) .composer {
+  background: none;
+  box-shadow: none;
+  padding: 0;
+}
+.room .chat-sheet-wrap:not(.is-writing) .composer-plus,
+.history-btn {
+  width: 46px;
+  height: 46px;
+  min-width: 46px;
+  border-radius: var(--chic-radius-full);
+  background: var(--chic-sand);
+  color: var(--chic-aubergine);
+  box-shadow: var(--chic-lift);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.room .chat-sheet-wrap:not(.is-writing) .chat-sheet:not(:has(.chat-messages)) .composer-input {
+  flex: 1;
+  height: 48px;
+  min-height: 48px;
+  padding: 13px var(--space-16);
+  border-radius: var(--chic-radius-full);
+  background: var(--chic-white);
+  box-shadow: var(--chic-lift);
+}
+.history-btn {
+  bottom: calc(max(var(--bottom-safe), var(--space-8)) + var(--space-4) + 1px);
+}
+.history-btn.is-on {
+  background: var(--chic-aubergine);
+  color: var(--chic-cream);
+}
+/* writing: one white box, full width; the clock steps aside */
+.room:has(.chat-sheet-wrap.is-writing) .history-btn {
+  display: none;
+}
+.room .chat-sheet-wrap.is-writing:not(.is-full) {
+  right: var(--space-12);
+}
+.room .chat-sheet-wrap.is-writing .chat-sheet:not(:has(.chat-messages)) .composer {
+  padding: var(--space-12) var(--space-12) var(--space-8);
+  border-radius: 24px;
+  background: var(--chic-white);
+  box-shadow: 0 4px 18px rgba(32, 6, 17, 0.12);
+}
+.room .chat-sheet-wrap.is-writing .composer-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas: 'input input input' 'plus . send';
+  row-gap: var(--space-8);
+  padding: 0;
+  background: none;
+  box-shadow: none;
+}
+.room .chat-sheet-wrap.is-writing .composer-input {
+  grid-area: input;
+  min-height: 44px;
+  padding: 2px 4px;
+  background: none;
+  box-shadow: none;
+}
+.room .chat-sheet-wrap.is-writing .composer-plus {
+  grid-area: plus;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  border-radius: var(--chic-radius-full);
+  background: var(--chic-sand);
+  color: var(--chic-aubergine);
+}
+.room .chat-sheet-wrap.is-writing .composer-send {
+  grid-area: send;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--chic-radius-full);
+  background: var(--chic-aubergine);
+  color: var(--chic-cream);
+}
+.room .chat-sheet-wrap.is-writing .composer-send:disabled {
+  opacity: 1;
+  background: var(--chic-aubergine);
+}
+
+/* hover on the boxes in the + sheet (Synne 13.11): the box lifts a little and turns light sand */
+.plus-tiles .nr-tile {
+  transition: transform 220ms var(--ease-out), box-shadow 220ms var(--ease-out), background-color 220ms ease;
+}
+@media (hover: hover) {
+  .plus-tiles .nr-tile:hover {
+    transform: translateY(-2px);
+    background: #f4f1e8;
+    box-shadow: 0 6px 16px rgba(32, 6, 17, 0.1);
+  }
+}
+.plus-tiles .nr-tile:active {
+  transform: translateY(0);
+  background: var(--chic-sand);
+  box-shadow: var(--chic-lift);
+}
+@media (prefers-reduced-motion: reduce) {
+  .plus-tiles .nr-tile,
+  .plus-tiles .nr-tile:hover {
+    transform: none;
+    transition: none;
+  }
+}
+@media (hover: hover) {
+  .plus-tiles .nr-tile:hover {
+    transform: translateY(-3px);
+    background: var(--chic-white);
+    box-shadow: 0 10px 22px rgba(32, 6, 17, 0.14), 0 0 0 1.5px var(--chic-sand);
+  }
+}
+/* no ring – Synne doesn't want strokes; the lift and shadow are enough */
+@media (hover: hover) {
+  .plus-tiles .nr-tile:hover {
+    box-shadow: 0 10px 22px rgba(32, 6, 17, 0.14);
+  }
+}
+/* hover without movement: the box turns light green (citron) (Synne 13.11) */
+@media (hover: hover) {
+  .plus-tiles .nr-tile:hover {
+    transform: none;
+    background: var(--chic-citron);
+    box-shadow: var(--chic-lift);
+  }
+}
+.plus-tiles .nr-tile {
+  transition: background-color 200ms ease;
+}
+
+/* ---------- The chat bar in the room, after Synne's Figma (1004:15313, 1004:15249, 1004:15283, 1004:15353, 1004:15123) ----------
+   One light bar (corner 24) holds + · wand · the field · versions. A button that is on turns sand, and its panel opens
+   above the field inside the same bar: add (tiles), the wand (nature colours) or versions (cards).
+   Writing: the field grows into a white box with + and the wand bottom left and the dark send bottom right. */
+.history-btn {
+  display: none;
+}
+.room .chat-sheet-wrap:not(.is-full) {
+  right: var(--space-12);
+}
+.room .chat-sheet:not(:has(.chat-messages)) {
+  padding: 8px 12px;
+  border-radius: 24px;
+  background: rgba(240, 238, 234, 0.9);
+  -webkit-backdrop-filter: blur(18px) saturate(1.3);
+  backdrop-filter: blur(18px) saturate(1.3);
+  box-shadow: 0 6px 20px rgba(32, 6, 17, 0.12);
+}
+/* the row: four parts, 4 px apart, all 35 px high */
+.room .chat-sheet-wrap:not(.is-writing) .chat-sheet:not(:has(.chat-messages)) .composer-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.room .chat-sheet-wrap:not(.is-writing) .composer-plus,
+.room .bar-btn {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 35px;
+  height: 35px;
+  min-width: 35px;
+  padding: 0;
+  border-radius: var(--chic-radius-full);
+  background: var(--chic-white);
+  color: var(--chic-aubergine);
+  box-shadow: var(--chic-lift);
+}
+.room .composer-plus[aria-expanded='true'],
+.room .bar-btn.is-on {
+  background: var(--chic-sand);
+}
+.room .chat-sheet-wrap:not(.is-writing) .chat-sheet:not(:has(.chat-messages)) .composer-input {
+  height: 35px;
+  min-height: 35px;
+  padding: 8px 14px;
+  font-size: 15px;
+  line-height: 19px;
+}
+.room .composer-send {
+  width: 35px;
+  height: 35px;
+  min-width: 35px;
+  border-radius: var(--chic-radius-full);
+  background: var(--chic-aubergine);
+  color: var(--chic-cream);
+}
+.room .composer-send:disabled {
+  opacity: 1;
+}
+/* the panel above the row, inside the bar */
+.bar-panel {
+  display: flex;
+  gap: 8px;
+  margin: 8px 0 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  animation: peek-in 260ms var(--ease-out);
+}
+.bar-panel::-webkit-scrollbar {
+  display: none;
+}
+.bar-tile {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 76px;
+  height: 76px;
+  padding: 6px;
+  border-radius: var(--chic-radius-box);
+  background: var(--chic-white);
+  box-shadow: var(--chic-lift);
+  font: 500 11px/13px var(--font-body);
+  text-align: center;
+  color: var(--chic-aubergine);
+}
+@media (hover: hover) {
+  .bar-tile:hover {
+    background: var(--chic-citron);
+  }
+}
+.bar-tile-photo {
+  position: relative;
+  justify-content: flex-end;
+  padding: 0 0 6px;
+  overflow: hidden;
+  color: #fff;
+}
+.bar-tile-photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.bar-tile-photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--chic-shade);
+}
+.bar-tile-photo span {
+  position: relative;
+  z-index: 1;
+}
+/* versions inside the bar */
+.bar-panel .version-row {
+  position: static;
+  padding: 0;
+  animation: none;
+}
+.bar-panel .version-card {
+  width: 76px;
+  padding: 0;
+  background: none;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.bar-panel .version-card-img {
+  height: 76px;
+  border-radius: var(--chic-radius-box);
+  background: var(--chic-white);
+  box-shadow: var(--chic-lift);
+}
+.bar-panel .version-card.is-on .version-card-img {
+  box-shadow: inset 0 0 0 2px var(--chic-aubergine);
+}
+.bar-panel .version-card.is-on {
+  box-shadow: none;
+}
+/* writing: + and the wand bottom left, send bottom right */
+.room .chat-sheet-wrap.is-writing .composer-row {
+  grid-template-columns: auto auto 1fr auto;
+  grid-template-areas: 'input input input input' 'plus wand . send';
+  column-gap: 8px;
+}
+.room .chat-sheet-wrap.is-writing .bar-btn {
+  grid-area: wand;
+}
+.room .chat-sheet-wrap.is-writing .composer-plus {
+  width: 35px;
+  height: 35px;
+  min-width: 35px;
+  background: var(--chic-sand);
+}
+.room .chat-sheet-wrap.is-writing .chat-sheet:not(:has(.chat-messages)) {
+  padding: 0;
+  background: none;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.room:has(.chat-sheet-wrap .bar-panel) .stage-row,
+.room:has(.chat-sheet-wrap .bar-panel) .chat-peek {
+  display: none;
+}
+/* panels: four tiles fill the bar's width; the add panel scrolls for the fifth */
+.bar-panel {
+  gap: 6px;
+}
+.bar-tile,
+.bar-panel .version-card {
+  width: calc((100% - 18px) / 4);
+  min-width: 76px;
+}
+.bar-panel .version-row {
+  gap: 6px;
+  width: 100%;
+}
+/* bug fix (13.11): the menu from a box in the + sheet lay behind the sheet. The old grain-test rule made it
+   position: relative inside the home screen; it must float above the sheet */
+.screen.home > .menu-layer,
+.screen.all-rooms > .menu-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 45;
+}
+.screen.home > .menu-layer-over-sheet,
+.screen.all-rooms > .menu-layer-over-sheet {
+  z-index: 60;
+}
+/* the bar at rest is a full pill; when a panel is open it keeps 24 px so the cards fit (Synne 13.11) */
+.room .chat-sheet-wrap:not(.is-writing) .chat-sheet:not(:has(.chat-messages)):not(:has(.bar-panel)) {
+  border-radius: var(--chic-radius-full);
+}
+/* a smaller + in the bar, the same size as the wand */
+.room .composer-plus svg {
+  width: 18px;
+  height: 18px;
+}
+/* version cards (Synne 13.11): tidy, all on one line, and the outermost card is cut by the edge so you see there are more.
+   3.4 cards across; a soft fade on the left where older versions continue */
+.bar-panel:has(.version-row) {
+  margin-left: -12px;
+  margin-right: -12px;
+}
+.bar-panel .version-row {
+  gap: 6px;
+  padding: 0 12px;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 28px);
+  mask-image: linear-gradient(to right, transparent 0, #000 28px);
+}
+.bar-panel .version-card {
+  flex: none;
+  width: calc((100% - 24px - 18px) / 3.4);
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+}
+.bar-panel .version-card-img {
+  height: auto;
+  aspect-ratio: 1;
+}
+.bar-panel .version-card-name,
+.bar-panel .version-card-date {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.bar-panel .version-card-name {
+  margin-top: 6px;
+  font: 500 12px/16px var(--font-body);
+}
+.bar-panel .version-card-date {
+  font: 400 10px/14px var(--font-body);
+}
+/* the chosen card keeps the same size: a dark ring inside the picture, nothing else moves */
+.bar-panel .version-card.is-on {
+  outline: none;
+}
+.bar-panel .version-card {
+  width: calc((100% - 12px) / 3.4);
+}
+/* + when its menu is open: light green (Synne 13.11) */
+.room .composer-plus[aria-expanded='true'],
+.room .chat-sheet-wrap.is-writing .composer-plus[aria-expanded='true'] {
+  background: var(--chic-citron);
+}
+.room .chat-sheet-wrap .chat-sheet .composer-row .composer-plus[aria-expanded='true'] {
+  background: var(--chic-citron);
+}
+/* + open: sand, the same as the wand and versions when they are on (Synne 13.11) */
+.room .chat-sheet-wrap .chat-sheet .composer-row .composer-plus[aria-expanded='true'] {
+  background: var(--chic-sand);
+}
+
+/* ---------- 13.11 evening: one bar, everything inside it ----------
+   Writing keeps the same bar (no big box): the wand disappears and the versions button becomes send, grey until
+   there is text or a photo. The phone's keyboard pushes the bar up on its own. */
+.room .chat-sheet-wrap.is-writing .chat-sheet:not(:has(.chat-messages)) {
+  padding: 8px 12px;
+  border-radius: var(--chic-radius-full);
+  background: rgba(240, 238, 234, 0.9);
+  -webkit-backdrop-filter: blur(18px) saturate(1.3);
+  backdrop-filter: blur(18px) saturate(1.3);
+  box-shadow: 0 6px 20px rgba(32, 6, 17, 0.12);
+}
+.room .chat-sheet-wrap.is-writing .chat-sheet:not(:has(.chat-messages)) .composer {
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+.room .chat-sheet-wrap.is-writing .composer-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.room .chat-sheet-wrap.is-writing .composer-input {
+  flex: 1;
+  height: 35px;
+  min-height: 35px;
+  padding: 8px 14px;
+  border-radius: var(--chic-radius-full);
+  background: var(--chic-white);
+  box-shadow: var(--chic-lift);
+}
+.room .chat-sheet-wrap.is-writing .composer-plus {
+  background: var(--chic-white);
+}
+.room .composer-send:disabled {
+  background: var(--chic-sand);
+  color: var(--chic-white);
+  opacity: 1;
+}
+/* panels inside the bar keep the rounded box shape */
+.room .chat-sheet:has(.bar-panel) {
+  border-radius: 24px !important;
+}
+/* suggestions inside the bar: round photos in a row */
+.bar-panel-ideas .scan-carousel {
+  position: static;
+  display: flex;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+}
+/* versions panel: the cards and two actions under them */
+.version-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+}
+.version-actions {
+  display: flex;
+  gap: 6px;
+  padding: 0 12px;
+}
+.version-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: var(--chic-radius-full);
+  background: var(--chic-white);
+  box-shadow: var(--chic-lift);
+  font: 500 12px/16px var(--font-body);
+  color: var(--chic-aubergine);
+}
+.version-action.is-on {
+  background: var(--chic-sand);
+}
+.version-action:disabled {
+  opacity: 0.4;
+}
+.bar-panel:has(.version-panel) {
+  margin-left: -12px;
+  margin-right: -12px;
+}
+.version-panel .version-row {
+  padding: 0 12px;
+}
+/* compare: two versions with a divider you drag */
+.compare {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: var(--chic-cream);
+  touch-action: none;
+  cursor: ew-resize;
+}
+.compare-layer {
+  position: absolute;
+  inset: calc(var(--top-h) + 40px) 0 calc(var(--sheet-h) + var(--bottom-safe) + 40px);
+  display: grid;
+  place-items: center;
+  background: var(--chic-cream);
+}
+.compare-layer svg {
+  width: 100%;
+  height: 100%;
+}
+.compare-divider {
+  position: absolute;
+  top: calc(var(--top-h) + 40px);
+  bottom: calc(var(--sheet-h) + var(--bottom-safe) + 40px);
+  width: 2px;
+  translate: -1px 0;
+  background: var(--chic-white);
+  box-shadow: 0 0 6px rgba(32, 6, 17, 0.25);
+}
+.compare-grip {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 28px;
+  height: 44px;
+  translate: -50% -50%;
+  border-radius: var(--chic-radius-full);
+  background: var(--chic-white);
+  box-shadow: var(--chic-lift);
+}
+.compare-label {
+  position: absolute;
+  top: calc(var(--top-h) + 48px);
+  padding: 4px 10px;
+  border-radius: var(--chic-radius-full);
+  background: var(--chic-white);
+  box-shadow: var(--chic-lift);
+  font: 500 12px/16px var(--font-body);
+  color: var(--chic-aubergine);
+}
+.compare-label-left {
+  left: var(--space-16);
+}
+.compare-label-right {
+  right: var(--space-16);
+}
+.compare-close {
+  position: absolute;
+  top: calc(var(--top-h) + 44px);
+  left: 50%;
+  translate: -50% 0;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--chic-radius-full);
+  background: var(--chic-white);
+  box-shadow: var(--chic-lift);
+  color: var(--chic-aubergine);
+}
+/* send is grey (sand) until there is text or a photo */
+.room .chat-sheet-wrap .chat-sheet .composer-row .composer-send:disabled {
+  background: var(--chic-sand);
+  color: var(--chic-white);
+  opacity: 1;
+}
+.version-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* versions panel: «versions» label left, two small text actions right – like «recent rooms / All Rooms» */
+.version-actions {
+  display: none;
+}
+.version-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-16);
+  padding: 0 14px;
+}
+.version-head-title {
+  flex: 1;
+  font: var(--chic-label);
+  color: var(--chic-aubergine);
+}
+.version-link {
+  min-height: 32px;
+  padding: 0;
+  font: 500 13px/16px var(--font-body);
+  color: var(--chic-aubergine);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.version-link.is-on {
+  text-decoration-thickness: 2px;
+}
+.version-link:disabled {
+  opacity: 0.4;
+}
+/* cards with the real photo: a bit taller, like the room cards */
+.bar-panel .version-card-img {
+  aspect-ratio: 4 / 5;
+}
+/* several lines of text (Synne 13.11): the field becomes a soft box instead of a stretched pill, the bar follows,
+   and + and send sit at the bottom next to the last line */
+.room .chat-sheet-wrap .chat-sheet:has(.composer.is-multiline) {
+  border-radius: 24px !important;
+}
+.room .chat-sheet-wrap .composer.is-multiline .composer-row {
+  align-items: flex-end;
+}
+.room .chat-sheet-wrap .chat-sheet .composer.is-multiline .composer-input {
+  height: auto;
+  border-radius: 18px;
+}
+/* compare in the real room: the views fill the screen; a clear layer on top takes the drag */
+.compare-layer-real {
+  inset: 0;
+  pointer-events: none;
+}
+.compare-frame {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  object-fit: cover;
+}
+.compare-divider-real {
+  top: 0;
+  bottom: 0;
+}
+.compare {
+  z-index: 20;
+}
+.panel-catcher {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+/* versions: no header; «Save now» and «Compare» are cards at the end of the row */
+.version-head {
+  display: none;
+}
+.version-tool {
+  background: none;
+}
+.version-tool .version-tool-icon {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--chic-radius-box);
+  background: var(--chic-white);
+  box-shadow: var(--chic-lift);
+  color: var(--chic-aubergine);
+}
+.version-tool.is-on .version-tool-icon {
+  background: var(--chic-sand);
+}
+.version-tool:disabled {
+  opacity: 0.4;
+}
+@media (hover: hover) {
+  .version-tool:hover .version-tool-icon {
+    background: var(--chic-citron);
+  }
+}
+/* versions: no header; «Save now» and «Compare» are cards at the end of the row */
+.version-head {
+  display: none;
+}
+.version-tool {
+  background: none;
+}
+.version-tool .version-tool-icon {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--chic-radius-box);
+  background: var(--chic-white);
+  box-shadow: var(--chic-lift);
+  color: var(--chic-aubergine);
+}
+.version-tool.is-on .version-tool-icon {
+  background: var(--chic-sand);
+}
+.version-tool:disabled {
+  opacity: 0.4;
+}
+@media (hover: hover) {
+  .version-tool:hover .version-tool-icon {
+    background: var(--chic-citron);
+  }
+}
+/* an attached photo above the field: the bar keeps the rounded box, not a pill (Synne 13.11) */
+.room .chat-sheet-wrap .chat-sheet:has(.composer-with-attachment) {
+  border-radius: 24px !important;
+}
+/* the field text a little smaller */
+.room .chat-sheet-wrap .chat-sheet .composer-input {
+  font-size: 14px;
+}
+/* text vertically centred in the 35 px field (one line: 18 px line in 35 px) */
+.room .chat-sheet-wrap .chat-sheet .composer:not(.is-multiline) .composer-input {
+  box-sizing: border-box;
+  height: 35px;
+  min-height: 35px;
+  padding: 8.5px 14px;
+  line-height: 18px;
+  font-size: 14px;
+}
+
+/* the profile photo in the round avatar (Silje 17.11) */
+.home-avatar,
+.avatar {
+  overflow: hidden;
+}
+.home-avatar img,
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* the photo is a circle on black corners: zoom in a little so no black shows at the edge */
+  transform: scale(1.1);
+}
+
+/* «RECENT ROOMS» and «YOUR MOODBOARDS» on MyCrib in capitals (Silje 17.11); the other labels stay lower case */
+.home-block:has(.home-room-row) .section-title,
+.home-block[aria-label='Moodboards'] .section-title {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 12px; /* a little smaller in capitals (Silje 17.11) */
+  line-height: 16px;
+}
+/* less air between these two headings and their pictures (Silje 17.11): 16 → 8 px.
+   The header keeps its 48 px height, so «All Rooms» is still easy to tap. */
+.home-block:has(.home-room-row) .section-header,
+.home-block[aria-label='Moodboards'] .section-header {
+  margin-bottom: -8px;
+}
+.home-block[aria-label='Moodboards'] .section-header + * {
+  margin-top: 0;
+}
+
+/* the + in dusty rose (Silje 17.11); the plus is aubergine, since cream on rose is too faint to read */
+.home-fab {
+  background: var(--chic-rose);
+  color: var(--chic-aubergine);
+}
+/* room at the end of the moodboards, so the last one can scroll up above the + (Silje 17.11) */
+.home-block[aria-label='Moodboards'] {
+  padding-bottom: calc(var(--fab-size) + var(--space-8));
+}
+
+/* the nature panel in the bar (Silje 17.11): a heading over the photos, and taller photos.
+   The tiles wrap onto rows under the heading, scrolling sideways as before */
+.bar-panel-nature {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: auto auto;
+  grid-auto-columns: calc((100% - 18px) / 4);
+  column-gap: 6px;
+  row-gap: 8px;
+}
+.bar-panel-title {
+  grid-column: 1 / span 5; /* over all five photos */
+  grid-row: 1;
+  padding: 0 4px;
+  font: 400 12px/16px var(--font-body);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--chic-aubergine);
+}
+.bar-panel-nature .bar-tile {
+  grid-row: 2;
+  width: auto;
+  min-width: 76px;
+  height: 116px;
+}
+
+/* the puzzled fig a little smaller (Silje 17.11) */
+.fig-peek {
+  width: 80px;
+  /* a little to the right of the middle (Silje 17.11) */
+  left: calc(50% + 8px);
+  /* it peeks up from behind the chat's top edge, also when the chat is open, so it can be tapped to close it again */
+  bottom: calc(max(var(--bottom-safe), var(--space-8)) + var(--space-4) + var(--sheet-h, 64px) - var(--fig-sink));
+  --fig-sink: 12px; /* the closed bar is 58 px high: the fig shows as before */
+}
+/* while the fig is up, the note and undo/redo move up so they don't cover it */
+.room:has(.fig-peek) .chat-peek,
+.room:has(.fig-peek) .stage-row {
+  translate: 0 calc(-1 * var(--fig-clear));
+}
+.room {
+  --fig-clear: 16px; /* with the smaller fig, a little lift is enough */
+}
+
+/* chat as message bubbles (Silje 17.11): you on the right in light pink, the fig / the AI on the left in white,
+   so it is easy to see who wrote what */
+.chat-bubble-user p,
+.chat-bubble-ai > p {
+  display: inline-block;
+  padding: var(--space-8) var(--space-12);
+  border-radius: 18px;
+  font: 400 14px/20px var(--font-body);
+}
+.chat-bubble-user p {
+  background: var(--chic-blush);
+  color: var(--chic-aubergine);
+  box-shadow: none;
+  border-bottom-right-radius: 4px;
+}
+.chat-bubble-ai {
+  max-width: 85%;
+}
+.chat-bubble-ai > p {
+  background: var(--chic-white);
+  color: var(--chic-aubergine);
+  box-shadow: var(--chic-lift);
+  border-bottom-left-radius: 4px;
+}
+
+/* the colour dots the fig offers under its last line (Silje 17.11) */
+.chat-swatches {
+  display: flex;
+  flex-wrap: nowrap; /* one row that scrolls sideways, so the chat stays low */
+  overflow-x: auto;
+  scrollbar-width: none;
+  margin-left: calc(-1 * var(--space-4));
+  padding: 2px var(--space-4) 6px;
+  gap: var(--space-8);
+  margin-top: var(--space-8);
+}
+.chat-swatch {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+  min-height: 40px;
+  padding: 0 var(--space-12) 0 var(--space-8);
+  border-radius: var(--chic-radius-full);
+  background: var(--chic-white);
+  box-shadow: var(--chic-lift);
+  font: 500 13px/16px var(--font-body);
+  color: var(--chic-aubergine);
+}
+.chat-swatch i {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--chic-radius-full);
+}
+
+
+/* versions and nature photos share one format (Synne 13.11): smaller cards, 4.4 across; the chosen one clearly marked */
+.bar-panel:has(.nature-row) {
+  margin-left: -12px;
+  margin-right: -12px;
+}
+.bar-panel .nature-row {
+  padding: 0 12px;
+}
+.bar-panel .version-card {
+  width: calc((100% - 12px) / 4.4);
+}
+.bar-panel .version-card-img {
+  position: relative;
+  overflow: visible;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--chic-radius-box);
+  box-shadow: var(--chic-lift);
+}
+.bar-panel .version-card-img img {
+  border-radius: var(--chic-radius-box);
+}
+/* chosen: a dark ring with a little air around the photo, and the name in bold */
+.bar-panel .version-card.is-on .version-card-img {
+  outline: 2px solid var(--chic-aubergine);
+  outline-offset: 2px;
+  box-shadow: var(--chic-lift);
+}
+.bar-panel .version-card.is-on .version-card-name {
+  font-weight: 600;
+}
+.bar-panel .version-card {
+  padding-top: 4px;
+}
+@media (hover: hover) {
+  .bar-panel .version-card:not(.is-on):not(.version-tool):hover .version-card-img {
+    outline: 2px solid var(--chic-sand);
+    outline-offset: 2px;
+  }
+}
+.bar-panel .version-card:active .version-card-img {
+  transform: scale(0.97);
+}
+.bar-panel .version-card-img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.bar-panel .version-card-img img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* «Save version» fits on two lines instead of being cut */
+.bar-panel .version-tool .version-card-name {
+  white-space: normal;
+  overflow: visible;
+  line-height: 14px;
+}
+.bar-panel .version-row {
+  align-items: flex-start;
+}
+/* every card the same 4:5 shape, whatever the photo */
+.bar-panel .version-card-img {
+  min-height: 0;
+  overflow: hidden;
+}
+.bar-panel .version-card-img img {
+  position: absolute;
+  inset: 0;
+}
+.bar-panel .version-card.is-on .version-card-img,
+.bar-panel .version-card:hover .version-card-img {
+  overflow: hidden;
+}
+/* the bar looks the same with the chat open: white pill field, buttons on one line, everything 35 px and centred (Synne 13.11) */
+.room .chat-sheet-wrap .chat-sheet:has(.chat-messages) .composer {
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+.room .chat-sheet-wrap .chat-sheet:has(.chat-messages) .composer-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  background: none;
+  box-shadow: none;
+}
+.room .chat-sheet-wrap .chat-sheet:has(.chat-messages) .composer-input {
+  flex: 1;
+  border-radius: var(--chic-radius-full);
+  background: var(--chic-white);
+  box-shadow: var(--chic-lift);
+}
+.room .chat-sheet-wrap .chat-sheet .composer-row .composer-send {
+  box-sizing: border-box;
+  width: 35px;
+  height: 35px;
+  min-width: 35px;
+  padding: 0;
+}
+/* compare lives in the room itself, under the top bar and the chat bar – no separate mode (Synne 13.11) */
+.room .compare {
+  z-index: 3;
+}
+.room:has(.compare) .topbar {
+  position: relative;
+  z-index: 4;
+}
+.room .compare .compare-label {
+  top: calc(var(--top-h) + 12px);
+}
+/* compare: the two chosen cards say which side they are on */
+.version-card {
+  position: relative;
+}
+.version-card-side {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: var(--chic-radius-full);
+  background: var(--chic-aubergine);
+  color: var(--chic-cream);
+  font: 600 11px/1 var(--font-body);
+}
+/* open chat: same 35 px field and same side inset as the closed bar */
+.room .chat-sheet-wrap .chat-sheet:has(.chat-messages) .composer:not(.is-multiline) .composer-row .composer-input {
+  box-sizing: border-box;
+  height: 35px;
+  min-height: 35px;
+  padding: 8.5px 14px;
+  line-height: 18px;
+  font-size: 14px;
+}
+.room .chat-sheet-wrap .chat-sheet:has(.chat-messages) .composer-row {
+  margin-inline: 4px;
+}
+/* the X that ends compare: centred between the two labels, 44 px to tap (Synne 13.11) */
+.room .compare .compare-close {
+  top: calc(var(--top-h) + 4px);
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+}
+/* a photo in the bar (Synne 13.11): a small thumbnail lined up with the field, a small X inside its corner, and
+   a two-line field with the same tight 18 px lines as one line, so it reads as one calm box */
+.room .chat-sheet-wrap .chat-sheet .composer-with-attachment .composer-attachments {
+  padding: 2px 0 8px 39px;
+}
+.room .chat-sheet-wrap .chat-sheet .composer-with-attachment .attachment {
+  position: relative;
+}
+.room .chat-sheet-wrap .chat-sheet .composer-with-attachment .attachment-img {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--chic-radius-box);
+  overflow: hidden;
+  box-shadow: var(--chic-lift);
+}
+.room .chat-sheet-wrap .chat-sheet .composer-with-attachment .attachment-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.room .chat-sheet-wrap .chat-sheet .composer-with-attachment .attachment-remove {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  left: auto;
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border-radius: var(--chic-radius-full);
+  background: rgba(32, 6, 17, 0.7);
+  color: var(--chic-white);
+  translate: none;
+}
+/* a 44 px tap area around the small X */
+.room .chat-sheet-wrap .chat-sheet .composer-with-attachment .attachment-remove::after {
+  content: '';
+  position: absolute;
+  inset: -12px;
+}
+.room .chat-sheet-wrap .chat-sheet .composer.is-multiline .composer-row .composer-input {
+  padding: 8.5px 14px;
+  line-height: 18px;
+  font-size: 14px;
+  border-radius: 17.5px;
+}
+.room .chat-sheet-wrap .chat-sheet .composer.is-multiline .composer-row {
+  align-items: flex-end;
+}
+/* the photo lives inside the white field, above the text: one box, one message (Synne 13.11) */
+.composer-field {
+  display: contents;
+}
+.room .chat-sheet-wrap .chat-sheet .composer-with-attachment .composer-field {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  border-radius: 18px;
+  background: var(--chic-white);
+  box-shadow: var(--chic-lift);
+}
+.room .chat-sheet-wrap .chat-sheet .composer-with-attachment .composer-attachments {
+  display: flex;
+  gap: 6px;
+  padding: 6px 6px 0;
+}
+.room .chat-sheet-wrap .chat-sheet .composer-with-attachment .composer-field .composer-input {
+  flex: none;
+  width: 100%;
+  background: none;
+  box-shadow: none;
+  border-radius: 0 0 18px 18px;
+}
+.room .chat-sheet-wrap .chat-sheet .composer-with-attachment .composer-row {
+  align-items: flex-end;
+}
+/* photo in the field (Synne 14.11): the photo fills its square, no frame or inner padding; the X sits inside the corner;
+   + and send stay at the bottom, by the text line, also when the wand is showing */
+.room .chat-sheet-wrap .chat-sheet .composer.composer-with-attachment .composer-attachments .attachment-img {
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  border: 0;
+  border-radius: 12px;
+  background: var(--chic-cream);
+  box-shadow: none;
+}
+.room .chat-sheet-wrap .chat-sheet .composer.composer-with-attachment .composer-attachments .attachment-img > *,
+.room .chat-sheet-wrap .chat-sheet .composer.composer-with-attachment .composer-attachments .attachment-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.room .chat-sheet-wrap .chat-sheet .composer.composer-with-attachment .composer-attachments .attachment-remove {
+  top: 4px;
+  right: 4px;
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  background: rgba(32, 6, 17, 0.65);
+}
+.room .chat-sheet-wrap .chat-sheet .composer.composer-with-attachment .composer-attachments {
+  padding: 8px 8px 0;
+}
+.room .chat-sheet-wrap .chat-sheet .composer.composer-with-attachment:not(.x) .composer-row {
+  align-items: flex-end;
+}
+.room .chat-sheet-wrap .chat-sheet .composer.composer-with-attachment .composer-attachments {
+  padding: 10px 14px 0;
+}
+/* the suggestion circles: room for the chosen ring (2 px + 2 px gap) and the shadow, so nothing is cut off (Synne 14.11) */
+.room .bar-panel-ideas .scan-carousel {
+  padding: 5px;
+  margin: -5px -5px -5px 0;
+  overflow-y: visible;
+}
+.room .bar-panel.bar-panel-ideas {
+  overflow: visible;
+}
+.room .bar-panel.bar-panel-ideas .scan-carousel {
+  margin: -5px;
+}
+/* a new version was saved: the clock gives a soft pulse and keeps a small dot until the versions are opened (Synne 14.11) */
+.room .bar-btn.has-new {
+  position: relative;
+  animation: chic-new-version 900ms var(--chic-glide) 2;
+}
+.room .bar-btn.has-new::after {
+  content: '';
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  width: 9px;
+  height: 9px;
+  border-radius: var(--chic-radius-full);
+  background: var(--chic-aubergine);
+  box-shadow: 0 0 0 2px var(--chic-white);
+}
+@keyframes chic-new-version {
+  0%, 100% { scale: 1; }
+  40% { scale: 1.14; background: var(--chic-sand); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .room .bar-btn.has-new { animation: none; }
+}
+/* the furniture you tapped, at the top of the bar: a small photo, its name and an X (Synne 14.11) */
+.bar-selected {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  margin: 2px 0 8px;
+  padding: 3px 4px 3px 3px;
+  border-radius: var(--chic-radius-full);
+  background: var(--chic-sand);
+  color: var(--chic-aubergine);
+  font: 500 13px/16px var(--font-body);
+}
+.bar-selected-thumb {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--chic-radius-full);
+  background: var(--chic-white);
+  overflow: hidden;
+}
+.bar-selected-thumb > *,
+.bar-selected-thumb img {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+}
+.bar-selected-x {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--chic-radius-full);
+  color: var(--chic-aubergine);
+}
+.bar-selected-x::after {
+  content: '';
+  position: absolute;
+  inset: -11px;
+}
+.room .chat-sheet:has(.bar-selected) {
+  border-radius: 24px !important;
+}
+/* writing (Synne 14.11): only the last button changes – the clock turns into send with a soft swap, and back again */
+@keyframes chic-swap-in {
+  from { opacity: 0; scale: 0.6; rotate: -30deg; }
+  to { opacity: 1; scale: 1; rotate: 0deg; }
+}
+.room .chat-sheet-wrap .chat-sheet .composer-row .composer-send,
+.room .chat-sheet-wrap .chat-sheet .composer-row > .bar-btn:last-child {
+  animation: chic-swap-in 220ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+.room .chat-sheet-wrap .chat-sheet .composer-row .composer-send {
+  transition: background-color 200ms ease, color 200ms ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .room .chat-sheet-wrap .chat-sheet .composer-row .composer-send,
+  .room .chat-sheet-wrap .chat-sheet .composer-row > .bar-btn:last-child { animation: none; }
+}
+/* a photo or a long text (Synne 14.11): the field takes the whole width, the photo and the text on top,
+   and the buttons in a row under it – + and the wand to the left, send to the right (like ChatGPT) */
+.room .chat-sheet-wrap .chat-sheet .composer.is-multiline:not(.x) .composer-row,
+.room .chat-sheet-wrap .chat-sheet .composer.composer-with-attachment:not(.x) .composer-row {
+  display: grid;
+  grid-template-columns: auto auto 1fr auto;
+  align-items: center;
+  column-gap: 4px;
+  row-gap: 8px;
+}
+.room .chat-sheet-wrap .chat-sheet .composer:is(.is-multiline, .composer-with-attachment):not(.x) .composer-row > .composer-field,
+.room .chat-sheet-wrap .chat-sheet .composer:is(.is-multiline, .composer-with-attachment):not(.x) .composer-row .composer-input {
+  grid-column: 1 / -1;
+  grid-row: 1;
+}
+.room .chat-sheet-wrap .chat-sheet .composer:is(.is-multiline, .composer-with-attachment):not(.x) .composer-row > .composer-plus {
+  grid-column: 1;
+  grid-row: 2;
+}
+.room .chat-sheet-wrap .chat-sheet .composer:is(.is-multiline, .composer-with-attachment):not(.x) .composer-row > .bar-btn:not(:last-child) {
+  grid-column: 2;
+  grid-row: 2;
+}
+.room .chat-sheet-wrap .chat-sheet .composer:is(.is-multiline, .composer-with-attachment):not(.x) .composer-row > .composer-send,
+.room .chat-sheet-wrap .chat-sheet .composer:is(.is-multiline, .composer-with-attachment):not(.x) .composer-row > .bar-btn:last-child {
+  grid-column: 4;
+  grid-row: 2;
+}
+/* a long text without a photo: the same calm box as with a photo */
+.room .chat-sheet-wrap .chat-sheet .composer.is-multiline:not(.composer-with-attachment) .composer-row .composer-input {
+  border-radius: 18px;
+}
+/* a long text scrolls inside the box after about five lines */
+.room .chat-sheet-wrap .chat-sheet .composer .composer-row .composer-input {
+  max-height: 107px;
+  overflow-y: auto;
+}
+/* scanning: the camera fills the whole phone, also under the clock – no cream strip at the top (Synne 14.11) */
+/* the room's own overlays already reach up under the clock; the others are moved up by the clock's height */
+:not(.room) > .screen-overlay.rs {
+  top: calc(-1 * var(--status-h));
+}
+.phone:has(.screen-overlay.rs) .status-bar {
+  position: relative;
+  z-index: 60;
+}
+/* sheets (Synne 14.11): the dark layer reaches up under the clock, so nothing behind is cut off by a cream strip;
+   the clock stays readable on top. (The room already reaches up under the clock.) */
+.screen:not(.room) .scrim:not(.scrim-modeless) {
+  top: calc(-1 * var(--status-h));
+}
+.phone:has(.scrim:not(.scrim-modeless)) .status-bar {
+  position: relative;
+  z-index: 60;
+}
+/* a tall sheet goes almost all the way up – just under the clock – and its buttons sit at the bottom */
+.scrim .sheet.sheet-tall {
+  height: calc(100% - var(--status-h) - var(--space-8));
+  max-height: none;
+}
+.scrim .sheet.sheet-tall > .sheet-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+.scrim .sheet.sheet-tall > .sheet-foot {
+  flex: none;
+  margin-top: auto;
+}
+.cr-scan-3d .cr-scan-frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+/* «Challenge my style»: a row you tap, with a switch on the right (Synne 14.11) */
+.nr-switch-row {
+  display: flex;
+  align-items: center;
+  gap: var(--chic-inset);
+  width: 100%;
+  min-height: var(--chic-touch);
+  padding: 12px var(--chic-inset);
+  border-radius: var(--chic-radius-box);
+  background: var(--chic-white);
+  box-shadow: var(--chic-lift);
+  text-align: left;
+  color: var(--chic-aubergine);
+}
+.nr-switch-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.nr-switch-title {
+  font: 500 15px/20px var(--font-body);
+}
+.nr-switch-note {
+  font: 400 13px/18px var(--font-body);
+  color: var(--chic-muted);
+}
+.nr-switch {
+  flex: none;
+  position: relative;
+  width: 44px;
+  height: 26px;
+  border-radius: var(--chic-radius-full);
+  background: var(--chic-sand);
+  transition: background-color 200ms ease;
+}
+.nr-switch > span {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--chic-radius-full);
+  background: var(--chic-white);
+  box-shadow: var(--chic-lift);
+  transition: translate var(--chic-glide);
+}
+.nr-switch.is-on {
+  background: var(--chic-aubergine);
+}
+.nr-switch.is-on > span {
+  translate: 18px 0;
+}
+.nr-switch-row:focus-visible {
+  box-shadow: var(--chic-focus);
+}
+/* «Enter / Edit measurements» as a sheet: as tall as the other tall sheets – just under the clock (Synne 14.11).
+   Outside the room the screen already starts under the clock, so only the small gap is needed. */
+.screen:not(.room) .screen-overlay.mf-as-sheet {
+  top: var(--space-8);
+}
+.phone:has(.mf-as-sheet) .status-bar {
+  position: relative;
+  z-index: 60;
+}
+/* nature photos you pick from (Synne 14.11): enough room between them for the chosen ring (2 px + 2 px gap on each
+   side), so two chosen photos never touch – the same ring as on the version cards. Applies to every nature strip. */
+.nature-strip {
+  gap: 10px;
+}
+.nature-pick.is-active img {
+  outline: 2px solid var(--chic-aubergine);
+  outline-offset: 2px;
+}
+.nature-pick.is-active span {
+  font-weight: 600;
+}
+/* in a form, the white boxes you type in or switch share one corner: 16 px, like the multi-line field (Synne 14.11) */
+.nr-switch-row {
+  border-radius: var(--chic-radius-field);
+}
+/* «Connect a moodboard» row in Room details: like the switch row, with a chevron (Synne 14.11) */
+.nr-link-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: var(--chic-touch);
+  padding: 12px var(--chic-inset);
+  border-radius: var(--chic-radius-field);
+  background: var(--chic-white);
+  box-shadow: var(--chic-lift);
+  text-align: left;
+  color: var(--chic-aubergine);
+}
+.nr-link-row:focus-visible {
+  box-shadow: var(--chic-focus);
+}
+.nr-link-thumbs {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  border-radius: var(--chic-radius-box);
+  background: var(--chic-cream);
+}
+.nr-link-thumbs img {
+  width: 36px;
+  height: 36px;
+  object-fit: cover;
+  border-radius: var(--chic-radius-image);
+  box-shadow: 0 0 0 2px var(--chic-white);
+}
+.nr-link-thumbs img + img {
+  margin-left: -14px;
+}
+/* the moodboards in their sheet: two across, the chosen ones with the same ring as everywhere else */
+.nr-boards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 10px;
+  padding-top: 4px;
+}
+.nr-board {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: left;
+  color: var(--chic-aubergine);
+}
+.nr-board .board-cover {
+  margin-bottom: 6px;
+  border-radius: var(--chic-radius-image);
+}
+.nr-board.is-on .board-cover {
+  outline: 2px solid var(--chic-aubergine);
+  outline-offset: 2px;
+}
+.nr-board-name {
+  font: 500 14px/18px var(--font-body);
+}
+.nr-board.is-on .nr-board-name {
+  font-weight: 600;
+}
+.nr-board-meta {
+  font: 400 12px/16px var(--font-body);
+  color: var(--chic-muted);
+}
+/* an empty moodboard (Synne 14.11): a white box with the moodboard icon, the same shape as a full one; the name in dark
+   text, since there is no photo behind it. Everywhere a board is shown. */
+.board-cover.is-empty {
+  display: grid;
+  place-items: center;
+  aspect-ratio: var(--board-cover-ratio);
+  background: var(--chic-white);
+  box-shadow: var(--chic-lift);
+  color: var(--chic-muted);
+}
+.board-cover.is-empty::after {
+  content: none;
+}
+.board-card:has(.board-cover.is-empty) .board-card-name,
+.board-card:has(.board-cover.is-empty) .board-card-meta {
+  color: var(--chic-aubergine);
+  text-shadow: none;
+}
+.board-tall.is-empty {
+  display: grid;
+  place-items: center;
+  background: var(--chic-white);
+  box-shadow: var(--chic-lift);
+  color: var(--chic-muted);
+}
+.board-tall.is-empty::after {
+  content: none;
+}
+.board-tall.is-empty .board-simple-name {
+  color: var(--chic-aubergine);
+  text-shadow: none;
+}
+.nr-link-empty {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--chic-radius-image);
+  background: var(--chic-cream);
+  box-shadow: 0 0 0 2px var(--chic-white);
+  color: var(--chic-muted);
+}
+.nr-link-empty + img,
+img + .nr-link-empty,
+.nr-link-empty + .nr-link-empty {
+  margin-left: -14px;
+}
+.board-cover.is-empty {
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+}
+/* «Personalise the room (optional)» in Room details: one row that opens the optional parts (Synne 14.11) */
+.nr-more-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: var(--chic-touch);
+  padding: 12px var(--chic-inset);
+  border-radius: var(--chic-radius-field);
+  background: var(--chic-white);
+  box-shadow: var(--chic-lift);
+  text-align: left;
+  color: var(--chic-aubergine);
+}
+.nr-more-row > .icon {
+  flex: none;
+  transition: rotate 200ms ease;
+}
+.nr-more-row[aria-expanded='true'] > .icon {
+  rotate: 90deg;
+}
+.nr-more-row:focus-visible {
+  box-shadow: var(--chic-focus);
+}
+.nr-more {
+  display: flex;
+  flex-direction: column;
+  gap: var(--chic-gap-section);
+  animation: fade-in 200ms ease;
+}
+/* the show / hide control on «Personalise the room» (Synne 14.11): a small pill with a chevron that turns */
+.nr-more-row {
+  align-items: flex-start;
+}
+.nr-more-toggle {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 32px;
+  padding: 0 10px 0 12px;
+  border-radius: var(--chic-radius-full);
+  background: var(--chic-cream);
+  font: 500 13px/16px var(--font-body);
+  color: var(--chic-aubergine);
+}
+.nr-more-toggle .icon {
+  transition: rotate 200ms ease;
+}
+.nr-more-row[aria-expanded='true'] .nr-more-toggle {
+  background: var(--chic-sand);
+}
+.nr-more-row[aria-expanded='true'] .nr-more-toggle .icon {
+  rotate: 180deg;
+}
+/* consistent spacing in Room details and Room settings (Synne 14.11): the nature row only keeps the 4 px the chosen
+   ring needs, and gives it back with a negative margin, so the photos sit as far from their heading as the chips do,
+   and the next block is the same 24 px away as everywhere else */
+.nr-details .nr-group .nature-strip {
+  padding: 4px var(--chic-edge);
+  margin: -4px -16px -4px;
+}
+/* the row that opens «Personalise the room»: a plain chevron that turns, centred (Synne 14.11) */
+.nr-more-row {
+  align-items: center;
+}
+.nr-more-row > .icon {
+  flex: none;
+  transition: rotate 200ms ease;
+}
+.nr-more-row[aria-expanded='true'] > .icon {
+  rotate: 180deg;
+}
+/* nature names on one line, so every photo in the row is the same height */
+.nature-strip-small .nature-pick span {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* the cover before there is a photo (Synne 14.11): a white box with an image icon, «Add photo» under it */
+.nr-cover.is-empty {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 12px;
+  background: var(--chic-white);
+  box-shadow: var(--chic-lift);
+  color: var(--chic-muted);
+}
+.nr-cover.is-empty .nr-cover-change {
+  position: static;
+  translate: none;
+  background: var(--chic-cream);
+  color: var(--chic-aubergine);
+}
+.nr-cover.is-empty > svg {
+  width: 32px;
+  height: 32px;
+}
+.nr-cover.is-empty .nr-cover-change {
+  left: auto;
+  bottom: auto;
+  transform: none;
+}
+/* the connect icon on «Connect a moodboard», slanted (Synne 14.11) */
+.nr-link-icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  rotate: -45deg;
+}
+/* an empty board is always as big as a full one, wherever it sits (Synne 14.11) */
+.board-cover.is-empty,
+.nr-board .board-cover {
+  width: 100%;
+  aspect-ratio: var(--board-cover-ratio);
+}
+.nr-board {
+  align-items: stretch;
+}
+/* screens that are not positioned: their sheets already start at the top of the phone, so they are not moved up again
+   (the rule above would push them over the clock – seen in Room settings, 14.11) */
+.screen.room-settings .scrim:not(.scrim-modeless),
+.screen.moodboard .scrim:not(.scrim-modeless),
+.screen.settings .scrim:not(.scrim-modeless),
+.screen.home:has(.nature-x) .scrim:not(.scrim-modeless) {
+  top: 0;
+}
+.screen.room-settings .screen-overlay.mf-as-sheet,
+.screen.moodboard .screen-overlay.mf-as-sheet,
+.screen.settings .screen-overlay.mf-as-sheet {
+  top: calc(var(--status-h) + var(--space-8));
+}
+/* «Personalise the room» as plain text on the background, not a box (Synne 14.11): it reads as «more if you like»
+   and as the heading for what opens under it; the whole line is still at least 48 px to tap */
+.nr-details .nr-more-row {
+  min-height: var(--chic-touch);
+  padding: 4px 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+.nr-details .nr-more-row:focus-visible {
+  border-radius: var(--chic-radius-box);
+  box-shadow: var(--chic-focus);
+}
+/* the placeholder never wraps in the small field; a long one ends in … (Synne 14.11) */
+.room .chat-sheet-wrap .chat-sheet .composer:not(.is-multiline) .composer-input::placeholder {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.side-panel-label {
+  margin: 0;
+  padding: 0 var(--space-16) var(--space-8);
+}
+/* a room made from photos (Synne 14.11): each photo whole in its own format, 6 px from the screen edges, centred in the
+   space between the top bar and the chat bar; swipe between them as before */
+.photo-page {
+  flex: none;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  padding: calc(var(--top-h) + var(--space-8)) var(--chic-edge) calc(var(--sheet-h) + var(--bottom-safe) + var(--space-16));
+  scroll-snap-align: start;
+}
+.photo-pages-track .photo-page img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: var(--chic-radius-image);
+}
+/* ---------- Inspiration → «Make my kitchen like this» (Synne 14.11) ---------- */
+/* Explore inside the sheet: the same search and filters, the photos reach the sheet's edges like on Explore */
+.inspo-picker {
+  margin: 0 calc(-1 * var(--space-16));
+}
+.inspo-picker .discover-search-wrap,
+.inspo-picker .discover-filters,
+.inspo-picker .discover-filter {
+  padding-left: var(--space-16);
+  padding-right: var(--space-16);
+}
+/* the ready-made prompt above the field */
+.bar-suggest {
+  display: flex;
+  margin: 0 0 8px;
+}
+.bar-suggest-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 0 12px;
+  border-radius: var(--chic-radius-full);
+  background: var(--chic-white);
+  box-shadow: var(--chic-lift);
+  font: 500 13px/16px var(--font-body);
+  color: var(--chic-aubergine);
+  animation: fade-in 200ms ease;
+}
+.bar-suggest-chip:hover {
+  background: var(--chic-citron);
+}
+.room .chat-sheet:has(.bar-suggest) {
+  border-radius: 24px !important;
+}
+/* an Explore photo in the field shows as itself */
+.attachment-pin img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* the AI building the room (Synne 14.11, second version): calm, like ChatGPT making an image. The frame has the photo's
+   own shape and sits exactly where the photo sat, so nothing jumps. The old photo softens; the new room fades in from the
+   top through a wide, soft gradient edge while it sharpens; a small glass label says what is happening. */
+.makeover {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: var(--chic-cream);
+}
+.makeover > .photo-page {
+  position: absolute;
+  inset: 0;
+}
+.makeover-frame {
+  position: relative;
+  width: 100%;
+  max-height: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: var(--chic-radius-image);
+  overflow: hidden;
+}
+.makeover-frame img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.makeover-from {
+  animation: makeover-soften var(--mk-ms) ease-out forwards;
+}
+@keyframes makeover-soften {
+  0% { filter: none; }
+  20%, 100% { filter: blur(10px) saturate(0.7) brightness(1.04); }
+}
+.makeover-to {
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 40%, transparent 60%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 40%, transparent 60%, transparent 100%);
+  -webkit-mask-size: 100% 250%;
+  mask-size: 100% 250%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  animation: makeover-reveal var(--mk-ms) cubic-bezier(0.45, 0, 0.25, 1) forwards;
+}
+@keyframes makeover-reveal {
+  0%, 15% { -webkit-mask-position: 0 100%; mask-position: 0 100%; filter: blur(20px); }
+  85% { -webkit-mask-position: 0 0; mask-position: 0 0; filter: blur(3px); }
+  100% { -webkit-mask-position: 0 0; mask-position: 0 0; filter: blur(0); }
+}
+.makeover-status {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--sheet-h) + var(--space-16));
+  translate: -50% 0;
+  padding: 8px 14px;
+  border-radius: var(--chic-radius-full);
+  background: rgba(255, 255, 255, 0.55);
+  -webkit-backdrop-filter: blur(20px) saturate(1.6);
+  backdrop-filter: blur(20px) saturate(1.6);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 6px 20px rgba(32, 6, 17, 0.1);
+  white-space: nowrap;
+  animation: fade-in 300ms ease;
+}
+.makeover-text {
+  font: 500 13px/16px var(--font-body);
+  background: linear-gradient(90deg, var(--chic-aubergine) 35%, rgba(32, 6, 17, 0.35) 50%, var(--chic-aubergine) 65%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: makeover-shimmer 2s linear infinite;
+}
+@keyframes makeover-shimmer {
+  from { background-position: 100% 0; }
+  to { background-position: -150% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .makeover-from, .makeover-text { animation: none; }
+  .makeover-to { animation-timing-function: steps(1, end); }
+}
+/* while the AI builds the room, the top bar stays on top */
+.room:has(.makeover) .topbar {
+  position: relative;
+  z-index: 4;
+}
+/* the picker's photos stay inside the sheet (undo the edge-to-edge margin) */
+.inspo-picker {
+  margin: 0;
+}
+.inspo-picker .discover-search-wrap,
+.inspo-picker .discover-filters,
+.inspo-picker .discover-filter {
+  padding-left: 0;
+  padding-right: 0;
+}
+.inspo-picker .inspo-grid {
+  margin-left: calc(var(--chic-edge) - var(--space-16));
+  margin-right: calc(var(--chic-edge) - var(--space-16));
+}
+.inspo-picker .discover-filters,
+.inspo-picker .discover-filter {
+  margin-left: 0;
+  margin-right: 0;
+}
+/* the chat bar as glass (Synne 14.11, round 3 – «fortsatt jalla»): clear rather than milky, so what is behind shows
+   through blurred; the edge is two hairlines only – a bright white line along the top and a thin dark line round the
+   sides – and a small, soft shadow. No coloured fill, no wide rim. */
+.room .chat-sheet-wrap .chat-sheet:not(:has(.chat-messages)),
+.room .chat-sheet-wrap.is-writing .chat-sheet:not(:has(.chat-messages)) {
+  border: 0;
+  background: rgba(255, 255, 255, 0.28);
+  -webkit-backdrop-filter: blur(20px) saturate(1.9) brightness(1.04);
+  backdrop-filter: blur(20px) saturate(1.9) brightness(1.04);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.4),
+    0 0 0 0.5px rgba(32, 6, 17, 0.22),
+    0 4px 14px rgba(32, 6, 17, 0.1);
+  padding: 6px;
+}
+/* on a photo room the photo reaches down behind the bar, so the glass has something to show through */
+.room .photo-page {
+  padding-bottom: calc(var(--bottom-safe) + var(--space-8));
+}
+/* a sheet or dialog always lies over the tab bar and the + button (Synne 14.11: «Delete kitchen?» lay under them) –
+   also sheets opened from inside a scrolling list, like a room card's menu */
+.phone:has(.scrim:not(.scrim-modeless)) .surface-switch,
+.phone:has(.scrim:not(.scrim-modeless)) .home-fab {
+  visibility: hidden;
+}
+/* ---------- One glass material everywhere (Synne 14.11: «gjør det med alle glass effektene») ----------
+   The chat bar's glass, as tokens in tokens-chic.css. Small controls (pills, round buttons, the tab bar) are clear;
+   menus, dropdowns and notes with running text use the whiter fill so they stay readable over photos (WCAG 4.5:1).
+   !important because many older rules set their own glass with more specific selectors. */
+.glass,
+.glass-chic:not(.version-card),
+.icon-btn-glass,
+.surface-switch,
+.compare-label,
+.compare-close,
+.makeover-status,
+.photo-pages-pager,
+.room .bar-btn.is-glass {
+  background: var(--chic-glass-fill) !important;
+  -webkit-backdrop-filter: var(--chic-glass-filter) !important;
+  backdrop-filter: var(--chic-glass-filter) !important;
+  box-shadow: var(--chic-glass-edge) !important;
+  border: 0 !important;
+}
+.glass::before,
+.glass-chic::before,
+.icon-btn-glass::before {
+  content: none !important;
+}
+.add-menu,
+.context-menu,
+.dropdown.glass,
+.search-dropdown,
+.nature-x-menu,
+.chat-peek,
+.furniture-actions {
+  background: var(--chic-glass-fill-text) !important;
+  -webkit-backdrop-filter: var(--chic-glass-filter) !important;
+  backdrop-filter: var(--chic-glass-filter) !important;
+  box-shadow: var(--chic-glass-edge) !important;
+  border: 0 !important;
+}
+/* send before there is anything to send (Synne 14.11: the sand button could hardly be seen): the same aubergine
+   button, just faded, so it is clear what it is and that it isn't ready yet */
+.room .chat-sheet-wrap .chat-sheet .composer-row .composer-send:disabled {
+  background: var(--chic-aubergine) !important;
+  color: var(--chic-cream) !important;
+  opacity: 0.35;
+}
+/* on a light page the clear glass went almost white, so the white buttons and field melted into it (Synne 14.11):
+   the bar's glass gets a faint warm-grey tint – still glass, but the white parts stand out; send waiting is a bit darker */
+.room .chat-sheet-wrap .chat-sheet:not(:has(.chat-messages)),
+.room .chat-sheet-wrap.is-writing .chat-sheet:not(:has(.chat-messages)) {
+  background: rgba(120, 104, 96, 0.14) !important;
+}
+.room .chat-sheet-wrap .chat-sheet .composer-row .composer-send:disabled {
+  opacity: 0.5;
+}
+/* a wide room photo (several photos put together, Synne 14.11): it fills the height between the bars and is dragged
+   sideways to see the whole room; it starts in the middle */
+.photo-page.is-wide {
+  display: block;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  padding-left: 0;
+  padding-right: 0;
+}
+.photo-page.is-wide::-webkit-scrollbar {
+  display: none;
+}
+.photo-pages-track .photo-page.is-wide img {
+  height: 100%;
+  width: auto;
+  max-width: none;
+  max-height: none;
+  border-radius: 0;
+}
+/* the two other ways under «Start scanning», as text buttons (Synne 14.11) */
+.not-scanned-more {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+  margin-top: 4px;
+}
+/* the tab bar a little lighter, so the chosen sand tab stands out (Synne 14.11) */
+.surface-switch {
+  background: rgba(255, 255, 255, 0.82) !important;
+}
+/* the image page shows the whole photo in its own shape (Synne 14.11: «ikke kutt av bildet så mye»), no fixed height */
+.image-hero img {
+  height: auto !important;
+  max-height: none;
+  aspect-ratio: auto;
+  object-fit: contain;
+}
+/* a sheet over the home screen is never faded (Synne 14.11: «Delete» looked washed out): the tab bar's frosted
+   layer and fade sit under every sheet */
+.phone:has(.scrim:not(.scrim-modeless)) .surface-switch-wrap,
+.phone:has(.scrim:not(.scrim-modeless)) .surface-fade {
+  visibility: hidden;
+}
+.scrim .sheet {
+  position: relative;
+  z-index: 50;
+}
+/* «Find more photos» and «Go to Explore» on a moodboard: the black primary button, not glass (Synne 14.11) */
+.moodboard-cta .btn,
+.moodboard-cta .btn.btn-primary {
+  background: var(--chic-aubergine) !important;
+  color: var(--chic-cream) !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  box-shadow: 0 6px 18px rgba(32, 6, 17, 0.22) !important;
+  border: 0 !important;
+}
+.moodboard-cta .btn::before {
+  content: none !important;
+}
+/* the two other ways under each other, centred under «Start scanning» (Synne 14.11) */
+.not-scanned-more {
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+/* merge (17.11): Silje's heading over Synne's nature cards – the panel stacks the heading and the card row instead of
+   laying the photos out in Silje's tile grid */
+.bar-panel.bar-panel-nature:has(.nature-row) {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.bar-panel.bar-panel-nature:has(.nature-row) .bar-panel-title {
+  padding: 0 12px;
+}
+/* the clock area got darker than the rest while a sheet or menu was open (Synne 17.11): the dark layer already reaches up
+   under the clock (14.11), so the status bar's own dimming (13.11) doubled it there. Only the dark layer dims now. */
+.phone:has(.scrim:not(.scrim-modeless)) .status-bar {
+  background: transparent;
+  animation: none;
+}
+/* the nature photos in the bar: their colours as a strip under the photo (Synne 17.11) – four blocks side by side,
+   slightly rounded, the same width as the photo */
+.bar-panel .nature-row-swatches {
+  display: flex;
+  width: 100%;
+  height: 8px;
+  margin: 6px 0 2px;
+  border-radius: 3px;
+  overflow: hidden;
+}
+.bar-panel .nature-row-swatches i {
+  flex: 1;
+}
+
+/* ---------- Fig, the interior agent in the chat (Synne 17.11) ---------- */
+/* Fig's face in a small cream circle; the photo is the fig cut out, so it sits a little inside the circle */
+.fig-avatar {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  border-radius: var(--chic-radius-full);
+  background: var(--chic-cream);
+  box-shadow: 0 0 0 1px rgba(32, 6, 17, 0.06);
+  overflow: hidden;
+}
+.fig-avatar img {
+  width: 86%;
+  height: 86%;
+  object-fit: contain;
+}
+/* who you are chatting with, at the top of the open chat */
+.fig-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 2px 4px 10px;
+  color: var(--chic-aubergine);
+}
+.fig-head-close {
+  /* small, up in the top right corner of the chat (Silje 18.11); still 48 px to tap */
+  margin: -12px -12px 0 auto;
+  align-self: flex-start;
+}
+/* Fig at the top of the chat: bigger, without the cream circle (Silje 18.11) */
+/* also next to Fig's messages (Silje 18.11) */
+.fig-head .fig-head-fig,
+.chat-fig {
+  background: none;
+  box-shadow: none;
+  border-radius: 0;
+  overflow: visible;
+}
+.fig-head .fig-head-fig img,
+.chat-fig img {
+  width: 100%;
+  height: 100%;
+}
+.fig-head-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+.fig-head-text strong {
+  font: 600 15px/18px var(--font-body);
+}
+.fig-head-text small {
+  font: 400 12px/16px var(--font-body);
+  color: var(--chic-muted);
+}
+/* Fig's messages: its face to the left of the first in a row, the others lined up under it */
+.chat-bubble-ai.is-fig {
+  position: relative;
+  padding-left: 36px;
+  max-width: calc(85% + 36px);
+}
+.chat-bubble-ai.is-fig > .chat-fig {
+  position: absolute;
+  left: 0;
+  top: 2px;
+  width: 28px;
+  height: 28px;
+}
+/* while Fig thinks it wobbles, like Silje's fig over the bar */
+.fig-avatar.is-thinking {
+  transform-origin: 50% 90%;
+  animation: fig-wobble 900ms ease-in-out infinite;
+}
+.chat-thinking.is-fig > p {
+  color: var(--chic-muted);
+}
+@media (prefers-reduced-motion: reduce) {
+  .fig-avatar.is-thinking { animation: none; }
+}
+/* the short note above the bar: Fig's face in front of its line */
+.chat-peek {
+  display: flex !important;
+  align-items: center;
+  gap: 10px;
+}
+/* in the note, Fig is bigger and stands on its own, without the cream circle (Silje 18.11) */
+.chat-peek .chat-peek-fig {
+  background: none;
+  box-shadow: none;
+  border-radius: 0;
+  overflow: visible;
+}
+.chat-peek .chat-peek-fig img {
+  width: 100%;
+  height: 100%;
+}
+.chat-peek > span:not(.fig-avatar) {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+/* Fig's face changes with what it says: a small pop when it does */
+.fig-peek-fig img {
+  animation: fig-face-in 260ms var(--ease-out, ease-out);
+}
+@keyframes fig-face-in {
+  from { scale: 0.85; opacity: 0.4; }
+  to { scale: 1; opacity: 1; }
+}
+
+/* ---------- Softer transitions in the room (Synne 17.11: «veldig harde overganger») ----------
+   Motion tokens: open 250 ms, close 150–350 ms, ease cubic-bezier(0.22, 1, 0.36, 1); small travel (8 px), light blur */
+/* the chat's content fades up as the chat opens */
+.room .chat-sheet .fig-head,
+.room .chat-sheet .chat-messages {
+  animation: chat-content-in 250ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes chat-content-in {
+  from { opacity: 0; transform: translateY(8px); }
+}
+/* a new message slides softly into the list */
+.room .chat-messages > .chat-bubble:last-child {
+  animation: chat-content-in 250ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* the note leaves the way it came, a little faster */
+.chat-peek.is-leaving {
+  animation: peek-out 350ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  pointer-events: none;
+}
+@keyframes peek-out {
+  to { opacity: 0; transform: translateY(8px); }
+}
+/* the room in a nature palette fades in over the room as it was, instead of popping up */
+.room .nature-preview {
+  animation: room-in 400ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes room-in {
+  from { opacity: 0; filter: blur(2px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .room .chat-sheet .fig-head,
+  .room .chat-sheet .chat-messages,
+  .room .chat-messages > .chat-bubble:last-child,
+  .chat-peek.is-leaving,
+  .room .nature-preview { animation: none; }
+}
+
+/* ---------- The stand version (Synne 17.11) ---------- */
+/* the top bar keeps its shape without the back and menu buttons */
+.topbar-spacer {
+  width: 44px;
+  height: 44px;
+  flex: none;
+}
+.topbar-title.is-static {
+  cursor: default;
+}
+/* the suggestions above the field: one row that scrolls sideways */
+.stand-suggest {
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  margin-inline: -2px;
+  padding-inline: 2px;
+}
+.stand-suggest::-webkit-scrollbar {
+  display: none;
+}
+.stand-suggest .bar-suggest-chip {
+  flex: none;
+  white-space: nowrap;
+}
+
+/* ---------- The stand: show the way (Synne 18.11) ----------
+   What to do next glows softly – one slow pulse, a light ring with a warm haze – so visitors are led by the interface
+   rather than by us. Rooms that aren't built are dimmed with «Coming soon». Only with .stand-on (src/stand.ts). */
+@keyframes stand-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.95), 0 0 0 6px rgba(201, 112, 104, 0.55), 0 0 16px 6px rgba(201, 112, 104, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 1), 0 0 0 11px rgba(201, 112, 104, 0.8), 0 0 36px 16px rgba(201, 112, 104, 0.5);
+  }
+}
+/* only where it isn't obvious what to tap (Synne 18.11): where to start (+), which of three choices (Add furniture,
+   Scan item), that the field types the next line by itself, and that the note opens the chat with a choice waiting.
+   Single buttons, the colour dots and Fig's buttons in the chat don't glow – they are clear on their own. */
+/* the round + has room around it: it glows outwards */
+.stand-on .home-fab.stand-next {
+  animation: stand-glow 1.6s ease-in-out infinite;
+}
+/* tiles, menu rows, the field and the note sit close to other things: a clean ring inside the edge that pulses, so
+   nothing spills over the neighbours or gets cut off (Synne 18.11: the outer glow on «Add furniture» looked «jalla») */
+@keyframes stand-ring {
+  0%, 100% { box-shadow: inset 0 0 0 1.5px rgba(201, 112, 104, 0.45), var(--stand-lift, 0 0 0 transparent); }
+  50% { box-shadow: inset 0 0 0 2.5px rgba(201, 112, 104, 1), var(--stand-lift, 0 0 0 transparent); }
+}
+.stand-on .nr-tile.stand-next,
+.stand-on .add-menu .menu-item.is-highlight,
+.stand-on .chat-sheet-wrap.stand-type .composer-input {
+  --stand-lift: var(--chic-lift);
+  animation: stand-ring 1.6s ease-in-out infinite;
+}
+.stand-on .add-menu .menu-item.is-highlight {
+  --stand-lift: 0 0 0 transparent;
+}
+.stand-on .chat-peek.stand-next {
+  --stand-lift: 0 4px 14px rgba(32, 6, 17, 0.1);
+  animation: stand-ring 1.6s ease-in-out infinite !important;
+}
+.stand-on .add-menu .menu-item.is-highlight {
+  border-radius: var(--chic-radius-box);
+}
+/* rooms that aren't built: a small «Coming soon» label – not greyed out (Synne 18.11) */
+.stand-on .room-card.is-dim,
+.stand-on .room-pick-card.is-dim {
+  position: relative;
+}
+.stand-on .room-pick-card.is-dim {
+  pointer-events: none;
+}
+.stand-on .room-card.is-dim::after,
+.stand-on .room-pick-card.is-dim::after {
+  content: attr(data-soon);
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 4px 10px;
+  border-radius: var(--chic-radius-full);
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--chic-aubergine);
+  font: 500 12px/16px var(--font-body);
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .stand-on .home-fab.stand-next,
+  .stand-on .nr-tile.stand-next,
+  .stand-on .add-menu .menu-item.is-highlight,
+  .stand-on .chat-sheet-wrap.stand-type .composer-input,
+  .stand-on .chat-peek.stand-next {
+    animation: none !important;
+    box-shadow: 0 0 0 3px #fff, 0 0 0 8px rgba(201, 112, 104, 0.7) !important;
+  }
+}
+/* only the next step pulses: a tile that is already open stops (Synne 18.11) */
+.stand-on .nr-tile.stand-next[aria-expanded='true'] {
+  animation: none;
+}
+/* «Får et sofabord plass?»: + in the room's bar shows the way (Synne 18.11) */
+.stand-on .chat-sheet-wrap.stand-plus .composer-plus {
+  --stand-lift: 0 0 0 transparent;
+  animation: stand-ring 1.6s ease-in-out infinite;
+}
+
+/* ---------- The fig's talk, tighter (Synne 18.11: «chaten kan ta litt mindre plass») ---------- */
+.room .fig-head {
+  gap: 8px;
+  padding: 0 4px 6px;
+}
+.room .fig-head-text {
+  flex-direction: row;
+  align-items: baseline;
+  gap: 6px;
+}
+.room .fig-head-text strong {
+  font: 600 14px/18px var(--font-body);
+}
+.room .chat-messages {
+  gap: var(--space-8);
+}
+.room .chat-bubble-user p,
+.room .chat-bubble-ai > p {
+  padding: 7px 11px;
+  font: 400 13px/18px var(--font-body);
+}
+.room .chat-bubble-ai.is-fig {
+  padding-left: 30px;
+}
+.room .chat-bubble-ai.is-fig > .chat-fig {
+  width: 22px;
+  height: 22px;
+}
+.room .chat-swatch {
+  min-height: 34px;
+  font-size: 13px;
+}
+.room .chat-swatch i {
+  width: 20px;
+  height: 20px;
+}
+/* the colour to end on glows at the stand; the others can still be tried */
+.stand-on .chat-swatch.is-pick {
+  --stand-lift: var(--chic-lift);
+  animation: stand-ring 1.6s ease-in-out infinite;
+}
+/* «Show chat»: above the bar on the right, when the chat is closed but has a talk */
+.room .chat-show {
+  position: absolute;
+  z-index: 4;
+  right: var(--space-16);
+  bottom: calc(var(--sheet-h) + var(--bottom-safe) + var(--space-20));
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 14px 0 10px;
+  border-radius: var(--chic-radius-full);
+  color: var(--chic-aubergine);
+  font: 500 13px/16px var(--font-body);
+}
+.room .chat-show .icon {
+  rotate: 180deg;
+}
+/* the finished room fills the screen, while it is made and after */
+.room .makeover.is-final .photo-page,
+.room .makeover.is-final > .photo-page {
+  padding: 0;
+}
+.room .makeover.is-final .makeover-frame {
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  aspect-ratio: auto;
+  border-radius: 0;
+}
+/* Fig's face without a circle or ring – just the fig, a little bigger (Synne 18.11) */
+.fig-avatar {
+  background: none;
+  box-shadow: none;
+  border-radius: 0;
+  overflow: visible;
+}
+.fig-avatar img {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 2px 3px rgba(32, 6, 17, 0.18));
+}
+/* «Show chat», more discreet (Synne 18.11) */
+.room .chat-show {
+  height: 28px;
+  padding: 0 11px 0 8px;
+  gap: 4px;
+  font: 500 12px/16px var(--font-body);
+  color: var(--chic-muted);
+  opacity: 0.9;
+}
+.room .chat-show .icon {
+  width: 13px;
+  height: 13px;
+}
+
+/* ---------- The stand: «Hva vil du prøve?» on Home (Synne 18.11) ---------- */
+.stand-trips {
+  margin: 4px var(--chic-edge, 16px) 20px;
+  padding: 14px 6px 6px;
+  border-radius: var(--chic-radius-box);
+  background: var(--chic-white);
+  box-shadow: var(--chic-lift);
+}
+.stand-trips-title {
+  margin: 0 10px 6px;
+  font: 400 12px/16px var(--font-body);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--chic-muted);
+}
+.stand-trip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 56px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  text-align: left;
+  color: var(--chic-aubergine);
+}
+.stand-trip:active {
+  background: var(--chic-cream);
+}
+.stand-trip-tick {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--chic-radius-full);
+  box-shadow: inset 0 0 0 1.5px var(--chic-sand);
+}
+.stand-trip.is-done .stand-trip-tick {
+  background: var(--chic-aubergine);
+  color: var(--chic-cream);
+  box-shadow: none;
+}
+.stand-trip-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.stand-trip-text strong {
+  font: 500 15px/20px var(--font-body);
+}
+.stand-trip-text small {
+  font: 400 12px/16px var(--font-body);
+  color: var(--chic-muted);
+}
+.stand-trip.is-done .stand-trip-text strong {
+  color: var(--chic-muted);
+}
+/* the moodboard trip: the first board shows the way – the ring lies on top of the photos */
+.stand-on .board-tall.stand-next {
+  position: relative;
+}
+.stand-on .board-tall.stand-next::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  pointer-events: none;
+  animation: stand-ring 1.6s ease-in-out infinite;
+}
+
+/* ---------- The stand: Fig's welcome popup (Synne 19.11) ---------- */
+.stand-welcome {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 0 0 12px;
+  text-align: center;
+  color: var(--chic-aubergine);
+}
+.stand-welcome-title {
+  margin: 6px 0 0;
+  font: 600 20px/26px var(--font-body);
+}
+.stand-welcome-text {
+  margin: 0;
+  font: 400 14px/20px var(--font-body);
+  color: var(--chic-muted);
+}
+.stand-trips.stand-trips-sheet {
+  margin: 0;
+  padding: 4px;
+  background: none;
+  box-shadow: none;
+}
+.stand-trips-sheet .stand-trip {
+  margin-top: 6px;
+  background: var(--chic-white);
+  box-shadow: var(--chic-lift);
+}
+/* the main story first and darker, so it reads as the natural start */
+.stand-trips-sheet .stand-trip.is-main {
+  background: var(--chic-aubergine);
+  color: var(--chic-cream);
+}
+.stand-trips-sheet .stand-trip.is-main small {
+  color: rgba(247, 245, 239, 0.7);
+}
+/* the stand's menu, simpler (Synne 19.11): one line per choice; what is done is greyed out */
+.stand-trip {
+  min-height: 48px;
+}
+.stand-trip-text strong {
+  font: 500 15px/20px var(--font-body);
+}
+.stand-trip.is-done {
+  opacity: 0.45;
+}
+.stand-trips-sheet .stand-trip.is-done {
+  box-shadow: none;
+  background: var(--chic-cream);
+}
+/* Room details at the stand (Synne 19.11): the name field glows first, then «Personalise the room» – shown as a white
+   box you can tap rather than plain text, so it reads as a button */
+.stand-on .nr-details .input.stand-next-field {
+  --stand-lift: var(--chic-lift);
+  animation: stand-ring 1.6s ease-in-out infinite;
+}
+.stand-on .nr-details .nr-more-row.stand-more {
+  padding: 12px var(--chic-inset, 16px);
+  border-radius: var(--chic-radius-field, 16px);
+  background: var(--chic-white);
+  box-shadow: var(--chic-lift);
+}
+.stand-on .nr-details .nr-more-row.stand-next-row {
+  --stand-lift: var(--chic-lift);
+  animation: stand-ring 1.6s ease-in-out infinite;
+}
+/* «Utforsk på egen hånd» in the task-done popup: a quiet way out */
+.stand-trips-sheet .stand-trip.stand-trip-quiet {
+  justify-content: center;
+  background: none;
+  box-shadow: none;
+  color: var(--chic-muted);
+}
+.stand-trips-sheet .stand-trip.stand-trip-quiet .stand-trip-text {
+  flex: none;
+}
+/* «Check your room» at the stand (Synne 19.11): a short hint for the view, the next view's tab pulses, then «Looks right» */
+.stand-check-hint {
+  margin: 10px 0 6px;
+  text-align: center;
+  font: 500 13px/18px var(--font-body);
+  color: var(--chic-aubergine);
+}
+@keyframes stand-tab {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(201, 112, 104, 0); }
+  50% { box-shadow: 0 0 0 2px rgba(201, 112, 104, 0.9); }
+}
+.stand-on .stand-tab-next {
+  padding: 4px 10px;
+  border-radius: var(--chic-radius-full);
+  animation: stand-tab 1.6s ease-in-out infinite;
+}
+.stand-on .stand-ok-btn {
+  animation: stand-glow 1.6s ease-in-out infinite;
+}
+/* «La naturen bestemme» at the stand (Synne 19.11): the wand shows the way, then send */
+.stand-on .chat-sheet-wrap.stand-wand .bar-btn[aria-label^='Spice up'],
+.stand-on .chat-sheet-wrap.stand-send .composer-send {
+  --stand-lift: 0 0 0 transparent;
+  animation: stand-glow 1.6s ease-in-out infinite;
+}
+
+/* the room in colours from nature is «made» (Synne 19.11: «det skjer aldri at det genereres på et millisekund»):
+   it comes in blurred and pale and sharpens over about 4 s, with a small label, like an AI image being generated */
+.nature-gen,
+.nature-made {
+  display: contents;
+}
+.room .nature-gen > .nature-preview {
+  animation: nature-gen 4.2s cubic-bezier(0.45, 0, 0.25, 1) forwards;
+}
+@keyframes nature-gen {
+  0% { opacity: 0; filter: blur(30px) saturate(0.5) brightness(1.08); }
+  15% { opacity: 1; filter: blur(26px) saturate(0.6) brightness(1.06); }
+  70% { filter: blur(6px) saturate(0.9); }
+  100% { opacity: 1; filter: blur(0) saturate(1) brightness(1); }
+}
+.room .nature-gen-status {
+  position: absolute;
+  z-index: 6;
+  left: 50%;
+  bottom: calc(var(--sheet-h) + var(--bottom-safe) + var(--space-24, 24px));
+}
+@media (prefers-reduced-motion: reduce) {
+  .room .nature-gen > .nature-preview { animation: none; }
+}
+/* «Oppgaver» (Synne 19.11): a small dark pill over the app – clearly the test, not part of MyCrib – that opens the menu */
+.stand-tasks-btn {
+  position: absolute;
+  z-index: 30;
+  left: var(--space-16);
+  bottom: calc(var(--bottom-safe) + 84px);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 14px 0 8px;
+  border-radius: var(--chic-radius-full);
+  background: var(--chic-aubergine);
+  color: var(--chic-cream);
+  font: 600 14px/18px var(--font-body);
+  box-shadow: 0 8px 22px rgba(32, 6, 17, 0.28);
+}
+.stand-tasks-count {
+  padding: 2px 8px;
+  border-radius: var(--chic-radius-full);
+  background: rgba(247, 245, 239, 0.18);
+  font: 600 12px/16px var(--font-body);
+}
+/* «task done» as a banner at the top (Synne 19.11: «hvis de vil teste mer så må de ha mulighet til det»): it doesn't
+   block the app; «Neste oppgave» opens the menu */
+.stand-done-banner {
+  position: absolute;
+  z-index: 70;
+  top: calc(var(--status-h) + 8px);
+  left: 12px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 8px 8px 10px;
+  border-radius: 20px;
+  background: var(--chic-aubergine);
+  color: var(--chic-cream);
+  box-shadow: 0 10px 26px rgba(32, 6, 17, 0.3);
+  animation: chat-content-in 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.stand-done-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.stand-done-text strong {
+  font: 600 13px/17px var(--font-body);
+}
+.stand-done-text small {
+  font: 400 12px/16px var(--font-body);
+  color: rgba(247, 245, 239, 0.7);
+}
+.stand-done-next {
+  flex: none;
+  height: 34px;
+  padding: 0 12px;
+  border-radius: var(--chic-radius-full);
+  background: var(--chic-cream);
+  color: var(--chic-aubergine);
+  font: 600 13px/16px var(--font-body);
+}
+.stand-done-x {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  color: rgba(247, 245, 239, 0.75);
+}
+/* the moodboard task: the visitor's board glows in «Save to moodboard» */
+.stand-on .pick-row.stand-next-row {
+  border-radius: var(--chic-radius-box);
+  --stand-lift: 0 0 0 transparent;
+  animation: stand-ring 1.6s ease-in-out infinite;
+}
+
+/* a closed chat with a talk in it: the handle rests on top of the bar – tap or drag it up to open the chat, like a
+   sheet on iPhone (Synne 19.11, instead of the «Show chat» pill). A 44 px tall area to hit, a small grip to see */
+.room .chat-sheet-wrap .chat-sheet .chat-sheet-handle.is-floating {
+  display: grid;
+  top: -26px;
+  width: 120px;
+  height: 30px;
+}
+.room .chat-sheet-wrap .chat-sheet .chat-sheet-handle.is-floating span {
+  width: 44px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 1px 4px rgba(32, 6, 17, 0.25);
+}
+.room .chat-sheet-wrap .chat-sheet .chat-sheet-handle.is-floating::after {
+  content: '';
+  position: absolute;
+  inset: -8px -10px 0;
+}
+/* «From inspiration» (Synne 19.11): your moodboards or Explore */
+.inspo-pick-boards {
+  margin-top: 16px;
+}
+.inspo-pick-empty {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--chic-muted);
+  font: 400 14px/20px var(--font-body);
+}
+.inspo-pick-photos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.inspo-pick-photo {
+  display: block;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--chic-radius-image);
+  overflow: hidden;
+}
+.inspo-pick-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.inspo-picker {
+  margin-top: 12px;
+}
+/* the room task (Synne 19.11): the view menu shows the way to 3D and the floor plan */
+/* a clear rose ring on the 360° button from the moment the room opens (Synne 19.11). An outline, not a shadow: the
+   glass buttons' edge is a box-shadow with !important, which an animation can't override */
+@keyframes stand-rose-ring {
+  0%, 100% { outline-width: 2.5px; outline-offset: 2px; outline-color: rgba(201, 112, 104, 0.75); }
+  50% { outline-width: 3.5px; outline-offset: 4px; outline-color: rgb(201, 112, 104); }
+}
+.stand-on .view-select.stand-next {
+  outline: 2.5px solid rgb(201, 112, 104);
+  animation: stand-rose-ring 1.6s ease-in-out infinite;
+}
+.stand-on .view-menu .menu-item.is-highlight {
+  border-radius: var(--chic-radius-box);
+  --stand-lift: 0 0 0 transparent;
+  animation: stand-ring 1.6s ease-in-out infinite;
+}
+/* the empty moodboard (Synne 19.11): the photo fan in the middle of the screen */
+.board-empty-fan {
+  min-height: 56vh;
+  justify-content: center;
+}
+/* the «making» label at the top, so the open nature row doesn't hide it (19.11) */
+.room .nature-gen-status {
+  top: calc(var(--top-h) + 64px);
+  bottom: auto;
+}
+
+/* «Not this item?», simpler (Synne 19.11): one short line, the matches, one button */
+.nt-lead {
+  margin: 0 0 var(--space-12);
+  font: var(--type-body-medium);
+  color: var(--color-text-secondary);
+}
+.nt-matches + .btn {
+  margin-top: var(--space-16);
+}
+/* the ghost button under «Choose room» */
+.sheet-foot .preview-not-btn {
+  margin-top: var(--space-4);
+}
+
+/* the stand: a task is done (Synne 19.11) – a bigger popup in the middle of the screen with «Neste oppgave» */
+.stand-done-scrim {
+  z-index: 60;
+}
+.stand-done-dialog {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-8);
+  width: min(340px, calc(100% - 2 * var(--space-24)));
+  padding: var(--space-32) var(--space-24) var(--space-16);
+  text-align: center;
+  animation: stand-done-in 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.stand-done-dialog .stand-welcome-text {
+  margin-bottom: var(--space-12);
+}
+@keyframes stand-done-in {
+  from { opacity: 0; transform: scale(0.96); }
+}
+
+/* the stand: a task is done (Synne 19.11) – a pill at the top, between the back and menu buttons, that stays until
+   tapped. The check pops once and the pill breathes softly, so it is clear the task is done, but nothing is in the way */
+.stand-done-pill {
+  position: absolute;
+  z-index: 70;
+  top: calc(var(--status-h) + 6px);
+  left: 50%;
+  translate: -50% 0;
+  max-width: calc(100% - 128px);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 6px 14px 6px 6px;
+  border-radius: var(--chic-radius-full);
+  background: var(--chic-aubergine);
+  color: var(--chic-cream);
+  box-shadow: 0 8px 22px rgba(32, 6, 17, 0.28);
+  text-align: left;
+  animation: stand-done-pill-in 450ms cubic-bezier(0.34, 1.36, 0.64, 1), stand-done-breathe 2.4s ease-in-out 1s infinite;
+}
+.stand-done-check {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgb(201, 112, 104);
+  color: #fff;
+  animation: stand-done-check 500ms cubic-bezier(0.34, 1.36, 0.64, 1) 150ms both;
+}
+.stand-done-pill-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.stand-done-pill-text strong {
+  font: 600 13px/16px var(--font-body);
+  white-space: nowrap;
+}
+.stand-done-pill-text small {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font: 500 12px/15px var(--font-body);
+  color: rgba(247, 245, 239, 0.75);
+  white-space: nowrap;
+}
+@keyframes stand-done-pill-in {
+  from { opacity: 0; transform: translateY(-8px) scale(0.96); }
+}
+@keyframes stand-done-check {
+  from { transform: scale(0); }
+}
+@keyframes stand-done-breathe {
+  0%, 100% { box-shadow: 0 8px 22px rgba(32, 6, 17, 0.28), 0 0 0 0 rgba(201, 112, 104, 0); }
+  50% { box-shadow: 0 8px 22px rgba(32, 6, 17, 0.28), 0 0 0 5px rgba(201, 112, 104, 0.35); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .stand-done-pill,
+  .stand-done-check {
+    animation: none;
+  }
+}
+
+/* the open chat takes at most a third of the screen (Synne 19.11); dragging it up still makes it full. The messages
+   shrink and scroll, so the field and Fig's header always show. On a phone 1/3 of the screen, in the desktop frame
+   1/3 of the phone */
+.room .chat-sheet-wrap .chat-sheet:has(.chat-messages):not(.is-full):not(.is-dragging) {
+  max-height: min(33.3dvh, calc(var(--phone-height) / 3));
+}
+.room .chat-sheet-wrap .chat-sheet:has(.chat-messages):not(.is-full):not(.is-dragging) > * {
+  flex-shrink: 0;
+}
+.room .chat-sheet-wrap .chat-sheet:has(.chat-messages):not(.is-full):not(.is-dragging) > .chat-messages {
+  flex: 1 1 auto;
+  min-height: 40px;
+  max-height: none;
+}
+
+/* the names and dates under the cards in the bar (versions, colours from nature) on a dark room (Synne 19.11): the bar
+   keeps the same glass everywhere – «bakgrunnen må være lik hele veien» – and the text gets a soft light halo instead */
+.room .bar-panel .version-card-name,
+.room .bar-panel .version-card-date,
+.room .bar-panel .group-heading {
+  text-shadow: 0 0 2px rgba(247, 245, 239, 0.95), 0 0 8px rgba(247, 245, 239, 0.85);
+}
+
+/* ---------- One look per kind of round button (Synne 19.11: «gå gjennom og sjekk at alle er like») ----------
+   Round icon buttons are 40 px to see and 48 px to tap, with a 20 px icon:
+   - on the cream screens and sheets: a white circle with a soft lift (topbar, sheet ✕, the room menu)
+   - over a photo: the room's frosted glass (the room's back and menu, the image page, the scan screens) */
+.side-panel-head .icon-btn {
+  position: relative;
+  isolation: isolate;
+  width: 48px;
+  height: 48px;
+  background: transparent;
+  box-shadow: none;
+}
+.side-panel-head .icon-btn::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  z-index: -1;
+  border-radius: var(--corner-full);
+  background: var(--chic-white);
+  box-shadow: var(--chic-lift);
+}
+.side-panel-head .icon-btn svg {
+  width: 20px;
+  height: 20px;
+}
+/* over a photo: the same frosted glass as the room's top bar */
+.image-back,
+.image-back.icon-btn-glass,
+.rs .rs-round {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  margin: 4px;
+  border-radius: var(--chic-radius-full);
+  background: rgba(255, 255, 255, 0.62);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  backdrop-filter: blur(18px) saturate(1.4);
+  box-shadow: 0 2px 10px rgba(32, 6, 17, 0.1), inset 0 0 0 0.5px rgba(255, 255, 255, 0.7);
+  color: var(--chic-aubergine);
+}
+.image-back svg,
+.rs .rs-round svg {
+  width: 20px;
+  height: 20px;
+}
+.rs .rs-round::after {
+  inset: -4px;
+}
+/* the image page's back sits where the room's back sits */
+.image-back,
+.image-back.icon-btn-glass {
+  margin: 0;
+  top: calc(var(--status-h) + 8px);
+  left: 8px;
+}
+/* «New chat» in the room menu: the same 20 px icon as every round button */
+.side-panel-foot .icon-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* hover and press on round buttons (Synne 19.11: the back on the image page went dark and see-through on hover).
+   The general hover replaced the glass with a dark tint; now the button keeps its look and only gets a little lighter
+   (glass over a photo) or its white circle a little deeper shadow (on cream) */
+@media (hover: hover) {
+  .image-back:hover,
+  .rs .rs-round:hover,
+  .room .topbar .icon-btn:hover,
+  .room .nature-close:hover {
+    background: rgba(255, 255, 255, 0.8) !important;
+  }
+}
+.image-back:active,
+.rs .rs-round:active,
+.room .topbar .icon-btn:active {
+  background: rgba(255, 255, 255, 0.9) !important;
+  transform: scale(0.96);
+}
+.topbar .icon-btn:hover,
+.topbar .icon-btn:active,
+.sheet-head .icon-btn:hover,
+.sheet-head .icon-btn:active,
+.side-panel-head .icon-btn:hover,
+.side-panel-head .icon-btn:active {
+  background: transparent;
+}
+@media (hover: hover) {
+  .screen:not(.room) .topbar .icon-btn:hover::before,
+  .sheet-head .icon-btn:hover::before,
+  .side-panel-head .icon-btn:hover::before {
+    box-shadow: 0 2px 8px rgba(32, 6, 17, 0.14);
+  }
+}
+.image-back,
+.rs .rs-round {
+  transition: background-color 150ms ease-out, transform 150ms ease-out;
+}
+
+/* ---------- One clear ring for what to tap next (Synne 19.11) ----------
+   In the chat bar the rings were hard to see: the bar's buttons have their own shadows (some !important), which an
+   animated box-shadow can't override. Everything there now gets the same rose outline ring as the 360° button. */
+.stand-on .chat-sheet-wrap.stand-wand .bar-btn[aria-label^='Spice up'],
+.stand-on .chat-sheet-wrap.stand-send .composer-send,
+.stand-on .chat-sheet-wrap.stand-plus .composer-plus,
+.stand-on .chat-sheet-wrap.stand-type .composer-input,
+.stand-on .chat-peek.stand-next,
+.stand-on .stand-done-pill {
+  outline: 2.5px solid rgb(201, 112, 104);
+  animation: stand-rose-ring 1.6s ease-in-out infinite !important;
+}
+.stand-on .chat-peek.stand-next {
+  outline-offset: 3px;
+}
+/* the task-done pill pulses too, so it is clear it can be tapped (Synne 19.11); it still slides in first */
+.stand-on .stand-done-pill {
+  animation: stand-done-pill-in 450ms cubic-bezier(0.34, 1.36, 0.64, 1), stand-rose-ring 1.6s ease-in-out 450ms infinite !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .stand-on .chat-sheet-wrap.stand-wand .bar-btn[aria-label^='Spice up'],
+  .stand-on .chat-sheet-wrap.stand-send .composer-send,
+  .stand-on .chat-sheet-wrap.stand-plus .composer-plus,
+  .stand-on .chat-sheet-wrap.stand-type .composer-input,
+  .stand-on .chat-peek.stand-next,
+  .stand-on .stand-done-pill {
+    animation: none !important;
+  }
+}
+
+/* the stand's steps (Synne 19.11): a numbered list that shows how far you are – not buttons – with the next one marked */
+.stand-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.stand-steps .stand-step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: default;
+}
+.stand-step-no {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+  font: 600 12px/1 var(--font-body);
+  opacity: 0.6;
+}
+.stand-step.is-next {
+  background: var(--chic-white);
+  box-shadow: var(--chic-lift);
+}
+.stand-step.is-next .stand-step-no {
+  opacity: 1;
+  border-color: rgb(201, 112, 104);
+  background: rgb(201, 112, 104);
+  color: #fff;
+}
+.stand-step.is-done .stand-step-no {
+  border-color: transparent;
+  background: var(--chic-sand);
+  color: var(--chic-aubergine);
+  opacity: 1;
+}
+.stand-steps-foot {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: var(--space-16);
+}
+/* the steps aren't buttons: only the next one is a white card, the others are plain lines */
+.stand-trips-sheet.stand-steps .stand-step:not(.is-next) {
+  background: transparent;
+  box-shadow: none;
+}
+.stand-trips-sheet.stand-steps .stand-step {
+  min-height: 48px;
+}
+
+/* in the chat bar the ring was cut off by the bar's edge and melted into the warm glass (Synne 19.11: «fortsatt litt
+   utydelig»): the ring sits just inside the button, and the button itself pulses rose, so it shows on any room */
+@keyframes stand-bar-pulse {
+  0%, 100% { outline-color: rgba(201, 112, 104, 0.7); background-color: #fff; color: var(--chic-aubergine); }
+  50% { outline-color: rgb(201, 112, 104); background-color: rgb(201, 112, 104); color: #fff; }
+}
+.stand-on .chat-sheet-wrap.stand-wand .bar-btn[aria-label^='Spice up'],
+.stand-on .chat-sheet-wrap.stand-plus .composer-plus {
+  outline: 2.5px solid rgb(201, 112, 104);
+  outline-offset: -2.5px;
+  animation: stand-bar-pulse 1.6s ease-in-out infinite !important;
+}
+.stand-on .chat-sheet-wrap.stand-wand .bar-btn[aria-label^='Spice up'] svg,
+.stand-on .chat-sheet-wrap.stand-plus .composer-plus svg {
+  color: inherit;
+}
+/* the field and send keep the outer ring, but inside the bar's edge */
+.stand-on .chat-sheet-wrap.stand-type .composer-input,
+.stand-on .chat-sheet-wrap.stand-send .composer-send {
+  outline-offset: -2.5px;
+  outline-width: 3px;
+}
+@keyframes stand-field-ring {
+  0%, 100% { outline-color: rgba(201, 112, 104, 0.55); }
+  50% { outline-color: rgb(201, 112, 104); }
+}
+.stand-on .chat-sheet-wrap.stand-type .composer-input,
+.stand-on .chat-sheet-wrap.stand-send .composer-send {
+  animation: stand-field-ring 1.6s ease-in-out infinite !important;
+}
+/* the field glows as a whole – the photo of the table and the text – not only where the text goes (Synne 19.11) */
+.stand-on .chat-sheet-wrap.stand-type .composer-input {
+  outline: none;
+  animation: none !important;
+}
+.stand-on .chat-sheet-wrap.stand-type .composer-field {
+  outline: 3px solid rgb(201, 112, 104);
+  outline-offset: -3px;
+  animation: stand-field-ring 1.6s ease-in-out infinite !important;
+}
+
+/* the pimped room in 360° is «made» like an AI image (Synne 19.11), the same effect as colours from nature */
+.room .measured-view.is-generating {
+  animation: nature-gen 4.2s cubic-bezier(0.45, 0, 0.25, 1) forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .room .measured-view.is-generating { animation: none; }
+}
+
+/* the stand's moodboard task: the first photo in Discover pulses with the same rose ring (Synne 19.11) */
+.stand-on .inspo-tile-main.stand-next {
+  outline: 3px solid rgb(201, 112, 104);
+  outline-offset: 3px;
+  animation: stand-rose-ring 1.6s ease-in-out infinite;
+}
+
+/* ---------- Every round icon button looks like the sheets' ✕ (Synne 19.11: «ganske freshe … bruk den stilen på alle») ----------
+   Almost white, with a thin dark edge, a white light along the top and a soft shadow. 40 px to see, 48 px to tap.
+   Also the 360° pill next to them, so the room's top row matches. */
+.room .topbar .icon-btn,
+.room .view-select,
+.room .view-select.glass,
+.room .nature-close,
+.image-back,
+.image-back.icon-btn-glass,
+.rs .rs-round,
+.sheet-head .icon-btn,
+.sheet-head .icon-btn-glass {
+  background: rgba(255, 253, 249, 0.92) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(1.6) !important;
+  backdrop-filter: blur(20px) saturate(1.6) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95), inset 0 0 0 0.5px rgba(255, 255, 255, 0.4), 0 0 0 0.5px rgba(32, 6, 17, 0.22), 0 4px 14px rgba(32, 6, 17, 0.1) !important;
+  color: var(--chic-aubergine);
+}
+/* the sheets' ✕ drew its white circle with ::before – the button itself is the circle now, the same as everywhere */
+.sheet-head .icon-btn::before,
+.sheet-head .icon-btn-glass::before {
+  content: none !important;
+}
+/* on the cream screens (settings, All rooms …) the circle is drawn by ::before: the same look */
+.screen:not(.room) .topbar .icon-btn::before,
+.side-panel-head .icon-btn::before {
+  background: rgb(255, 253, 249);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95), 0 0 0 0.5px rgba(32, 6, 17, 0.22), 0 4px 14px rgba(32, 6, 17, 0.1);
+}
+@media (hover: hover) {
+  .room .topbar .icon-btn:hover,
+  .room .view-select:hover,
+  .image-back:hover,
+  .rs .rs-round:hover,
+  .sheet-head .icon-btn:hover {
+    background: #fff !important;
+  }
+}
+/* the 360° pill is glass like the chat bar at the bottom of the room (Synne 19.11): clear, blurred, with the same
+   hairline edges, so the photo shows through */
+.room .view-select,
+.room .view-select.glass {
+  background: rgba(255, 255, 255, 0.28) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(1.9) brightness(1.04) !important;
+  backdrop-filter: blur(20px) saturate(1.9) brightness(1.04) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95), inset 0 0 0 0.5px rgba(255, 255, 255, 0.4), 0 0 0 0.5px rgba(32, 6, 17, 0.22), 0 4px 14px rgba(32, 6, 17, 0.1) !important;
+}
+@media (hover: hover) {
+  .room .view-select:hover {
+    background: rgba(255, 255, 255, 0.45) !important;
+  }
+}
+
+/* the name (and date) on the photo, white on a soft shade at the bottom, like a photo card – readable on any room
+   without the light halo (Synne 19.11: «ser litt rart ut med den teksten») */
+.room .bar-panel .version-card-name,
+.room .bar-panel .version-card-date {
+  text-shadow: none;
+}
+.bar-panel .version-card-img {
+  position: relative;
+  overflow: hidden;
+}
+.version-card-label {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 22px 8px 6px;
+  border-radius: 0 0 var(--chic-radius-box) var(--chic-radius-box);
+  background: linear-gradient(to bottom, rgba(32, 6, 17, 0), rgba(32, 6, 17, 0.62));
+  color: #fff;
+  text-align: left;
+  pointer-events: none;
+}
+.bar-panel .version-card-label .version-card-name {
+  margin: 0;
+  color: #fff;
+  font: 600 12px/15px var(--font-body);
+}
+.bar-panel .version-card-label .version-card-date {
+  color: rgba(255, 255, 255, 0.85);
+  font: 400 10px/13px var(--font-body);
+}
+/* the chosen card keeps its dark ring outside the photo */
+.bar-panel .version-card.is-on .version-card-img {
+  overflow: visible;
+}
+.bar-panel .version-card.is-on .version-card-label {
+  border-radius: 0 0 var(--chic-radius-box) var(--chic-radius-box);
+}
+/* «Save version» and «Compare»: the word sits inside the white card, under the icon */
+.bar-panel .version-tool .version-tool-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.bar-panel .version-tool .version-tool-icon .version-card-name {
+  margin: 0;
+  color: var(--chic-aubergine);
+  font: 500 12px/15px var(--font-body);
+  text-align: center;
+}
+.bar-panel .version-card-label {
+  padding: 18px 6px 5px;
+}
+.bar-panel .version-card-label .version-card-name {
+  font: 600 11px/14px var(--font-body);
+}
+.bar-panel .version-card-label .version-card-date {
+  font: 400 10px/12px var(--font-body);
+}

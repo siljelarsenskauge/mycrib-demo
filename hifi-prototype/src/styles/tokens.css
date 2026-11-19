@@ -1,0 +1,215 @@
+/*
+ * Design tokens from the Figma file (Designsystem page), Light mode.
+ * Names follow the Figma variables: color/semantic → --color-*, Spacing & Shape → --space-* / --corner-*,
+ * Typography → --font-*, text styles → --type-*, effect styles → --elevation-*.
+ * Everything visual in the app should use these variables, not raw values.
+ */
+:root {
+  /* ---------- Color / Semantic (Light) ---------- */
+  --color-background-default: #faf9f7; /* warmWhite (Synne 15.10.2026) */
+  --color-background-default-transparent: rgba(250, 249, 247, 0); /* for fades */
+  --color-surface-default: #f0eeea; /* warmGrey/50 */
+  --color-surface-subtle: #f0eeea; /* warmGrey/50 */
+  --color-surface-raised: #faf9f7;
+  --color-surface-inverse: #111111;
+  --color-surface-accent: #f2e3a7;
+  --color-surface-accent-subtle: #f7f1f2; /* a faint wine-red tint (6 % action/accent on white) – the recommended choice, «Scan room» */
+
+  --color-text-primary: #111111;
+  --color-text-secondary: #666666; /* 4.96:1 on surface/default, ≥ 4.5 on every surface (WCAG AA, Synne 22.10) */
+  --color-text-placeholder: #666666; /* same as text/secondary, WCAG AA */
+  --color-text-inverse: #ffffff;
+  --color-text-on-primary: #ffffff;
+  --color-text-on-secondary: #7a1c2c;
+  --color-text-on-accent: #ffffff;
+
+  --color-action-primary: #111111;
+  --color-action-secondary: #d4dde5;
+  --color-action-accent: #7a1c2c;
+  /* test of Synne's colours (Figma 762:1104, 06.11): only Home and Discover, not part of the design system yet */
+  --proposal-primary: #2b0f1d;
+  --proposal-accent: #879138;
+  --proposal-primary-soft: rgba(43, 15, 29, 0.08);
+
+  --color-border-default: #e3e3e3;
+  --color-border-strong: #cfcfcf;
+  --color-border-selected: #7a1c2c;
+  --color-border-accent-subtle: #d7bbc0; /* 30 % action/accent on white – a soft wine-red outline */
+
+  --color-state-hover: rgba(17, 17, 17, 0.05);
+  --color-state-pressed: rgba(17, 17, 17, 0.1);
+  /* simulated iOS system screens (camera, photo library, Files) for the user test – not MyCrib's own design (Synne 29.10) */
+  --ios-blue: #0a84ff;
+  --ios-fill: #f2f2f7;
+  --ios-label-secondary: #8e8e93;
+  --ios-black: #000000;
+  --color-overlay-scrim: rgba(17, 17, 17, 0.16); /* only a light overlay behind sheets */
+  --color-surface-input: #ffffff;
+  /* room scan (from Furnie): dark camera view and the light-blue scan colour */
+  --scan-bg: #141312;
+  --scan-view: #2a2724;
+  --scan-accent: #9fd6ea;
+  --scan-accent-soft: rgba(140, 200, 225, 0.14);
+  --scan-glow: rgba(140, 200, 225, 0.55);
+  --scan-glass: rgba(20, 19, 17, 0.45); /* inside text fields, so they stand out on sheets */
+
+  --color-status-info-background: #edf2f6;
+  --color-status-info-text: #22384f;
+  --color-status-warning-background: #fbf5e0;
+  --color-status-warning-text: #553a0b;
+  --color-status-warning-border: #f2e3a7;
+  --color-status-warning-accent: #8f600f; /* yellow/700 – outline on a guessed size (Figma status/warning/accent) */
+  --color-status-success-background: #eef1e6;
+  --color-status-success-text: #2f3d20;
+  --color-plan-floor: #fbf5e0; /* yellow/50 (Figma plan/floor): the floor in the measuring drawing (06L W1D) */
+  --color-status-success-border: #cbd5b6; /* green/200 (Figma status/success/border) */
+  --color-status-error-background: #fbeae5;
+  --color-status-error-text: #5c1f17;
+  --color-status-error-border: #f1c6bb;
+  --color-status-error-accent: #a93a2c;
+
+  /* ---------- Glass (Style=Glass variants in Figma) ---------- */
+  --glass-fill: rgba(250, 249, 247, 0.68); /* 68 %: a bit more see-through (Synne 22.10, was 80 %) */
+  --glass-stroke: rgba(250, 249, 247, 0.9);
+  --glass-blur: 24px;
+  --glass-saturate: 1.6; /* colours behind the glass stay alive, like iOS */
+  /* the glass edge, like iOS (Synne 22.10, IMG_0436): a light rim that is bright along the top and bottom
+     and fades away on the sides (--glass-rim, drawn by .glass::before), plus an almost invisible hairline */
+  --glass-edge: 0 0 0 0.5px rgba(17, 17, 17, 0.06);
+  --glass-rim: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.95),
+    rgba(255, 255, 255, 0.15) 35%,
+    rgba(255, 255, 255, 0.15) 65%,
+    rgba(255, 255, 255, 0.85)
+  );
+  --glass-rim-width: 1px;
+  /* menus (AddMenu, dropdowns) got lost on the light sheets (Synne 29.10): a rim that is light at the top and bottom
+     and darker on the sides, like a glass edge catching the light, plus a slightly deeper shadow */
+  --glass-rim-menu: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.95),
+      rgba(255, 255, 255, 0) 30%,
+      rgba(255, 255, 255, 0) 70%,
+      rgba(255, 255, 255, 0.9)
+    ),
+    linear-gradient(to right, rgba(17, 17, 17, 0.32), rgba(17, 17, 17, 0.08) 22%, rgba(17, 17, 17, 0.08) 78%, rgba(17, 17, 17, 0.32));
+  --glass-rim-menu-width: 1.5px;
+  --glass-shadow-menu: 0 10px 32px rgba(17, 17, 17, 0.14), 0 2px 6px rgba(17, 17, 17, 0.08);
+
+  /* ---------- Typography ---------- */
+  /* one font in the whole app: headings use Inter too, and differ by size, weight and colour (Synne 27.10).
+     Only the MYCRIB logo keeps Hanken Grotesk (--font-brand). Was Hanken Grotesk, before that Playfair Display. */
+  --font-heading: var(--font-body);
+  --font-brand: 'Hanken Grotesk', 'Helvetica Neue', Helvetica, sans-serif; /* font/brand – logo */
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* text styles: size / line height / letter spacing */
+  --type-display-brand: 400 50px/48px var(--font-brand); /* Display/Brand – logo, uppercase, -5% */
+  --type-display-small: 400 36px/44px var(--font-heading);
+  --type-headline-medium: 400 26px/34px var(--font-heading); /* new (09.11): the big title on «See more», one line on 402 px */
+  --type-headline-small: 400 24px/32px var(--font-heading);
+  --type-headline-xsmall: 400 20px/28px var(--font-heading); /* new: Headline/XSmall */
+  --type-title-large: 600 22px/28px var(--font-body);
+  --type-title-medium: 500 16px/24px var(--font-body);
+  --type-title-small: 500 14px/20px var(--font-body);
+  --type-body-large: 400 16px/24px var(--font-body);
+  --type-body-medium: 400 14px/20px var(--font-body);
+  --type-body-small: 400 12px/16px var(--font-body);
+  --type-label-large: 500 14px/20px var(--font-body);
+  --type-label-medium: 500 12px/16px var(--font-body);
+  --type-label-small: 500 11px/16px var(--font-body);
+  --tracking-title-medium: 0.15px;
+  --tracking-body-medium: 0.25px;
+  --tracking-body-small: 0.4px;
+  --tracking-label: 0.5px;
+  --tracking-caps: 0.06em; /* uppercase links and button labels */
+  --tracking-field: 0.8px; /* Label/Field */
+
+  /* ---------- Spacing & Shape ---------- */
+  --space-2: 2px;
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-48: 48px;
+  --space-64: 64px;
+
+  --corner-0: 0;
+  --corner-xs: 8px;
+  --corner-sm: 8px;
+  --corner-md: 8px;
+  --corner-lg: 8px;
+  --corner-xl: 24px; /* large surfaces: bottom sheets, menus, dialogs, panels */
+  --corner-xxl: 24px;
+  --corner-soft: 24px;
+  --corner-soft-inner: 16px; /* corner/soft-inner: a field inside a corner/soft card with 8 px padding */
+  --corner-full: 999px;
+
+  --size-touch-target: 48px;
+  --nature-pick-width: 104px; /* proposal, Figma E2 */
+  --nature-pick-height: 132px;
+  --nature-pick-small: 72px;
+  --board-cover-ratio: 3 / 2;
+  /* the same spacing around images everywhere (Synne 06.11) */
+  --image-gap: var(--space-8); /* between images */
+  --image-row-gap: var(--space-16); /* between rows that have a name under the image */
+  --image-edge: var(--space-8); /* from the screen edge */
+  --image-radius: 12px; /* all images, between corner-lg and corner-soft-inner (Synne 06.11) */
+  --screen-edge: var(--space-16); /* the padding of the screens, for pulling images out to --image-edge */
+  --chip-height: 36px; /* filters; the touch area is still 48 px (Synne 06.11) */
+  --chip-hit: 6px; /* (48 - 36) / 2 */
+  --fab-size: 64px;
+  /* a soft plum shadow and a faint light edge lift the + from the images, without a visible stroke (Synne 06.11) */
+  --fab-shadow: 0 6px 20px rgba(43, 15, 29, 0.38), 0 1px 3px rgba(43, 15, 29, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+  --fade-height: 104px; /* behind the buttons at the bottom of Home and Discover */
+  --fade-tint: rgba(43, 15, 29, 0.3); /* --proposal-primary, see-through */
+  --fade-tint-transparent: rgba(43, 15, 29, 0);
+  --image-hero-height: 680px; /* the big image takes most of the screen (Synne 06.11) */
+  --save-preview-height: 200px;
+  --swatch-size: 20px;
+  --room-card-ratio: 5 / 7; /* RoomCard: portrait everywhere (Synne 16.10.2026) */
+  /* «If nature says it fits» (07.11): «Beige» is the room photo with the colour taken out */
+  --nature-beige-filter: saturate(0.12) sepia(0.4) brightness(1.05);
+  --nature-swatch: 16px; /* a colour dot in the palette */
+  --nature-card-w: 112px; /* nature photo on the home screen (a bit smaller than a RoomCard) */
+  /* Discover in «See more» (07.11), layout from Synne's version (ny-retning) */
+  --screen-edge: 16px; /* side margin of a scrolling screen */
+  --image-edge: 16px; /* images line up with the text */
+  --image-gap: 8px; /* between images in a strip or the grid */
+  --image-row-gap: 16px; /* between rows in the grid (room for a title) */
+  --nature-pick-width: 104px;
+  --nature-pick-height: 132px;
+  --nature-pick-small: 72px;
+  --chip-height: 36px; /* a filter chip; the touch area is 48 px with --chip-hit above and below */
+  --chip-hit: 6px;
+  --save-preview-height: 200px; /* the image in the furniture sheet */
+  --image-hero-height: 480px; /* the image on its own page */
+  --tabs-float-height: 48px; /* «My moodboard | Discover» at the bottom: 40 px tabs + 4 px around */
+
+  /* ---------- Elevation (effect styles) ---------- */
+  --elevation-3: 0 4px 16px rgba(17, 17, 17, 0.06);
+  --elevation-4: 0 -2px 20px rgba(17, 17, 17, 0.08);
+  --elevation-5: 0 8px 24px rgba(17, 17, 17, 0.12);
+
+  /* ---------- Room drawing (3D/2D) – not in Figma variables yet, picked from the screens ---------- */
+  --room-floor: #ede8e0;
+  --room-wall: #f6f3ee;
+  --room-wall-side: #ebe6de;
+  --room-window: #cfdce6;
+  --room-door: #f2efea;
+  --room-line: rgba(17, 17, 17, 0.28);
+  --room-grid: rgba(17, 17, 17, 0.06);
+  --room-selected: var(--color-action-secondary);
+
+  /* ---------- Phone frame (desktop only) ---------- */
+  --phone-width: 402px;
+  --phone-height: 874px;
+  --motion-fast: 160ms;
+  --motion-medium: 260ms;
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+}

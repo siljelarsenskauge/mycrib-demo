@@ -1,0 +1,208 @@
+{
+  "navn": "Stue B1",
+  "enhet": "meter",
+  "koordinater": "x fra sofaveggen (vest) mot soveromsveggen, z fra balkongveggen mot badveggen, y opp fra gulvet",
+  "kilder": {
+    "tegning": "lest av plantegningen",
+    "oppgitt": "målt av gruppen",
+    "bilde": "regnet ut fra panoramabildene",
+    "anslått": "anslått, bør måles"
+  },
+  "rom": {
+    "bredde": 4.4,
+    "dybde": 4.425,
+    "takhoyde": 2.49,
+    "kilde": {
+      "bredde": "tegning",
+      "dybde": "tegning",
+      "takhoyde": "bilde"
+    }
+  },
+  "vegger": {
+    "balkong": {
+      "langs": "x",
+      "z": 0.0,
+      "apninger": [
+        {
+          "navn": "Balkongdør",
+          "fra": 0.8,
+          "til": 3.2,
+          "hoyde": 2.4,
+          "type": "glassdor",
+          "kilde": "anslått"
+        }
+      ]
+    },
+    "bad": {
+      "langs": "x",
+      "z": 4.425,
+      "apninger": [
+        {
+          "navn": "Åpning til gangen",
+          "fra": 2.9,
+          "til": 4.4,
+          "hoyde": 2.1,
+          "type": "apning",
+          "kilde": "oppgitt",
+          "merknad": "15 cm vegg i flukt med badveggen mellom kjøleskapet og åpningen (fra tegningen, skjult bak kjøleskapet på bildene)"
+        }
+      ]
+    },
+    "sofavegg": {
+      "langs": "z",
+      "x": 0.0,
+      "apninger": []
+    },
+    "soverom": {
+      "langs": "z",
+      "x": 4.4,
+      "apninger": [
+        {
+          "navn": "Åpning til soverommet ved balkongen",
+          "fra": 0.1,
+          "til": 1.0,
+          "hoyde": 2.1,
+          "type": "apning",
+          "kilde": "oppgitt"
+        },
+        {
+          "navn": "Åpning til soverommet ved gangen",
+          "fra": 3.025,
+          "til": 3.925,
+          "hoyde": 2.1,
+          "type": "apning",
+          "kilde": "oppgitt"
+        }
+      ]
+    }
+  },
+  "kjokken": {
+    "x0": 0.0,
+    "x1": 2.75,
+    "dybde": 0.6,
+    "benkehoyde": 0.9,
+    "overskap": {
+      "fra": 1.45,
+      "til": 2.15,
+      "dybde": 0.35
+    },
+    "kjoleskap": {
+      "x0": 2.15,
+      "x1": 2.75,
+      "hoyde": 1.85
+    },
+    "kilde": "oppgitt"
+  },
+  "mobler": [
+    {
+      "id": "sofa",
+      "navn": "Hjørnesofa med sjeselong",
+      "type": "hjornesofa",
+      "fast": true,
+      "x0": 0.0,
+      "z0": 0.32,
+      "lengde": 2.7,
+      "dybde": 0.93,
+      "sjeselong": 2.13,
+      "sjeselongbredde": 0.82,
+      "setehoyde": 0.4,
+      "armlenehoyde": 0.59,
+      "rygghoyde": 0.78,
+      "kilde": {
+        "lengde": "oppgitt",
+        "sjeselong": "oppgitt",
+        "dybde": "oppgitt",
+        "armlenehoyde": "oppgitt",
+        "plassering": "oppgitt",
+        "setehoyde": "anslått",
+        "sjeselongbredde": "bilde",
+        "armlenelengde": "bilde"
+      },
+      "merknad": "enden av sjeselongen står i flukt med teppekanten; sjeselongens bredde (82 cm) og armlenets lengde fra veggen (1,47 m) er lest av 360-bildet, bør måles",
+      "armlenelengde": 1.47
+    },
+    {
+      "id": "teppe",
+      "navn": "Teppe",
+      "type": "teppe",
+      "fast": true,
+      "x0": 0.67,
+      "z0": 0.12,
+      "bredde": 2.0,
+      "lengde": 2.9,
+      "kilde": {
+        "mål": "oppgitt",
+        "plassering": "oppgitt"
+      },
+      "merknad": "langsiden går langs sofaen; sjeselongen står helt på teppet"
+    },
+    {
+      "id": "stort",
+      "navn": "Stort glassbord",
+      "type": "settbord",
+      "x": 1.5,
+      "z": 1.3,
+      "rot": 0,
+      "storrelse": 0.42,
+      "kilde": "oppgitt"
+    },
+    {
+      "id": "lite",
+      "navn": "Lite glassbord",
+      "type": "settbord",
+      "x": 1.5,
+      "z": 1.58,
+      "rot": 0,
+      "storrelse": 0.36,
+      "kilde": "oppgitt"
+    },
+    {
+      "id": "spisebord",
+      "navn": "Spisebord",
+      "type": "rundbord",
+      "fast": true,
+      "x": 3.36,
+      "z": 0.95,
+      "diameter": 1.2,
+      "hoyde": 0.75,
+      "stoler": 3,
+      "kilde": {
+        "mål": "oppgitt",
+        "plassering": "anslått"
+      },
+      "merknad": "flyttet så gardinene går fri (ca. 35 cm fra balkongveggen til bordkanten)"
+    },
+    {
+      "id": "tv",
+      "navn": "TV på stativ",
+      "type": "tv",
+      "fast": true,
+      "x": 4.225,
+      "z": 2.013,
+      "bredde": 1.45,
+      "kilde": "oppgitt",
+      "merknad": "midt mellom dørene til soverommet, ca. 15–20 cm fra veggen"
+    },
+    {
+      "id": "lampe",
+      "navn": "Gulvlampe",
+      "type": "gulvlampe",
+      "fast": true,
+      "x": 0.18,
+      "z": 0.14,
+      "kilde": "bilde"
+    }
+  ],
+  "panorama": {
+    "bilder": [
+      "equi-a.jpg",
+      "equi-b.jpg"
+    ],
+    "x": 2.763,
+    "z": 2.672,
+    "hoyde": 1.364,
+    "retning_grader": 0,
+    "kilde": "bilde",
+    "merknad": "360-bildet er sydd av 64 håndholdte bilder (IMG_0562–0631, 13.11, ultravidvinkel) tatt ved tapekrysset etter oppskriften. Bildet er rettet opp og dreid så det passer 3D-modellen (takhjørnene, dørene til soverommet og sjeselongen), og området rundt sjeselongen og sofaen er vridd litt så de treffer modellen; modellen er ikke endret. Kamerapunktet er regnet ut fra bildet: ca. 24 cm nærmere sofaveggen enn krysset (3,00 / 2,70), og linsen ca. 1,36 m over gulvet."
+  }
+}
