@@ -1010,14 +1010,33 @@ export function RoomScreen({ roomId }: { roomId: string }) {
   // a short talk (Silje 20.11): the task is done after the first answer, the rest can be gone through if one wants
   const [roomStep, setRoomStep] = useState<number | null>(null);
   const roomAsk = roomStep !== null;
-  const ROOM_NUDGE = 'Bra! Trykk i feltet nederst og spør meg hva jeg synes om rommet.';
+  const ROOM_BACK = 'Bra! Gå tilbake til 360° i menyen oppe til venstre.';
+  const ROOM_NUDGE = 'Trykk i feltet nederst og spør meg hva jeg synes om rommet.';
   const ROOM_TALK = [
     { me: 'Hva synes du om rommet mitt, Fig?', fig: 'Fin start! Det er god plass her, og vinduet gir fint lys. Vil du ha et tips?' },
     { me: 'Ja, gjerne!', fig: 'Prøv tryllestaven nede til venstre og hent farger fra naturen, eller legg til et møbel med +.' },
     { me: 'Hvilke farger passer i rommet?', fig: 'Lyse, varme vegger gjør rommet luftig, og litt grønt fra planter gir liv.' },
     { me: 'Takk, Fig!', fig: 'Bare hyggelig! Jeg er her når du vil pynte videre.' },
   ];
-  const nextMode = ownRoom ? ROOM_VIEWS.find((m) => m !== mode && !seenModes.includes(m)) : undefined;
+  // with 3D and the floor plan seen, the visitor goes back to 360° themselves (Silje 20.11): the menu glows for it
+  const viewsSeen = ROOM_DONE_VIEWS.every((m) => seenModes.includes(m));
+  const askedRoom = useRef(false);
+  const nextMode = ownRoom ? ROOM_VIEWS.find((m) => m !== mode && !seenModes.includes(m)) ?? (viewsSeen && mode !== 'real' && !askedRoom.current ? 'real' : undefined) : undefined;
+  const figLine = (text: string) =>
+    update((d) => {
+      const c = ensureChat(d, roomId, 'Fig', d.activeChat[roomId] ?? uid('c'));
+      c.messages.push({ id: uid('m'), role: 'ai', text, mood: 'happy', createdAt: Date.now() });
+      c.updatedAt = Date.now();
+    });
+  // back in 360°: Fig asks to be asked about the room, and the field glows
+  useEffect(() => {
+    if (!ownRoom || !viewsSeen || mode !== 'real' || askedRoom.current) return;
+    askedRoom.current = true;
+    setRoomStep(0);
+    const t = window.setTimeout(() => figLine(ROOM_NUDGE), 600);
+    return () => window.clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mode, viewsSeen, ownRoom]);
   // Fig says what to try, once, when the new room opens
   useEffect(() => {
     if (!ownRoom) return;
@@ -1038,17 +1057,9 @@ export function RoomScreen({ roomId }: { roomId: string }) {
     const seen = [...seenModes, mode];
     setSeenModes(seen);
     // the last step of the task is asking Fig about the room (Silje 20.11): Fig says so, the task is done when it answers
-    if (ROOM_DONE_VIEWS.every((m) => seen.includes(m)) && !roomAsk) {
-      setRoomStep(0);
-      // back to 360°, where the talk is (Silje 20.11), then Fig says what to do
-      window.setTimeout(() => setMode('real'), 1200);
-      window.setTimeout(() => {
-        update((d) => {
-          const c = ensureChat(d, roomId, 'Fig', d.activeChat[roomId] ?? uid('c'));
-          c.messages.push({ id: uid('m'), role: 'ai', text: ROOM_NUDGE, mood: 'happy', createdAt: Date.now() });
-          c.updatedAt = Date.now();
-        });
-      }, 1800);
+    if (ROOM_DONE_VIEWS.every((m) => seen.includes(m)) && mode !== 'real') {
+      // the next step: back to 360° (the visitor does it, Silje 20.11)
+      figLine(ROOM_BACK);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode, ownRoom, seenModes.join()]);
