@@ -672,7 +672,7 @@ export function RoomScreen({ roomId }: { roomId: string }) {
   /** The fig talk: a tap in the field types the user's next line by itself, letter by letter (Silje 17.11) */
   const typeFigLine = () => {
     if (draft || typingRef.current) return;
-    const line = figTalk !== null ? FIG_SCRIPT[figTalk] : STAND && tableAsk ? TABLE_PROMPT : STAND && roomAsk ? ROOM_PROMPT : null;
+    const line = figTalk !== null ? FIG_SCRIPT[figTalk] : STAND && tableAsk ? TABLE_PROMPT : STAND && roomStep !== null ? ROOM_TALK[roomStep].me : null;
     if (!line) return;
     const letters = Array.from(line);
     let n = 0;
@@ -1007,10 +1007,16 @@ export function RoomScreen({ roomId }: { roomId: string }) {
   const ROOM_VIEWS: ViewMode[] = ['real', '3d', '2d'];
   const ROOM_DONE_VIEWS: ViewMode[] = ['3d', '2d'];
   // when 3D and the floor plan are seen, a tap in the field asks Fig about the room, and Fig answers (Silje 20.11)
-  const [roomAsk, setRoomAsk] = useState(false);
-  const ROOM_PROMPT = 'Hva synes du om rommet mitt, Fig?';
+  // a short talk (Silje 20.11): the task is done after the first answer, the rest can be gone through if one wants
+  const [roomStep, setRoomStep] = useState<number | null>(null);
+  const roomAsk = roomStep !== null;
   const ROOM_NUDGE = 'Bra! Trykk i feltet nederst og spør meg hva jeg synes om rommet.';
-  const ROOM_ANSWER = 'Fin start! Prøv tryllestaven nede til venstre og hent farger fra naturen, eller legg til et møbel med +.';
+  const ROOM_TALK = [
+    { me: 'Hva synes du om rommet mitt, Fig?', fig: 'Fin start! Det er god plass her, og vinduet gir fint lys. Vil du ha et tips?' },
+    { me: 'Ja, gjerne!', fig: 'Prøv tryllestaven nede til venstre og hent farger fra naturen, eller legg til et møbel med +.' },
+    { me: 'Hvilke farger passer i rommet?', fig: 'Lyse, varme vegger gjør rommet luftig, og litt grønt fra planter gir liv.' },
+    { me: 'Takk, Fig!', fig: 'Bare hyggelig! Jeg er her når du vil pynte videre.' },
+  ];
   const nextMode = ownRoom ? ROOM_VIEWS.find((m) => m !== mode && !seenModes.includes(m)) : undefined;
   // Fig says what to try, once, when the new room opens
   useEffect(() => {
@@ -1033,12 +1039,16 @@ export function RoomScreen({ roomId }: { roomId: string }) {
     setSeenModes(seen);
     // the last step of the task is asking Fig about the room (Silje 20.11): Fig says so, the task is done when it answers
     if (ROOM_DONE_VIEWS.every((m) => seen.includes(m)) && !roomAsk) {
-      setRoomAsk(true);
-      update((d) => {
-        const c = ensureChat(d, roomId, 'Fig', d.activeChat[roomId] ?? uid('c'));
-        c.messages.push({ id: uid('m'), role: 'ai', text: ROOM_NUDGE, mood: 'happy', createdAt: Date.now() });
-        c.updatedAt = Date.now();
-      });
+      setRoomStep(0);
+      // back to 360°, where the talk is (Silje 20.11), then Fig says what to do
+      window.setTimeout(() => setMode('real'), 1200);
+      window.setTimeout(() => {
+        update((d) => {
+          const c = ensureChat(d, roomId, 'Fig', d.activeChat[roomId] ?? uid('c'));
+          c.messages.push({ id: uid('m'), role: 'ai', text: ROOM_NUDGE, mood: 'happy', createdAt: Date.now() });
+          c.updatedAt = Date.now();
+        });
+      }, 1800);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode, ownRoom, seenModes.join()]);
@@ -1049,11 +1059,13 @@ export function RoomScreen({ roomId }: { roomId: string }) {
       return;
     }
     // the question about a room of your own: Fig answers from the script (Silje 20.11)
-    if (STAND && !ask && roomAsk && draft.trim() === ROOM_PROMPT) {
-      setRoomAsk(false);
+    if (STAND && !ask && roomStep !== null && draft.trim() === ROOM_TALK[roomStep].me) {
+      const step = roomStep;
+      setRoomStep(step + 1 < ROOM_TALK.length ? step + 1 : null);
       setDraft('');
       setSheet('open');
-      figSay(ROOM_PROMPT, { text: ROOM_ANSWER, mood: 'happy' }, () => setDoneMoments([...new Set([...doneMoments, MOMENTS[3]])]));
+      // one line and one answer finish the task; the talk can go on after it
+      figSay(ROOM_TALK[step].me, { text: ROOM_TALK[step].fig, mood: 'happy' }, step === 0 ? () => setDoneMoments([...new Set([...doneMoments, MOMENTS[3]])]) : undefined);
       return;
     }
     if (STAND && ask && figMoment(ask)) return;

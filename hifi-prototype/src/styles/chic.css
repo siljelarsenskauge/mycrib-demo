@@ -5604,12 +5604,13 @@ img + .nr-link-empty,
 .stand-on .chat-sheet-wrap.stand-send .composer-send {
   animation: stand-field-ring 1.6s ease-in-out infinite !important;
 }
-/* the field glows as a whole – the photo of the table and the text – not only where the text goes (Synne 19.11) */
-.stand-on .chat-sheet-wrap.stand-type .composer-input {
+/* the field glows as a whole – the photo of the table and the text – not only where the text goes (Synne 19.11).
+   Only with a photo: without one the field box isn't drawn (display: contents), so the text field keeps the ring (20.11) */
+.stand-on .chat-sheet-wrap.stand-type .composer-with-attachment .composer-input {
   outline: none;
   animation: none !important;
 }
-.stand-on .chat-sheet-wrap.stand-type .composer-field {
+.stand-on .chat-sheet-wrap.stand-type .composer-with-attachment .composer-field {
   outline: 3px solid rgb(201, 112, 104);
   outline-offset: -3px;
   animation: stand-field-ring 1.6s ease-in-out infinite !important;
