@@ -33,7 +33,7 @@ trykker i feltet, slik at demoen virker likt for alle og tastaturet ikke dekker 
 | `hifi-prototype/` | Appen: den høyoppløselige prototypen (React + TypeScript + Vite) |
 | `hifi-prototype/reference/lofi-v2/` | Lo-fi-prototypen som hi-fi-versjonen bygger på |
 | `hifi-prototype/docs/endringslogg.md` | Endringsloggen: hva som er gjort, foreslått og valgt underveis |
-| `Furniegruppe-html/` | Tidligere HTML-eksporter med 3D-modellen og 360°-bildene av rommet |
+| `design-reference/` | Tidlig designskisse av Furnie fra et visuelt designverktøy (Claude Design), med 3D-modellen og 360°-bildene. Brukt som referanse da appen ble bygget, ikke en del av appen |
 
 ## Kjør lokalt
 
