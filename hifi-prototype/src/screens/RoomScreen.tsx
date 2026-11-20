@@ -672,7 +672,7 @@ export function RoomScreen({ roomId }: { roomId: string }) {
   /** The fig talk: a tap in the field types the user's next line by itself, letter by letter (Silje 17.11) */
   const typeFigLine = () => {
     if (draft || typingRef.current) return;
-    const line = figTalk !== null ? FIG_SCRIPT[figTalk] : STAND && tableAsk ? TABLE_PROMPT : null;
+    const line = figTalk !== null ? FIG_SCRIPT[figTalk] : STAND && tableAsk ? TABLE_PROMPT : STAND && roomAsk ? ROOM_PROMPT : null;
     if (!line) return;
     const letters = Array.from(line);
     let n = 0;
@@ -1006,6 +1006,10 @@ export function RoomScreen({ roomId }: { roomId: string }) {
   const [seenModes, setSeenModes] = useState<ViewMode[]>([]);
   const ROOM_VIEWS: ViewMode[] = ['real', '3d', '2d'];
   const ROOM_DONE_VIEWS: ViewMode[] = ['3d', '2d'];
+  // when 3D and the floor plan are seen, a tap in the field asks Fig about the room, and Fig answers (Silje 20.11)
+  const [roomAsk, setRoomAsk] = useState(false);
+  const ROOM_PROMPT = 'Hva synes du om rommet mitt, Fig?';
+  const ROOM_ANSWER = 'Fin start! Prøv tryllestaven nede til venstre og hent farger fra naturen, eller legg til et møbel med +.';
   const nextMode = ownRoom ? ROOM_VIEWS.find((m) => m !== mode && !seenModes.includes(m)) : undefined;
   // Fig says what to try, once, when the new room opens
   useEffect(() => {
@@ -1026,13 +1030,24 @@ export function RoomScreen({ roomId }: { roomId: string }) {
     if (!ownRoom || seenModes.includes(mode)) return;
     const seen = [...seenModes, mode];
     setSeenModes(seen);
-    if (ROOM_DONE_VIEWS.every((m) => seen.includes(m))) setDoneMoments([...new Set([...doneMoments, MOMENTS[3]])]);
+    if (ROOM_DONE_VIEWS.every((m) => seen.includes(m))) {
+      setDoneMoments([...new Set([...doneMoments, MOMENTS[3]])]);
+      setRoomAsk(true);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode, ownRoom, seenModes.join()]);
 
   const send = (ask?: string) => {
     if (STAND && !ask && tableAsk && attachment && attachment.kind === 'coffeetable') {
       placeStandTable(attachment, draft.trim() || TABLE_PROMPT);
+      return;
+    }
+    // the question about a room of your own: Fig answers from the script (Silje 20.11)
+    if (STAND && !ask && roomAsk && draft.trim() === ROOM_PROMPT) {
+      setRoomAsk(false);
+      setDraft('');
+      setSheet('open');
+      figSay(ROOM_PROMPT, { text: ROOM_ANSWER, mood: 'happy' });
       return;
     }
     if (STAND && ask && figMoment(ask)) return;
@@ -1710,7 +1725,7 @@ export function RoomScreen({ roomId }: { roomId: string }) {
       )}
       {/* an invisible layer over the room while a panel is open: a tap on the room (also the 3D/360° frame) closes it */}
       {panel && <div className="panel-catcher" aria-hidden onPointerDown={() => setPanel(null)} />}
-      <div onClickCapture={(e) => { if ((e.target as HTMLElement).tagName === 'TEXTAREA') typeFigLine(); }} onFocusCapture={(e) => { continueIfOld(); if ((e.target as HTMLElement).tagName === 'TEXTAREA') { setWriting(true); setPanel(null); typeFigLine(); } }} onBlurCapture={(e) => { if (!e.currentTarget.contains(e.relatedTarget as Node)) setWriting(false); }} className={(writing || draft ? 'is-writing ' : '') + (STAND && ((figTalk !== null && (!lastMsg?.swatches?.length || triedSwatch)) || tableAsk) && !draft && !thinking ? 'stand-type ' : '') + (STAND && tableHint && overlay?.kind !== 'add' ? 'stand-plus ' : '') + (STAND && natureHint && panel !== 'magic' && !natureId ? 'stand-wand ' : '') + (STAND && natureHint && natureId ? 'stand-send ' : '') + 'chat-sheet-wrap' + (sheet === 'full' && !trayOpen && (chat?.messages.length ?? 0) > 0 ? ' is-full' : '')} ref={sheetRef}>
+      <div onClickCapture={(e) => { if ((e.target as HTMLElement).tagName === 'TEXTAREA') typeFigLine(); }} onFocusCapture={(e) => { continueIfOld(); if ((e.target as HTMLElement).tagName === 'TEXTAREA') { setWriting(true); setPanel(null); typeFigLine(); } }} onBlurCapture={(e) => { if (!e.currentTarget.contains(e.relatedTarget as Node)) setWriting(false); }} className={(writing || draft ? 'is-writing ' : '') + (STAND && ((figTalk !== null && (!lastMsg?.swatches?.length || triedSwatch)) || tableAsk || roomAsk) && !draft && !thinking ? 'stand-type ' : '') + (STAND && tableHint && overlay?.kind !== 'add' ? 'stand-plus ' : '') + (STAND && natureHint && panel !== 'magic' && !natureId ? 'stand-wand ' : '') + (STAND && natureHint && natureId ? 'stand-send ' : '') + 'chat-sheet-wrap' + (sheet === 'full' && !trayOpen && (chat?.messages.length ?? 0) > 0 ? ' is-full' : '')} ref={sheetRef}>
       <ChatSheet
         chat={trayOpen ? undefined : chat}
         state={sheet}
