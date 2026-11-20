@@ -30,9 +30,9 @@ trykker i feltet, slik at demoen virker likt for alle og tastaturet ikke dekker 
 
 | Mappe | Hva det er |
 |---|---|
-| `hifi-prototype/` | Appen: den høyoppløselige prototypen (React + TypeScript + Vite) |
-| `hifi-prototype/reference/lofi-v2/` | Lo-fi-prototypen som hi-fi-versjonen bygger på |
-| `hifi-prototype/docs/endringslogg.md` | Endringsloggen: hva som er gjort, foreslått og valgt underveis |
+| `final-mycrib/` | Appen: den høyoppløselige prototypen (React + TypeScript + Vite) |
+| `final-mycrib/reference/lofi-v2/` | Lo-fi-prototypen som hi-fi-versjonen bygger på |
+| `final-mycrib/docs/endringslogg.md` | Endringsloggen: hva som er gjort, foreslått og valgt underveis |
 | `design-reference/` | Tidlig designskisse av Furnie fra et visuelt designverktøy (Claude Design), med 3D-modellen og 360°-bildene. Brukt som referanse da appen ble bygget, ikke en del av appen |
 
 ## Kjør lokalt
@@ -40,18 +40,18 @@ trykker i feltet, slik at demoen virker likt for alle og tastaturet ikke dekker 
 Krever Node.js 18 eller nyere.
 
 ```bash
-cd hifi-prototype
+cd final-mycrib
 npm install
 npm run dev
 ```
 
-Åpne adressen Vite viser. `npm run build` lager en produksjonsversjon i `hifi-prototype/dist`.
+Åpne adressen Vite viser. `npm run build` lager en produksjonsversjon i `final-mycrib/dist`.
 
 ## Teknisk
 
 - React 18, TypeScript og Vite, med three.js til 3D og 360°.
 - Ingen backend. Data lagres i nettleseren (`localStorage`).
-- Publisert på Netlify (base `hifi-prototype`, build `npm run build`, publish `dist`), og kan installeres som en
+- Publisert på Netlify (base `final-mycrib`, build `npm run build`, publish `dist`), og kan installeres som en
   PWA.
 
 ## Om bruken av AI
