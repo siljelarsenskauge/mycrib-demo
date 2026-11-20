@@ -1009,6 +1009,7 @@ export function RoomScreen({ roomId }: { roomId: string }) {
   // when 3D and the floor plan are seen, a tap in the field asks Fig about the room, and Fig answers (Silje 20.11)
   const [roomAsk, setRoomAsk] = useState(false);
   const ROOM_PROMPT = 'Hva synes du om rommet mitt, Fig?';
+  const ROOM_NUDGE = 'Bra! Trykk i feltet nederst og spør meg hva jeg synes om rommet.';
   const ROOM_ANSWER = 'Fin start! Prøv tryllestaven nede til venstre og hent farger fra naturen, eller legg til et møbel med +.';
   const nextMode = ownRoom ? ROOM_VIEWS.find((m) => m !== mode && !seenModes.includes(m)) : undefined;
   // Fig says what to try, once, when the new room opens
@@ -1030,9 +1031,14 @@ export function RoomScreen({ roomId }: { roomId: string }) {
     if (!ownRoom || seenModes.includes(mode)) return;
     const seen = [...seenModes, mode];
     setSeenModes(seen);
-    if (ROOM_DONE_VIEWS.every((m) => seen.includes(m))) {
-      setDoneMoments([...new Set([...doneMoments, MOMENTS[3]])]);
+    // the last step of the task is asking Fig about the room (Silje 20.11): Fig says so, the task is done when it answers
+    if (ROOM_DONE_VIEWS.every((m) => seen.includes(m)) && !roomAsk) {
       setRoomAsk(true);
+      update((d) => {
+        const c = ensureChat(d, roomId, 'Fig', d.activeChat[roomId] ?? uid('c'));
+        c.messages.push({ id: uid('m'), role: 'ai', text: ROOM_NUDGE, mood: 'happy', createdAt: Date.now() });
+        c.updatedAt = Date.now();
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode, ownRoom, seenModes.join()]);
@@ -1047,7 +1053,7 @@ export function RoomScreen({ roomId }: { roomId: string }) {
       setRoomAsk(false);
       setDraft('');
       setSheet('open');
-      figSay(ROOM_PROMPT, { text: ROOM_ANSWER, mood: 'happy' });
+      figSay(ROOM_PROMPT, { text: ROOM_ANSWER, mood: 'happy' }, () => setDoneMoments([...new Set([...doneMoments, MOMENTS[3]])]));
       return;
     }
     if (STAND && ask && figMoment(ask)) return;
